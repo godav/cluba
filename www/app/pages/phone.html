@@ -1,0 +1,46 @@
+<div layout="column" md-theme="altTheme" class="md-primary gradient content-middle" style="color:white; height:20%;">
+    <div layout="row" class="rtl text-middle">
+
+        <div flex style="text-align: center; vertical-align:middle"> 
+            <span class="md-headline">Clubears</span>
+        </div>
+    </div>
+</div>
+
+<md-content class="md-padding rtl" layout-fill style="text-align: center">
+
+
+
+    <form name="signInForm" ng-show="isSignIn" ng-submit="signInSub()">
+        <h2 style="font-size: x-large; text-align: center; margin: 16% !important;">אימות מספר פלאפון</h2>
+        <div style="text-align: -webkit-center; text-align: center;">
+
+            <input type="tel" class="form-control" style="font-size: 150%" id="tel" name="tel" ng-model="tel" ng-intl-tel-input data-initial-country="il" ng-change="checkPhone(signInForm.tel)">
+            <span class="help-block" ng-show="userPhone.length === 0"></span>
+        </div>
+        <div class="text-middle" style="margin: 16% !important; text-align: center">
+            <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" data-ng-disabled="!isPhoneOK">שלחו לי קוד לנייד</button>
+        </div>
+
+    </form>
+
+    <form name="verificationCodeForm" ng-show="isVerification" role="form" ng-submit="onVerifyCodeSubmit()">
+        <!-- Input to enter the verification code -->
+        <h2 style="font-size: x-large; text-align: center; margin: 16% !important;">הקלד את קוד האימות</h2>
+
+        <md-input-container  class="md-block" style="padding-bottom: 25px;">
+            <label>קוד אימות</label>
+            <input type="number" ng-model="verificationCode" md-no-asterisk  ng-change="checkCode()" name="verificationCode" >    
+        </md-input-container>
+        
+        <div style="text-align:center;">
+        <!-- Button that triggers code verification -->
+        <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" ng-disabled="!codeComplete">אמת טלפון</button>
+
+        <!-- Button to cancel code verification -->
+        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="">ביטול</button>
+        </div>
+    </form>
+
+</md-content>
+

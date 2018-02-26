@@ -1,0 +1,59 @@
+<!--<md-toast>
+    <span flex>Custom toast!</span>
+
+</md-toast>-->
+
+<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-tooltip>
+                Side Panel
+            </md-tooltip>
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <!--        <md-button class="md-icon-button" aria-label="Done" ng-click="check()">
+                    <md-icon class="material-icons"><i class="material-icons">&#xE876;</i></md-icon>
+                </md-button>-->
+
+    </div>
+</md-toolbar>
+
+<div layout-padding flex id="toaster-ancor">
+
+    <md-chips ng-model="selectedUsers" md-autocomplete-snap>
+        <md-autocomplete 
+            md-selected-item="selectedItem" 
+            md-search-text="searchText" 
+            md-items="user in updateUsers(searchText)"                                   
+            md-item-text="user.name" 
+            placeholder="חפש טלפון" 
+            md-min-length="1"           
+            md-no-cache="true"
+            md-delay="150">  
+
+            <md-item-template>
+                <span md-highlight-text="searchText" md-highlight-flags="^i" ng-bind="user.name">{{user.name}}</span>
+
+            </md-item-template>
+            <md-not-found>
+                הטלפון אינו רשום!      
+            </md-not-found>
+        </md-autocomplete>
+        <md-chip-template>
+            <span>
+                <strong>{{$chip.name}}</strong>
+            </span>
+        </md-chip-template>
+    </md-chips>    
+</div>
+<md-content style="text-align: center;">
+
+    <md-button ng-disabled="isEmpty()" class="md-raised md-primary"  ng-click="openClub()">פתח מועדון</md-button>
+</md-content>
+
+<main-side-nav></main-side-nav>

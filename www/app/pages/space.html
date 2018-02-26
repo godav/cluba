@@ -1,0 +1,74 @@
+<div layout="column">
+
+	<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="rtl ">
+
+		<md-card-header class="clubnose">
+
+			<md-card-avatar>
+				<img class="md-user-avatar" src="img/avatar.png">
+			</md-card-avatar>
+
+			<md-card-header-text>
+				<span class="md-title">הספריה קריות</span>
+				<span class="md-subhead">2.3 קמ</span>
+			</md-card-header-text>
+		</md-card-header>
+	</md-card>
+
+	<md-nav-bar layout="row" layout-align="center end"
+	md-selected-nav-item="currentNavItem"
+	nav-bar-aria-label="navigation links">
+		<md-nav-item md-nav-sref="space.boys" name="Boys">
+			<i class="ionicons ion-male"></i><!-- clubes around -->
+		</md-nav-item>
+
+		<md-nav-item md-nav-sref="space.gallery" name="Mixed">
+			<i class="fa fa-venus-mars"></i><!-- history -->
+		</md-nav-item>
+		<md-nav-item md-nav-sref="space.girls" name="Girls">
+			<i class="ionicons ion-female"></i><!-- favorites -->
+		</md-nav-item>
+		<!-- these require actual routing with ui-router or ng-route, so they
+		won't work in the demo
+		<md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+		<md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+		You can also add options for the <code>ui-sref-opts</code> attribute.
+		<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+		Page Six
+		</md-nav-item>
+		-->
+	</md-nav-bar>
+
+	<div class="ext-content">
+		<div ui-view></div>
+		<!--  External content for `<span>{{currentNavItem}}</span>`. -->
+
+	</div>
+	<md-content class="md-padding footnav" layout="row" layout-align="center center" >
+
+		<md-nav-bar
+		md-selected-nav-item="currentNavItem"
+		nav-bar-aria-label="navigation links">
+			<md-nav-item md-nav-sref="space.pickapp" name="history">
+				<i class="material-icons">&#xE0B7;</i><!-- Pickapp -->
+			</md-nav-item>
+			<md-nav-item md-nav-sref="space.photo" name="photo">
+				<i class="material-icons">&#xE412;</i><!-- space take photo -->
+			</md-nav-item>
+			<md-nav-item md-nav-sref="space.gallery" name="gallery">
+				<i class="material-icons">&#xE410;</i><!-- space gallery -->
+			</md-nav-item>
+			<!-- these require actual routing with ui-router or ng-route, so they
+			won't work in the demo
+			<md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+			<md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+			You can also add options for the <code>ui-sref-opts</code> attribute.
+			<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+			Page Six
+			</md-nav-item>
+			-->
+		</md-nav-bar>
+
+	</md-content>
+
+</div>

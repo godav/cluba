@@ -1,0 +1,70 @@
+<div layout="column" class="gradient content-middle" style="color:white; height:20%;">
+
+	<div layout="row" class="rtl text-middle" layout-fill>
+
+		<div flex layout="column" layout-fill>
+
+		</div>
+		<div flex>
+			<div  class="md-media-sm card-media " style="position: relative;"><img id="mainavatar" ng-src="{{picture}}">
+				<md-button style="position: absolute;
+				bottom: -10px;
+				right: -20px; background: #de86de!important;" class="md-fab md-primary md-mini" aria-label="New">
+					<md-icon aria-label="edit" class="material-icons " ng-click="imageEdit()">
+						&#xE3C9;
+					</md-icon>
+				</md-button></img>
+			</div>
+		</div>
+		<div flex layout="column" layout-fill>
+
+		</div>
+	</div>
+</div>
+<div ng-controller="profileUpdate" layout="column" ng-cloak class="rtl">
+
+	<md-content layout-padding>
+		<form name="profileForm">
+
+			<md-input-container flex="50">
+				<label>שם פרטי</label>
+				<input required name="clientName" ng-model="profile.name" md-no-asterisk>
+				<div ng-messages="profileForm.name.$error">
+					<div ng-message="required">
+						שדה חובה
+					</div>
+				</div>
+			</md-input-container>
+			<md-input-container flex="50">
+				<label>שם משפחה</label>
+				<input required name="clientName" ng-model="profile.name" md-no-asterisk>
+				<div ng-messages="profileForm.name.$error">
+					<div ng-message="required">
+						שדה חובה
+					</div>
+				</div>
+			</md-input-container>
+
+			<md-input-container flex="50">
+				<label>סטטוס</label>
+				<md-select name="type" ng-model="status" required md-no-asterisk>
+					<md-option value="app">
+						רווק
+					</md-option>
+					<md-option value="web">
+						תפוס
+					</md-option>
+
+				</md-select>
+			</md-input-container>
+
+			<div>
+				<md-button class="md-raised login-facebook" type="Submit">
+					<i class="material-icons">&#xE876;</i>
+					שמירת השינויים
+				</md-button>
+			</div>
+
+		</form>
+	</md-content>
+

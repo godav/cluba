@@ -1,0 +1,135 @@
+<md-toolbar style="color:white;" id="pending-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-show="!partiesShow">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <md-button class="md-icon-button" aria-label="Cancel" ng-click="cancel()">
+            <md-icon class="material-icons">
+                <i class="material-icons">&#xE5C9;</i>
+            </md-icon>
+        </md-button>
+        <md-button ng-disabled="updated === false" class="md-icon-button" aria-label="Done" ng-click="updatePendingUsers()">
+            <md-icon class="material-icons">
+                <i class="material-icons">&#xE876;</i>
+            </md-icon>
+        </md-button>
+
+    </div>
+
+    <md-content>
+        <div layout="row" class="club-sub-head" >
+            <div flex="20">
+                <span class="club-name" >תמונה</span>
+            </div>
+            <div flex="40">
+                <span class="club-name" >שם</span>
+            </div>
+            <div flex="15">
+                <span class="event-panding" >מין</span>
+            </div>
+            <div flex="15">
+                <span class="event-approved">ביקורים קודמים</span>
+            </div>
+            <div flex="10">
+                <span class="club-reg-btn1">אישור</span>
+            </div>
+        </div>
+    </md-content>
+</md-toolbar>
+<div  id="toast-content" style="position: relative;">   </div>
+<div scroll-headline-pending id="pending-content" flex style="overflow: auto;" ng-clock  ng-show="!partiesShow">
+
+    <div ng-repeat="user in users" >	
+        <hr ng-if="$first" class="user-hr-no-top" >
+        <hr ng-if="!$first" class="user-hr">
+        <div layout="row" class="user-list" ng-class="user.group % 2 === 0 ? 'even-line' : 'odd-line'">
+
+            <div flex="20" layout="row" >
+                <img ng-src='{{user.picture}}' class="avatar" ng-click="showConfirm($event, user)"> 
+            </div>
+            <div flex="40" layout="row">
+                <span class="user-name vertical-text" >{{user.name}}</span>
+            </div>
+            <div flex="15" layout="row">
+                <span class="user-name vertical-text" ><i ng-if="user.gender === 'male'" class="fa fa-mars" style="font-size:24px"></i><i  ng-if="user.gender === 'female'" class="fa fa-venus" style="font-size:24px"></i></span>
+            </div>
+            <div flex="15">
+
+            </div>
+            <div flex="10" layout="row">
+                <md-checkbox ng-disabled="user.approved && user.sent" ng-model="user.approved" aria-label="Checkbox 1"  ng-change="changeState(user)"></md-checkbox>
+
+            </div>          
+        </div>
+        <hr ng-if="$last" class="user-hr-no-bottom">
+
+
+    </div>
+
+
+    <md-fab-toolbar ng-class="isOpen ? 'toolbar-open' : 'toolbar-close'" md-open="isOpen" md-direction="left" count="countt" id="fab-tool">
+        <md-fab-trigger class="align-with-text" style="right: 35px;">
+            <md-button aria-label="options" class="md-fab md-mini md-primary"> 
+                <md-icon style="display: unset">
+                    <!-- Put what ever youwant here -->
+                    <i class="material-icons">&#xE5D2;</i>
+                </md-icon>
+
+            </md-button>
+        </md-fab-trigger>
+
+        <md-toolbar>
+            <md-fab-actions class="md-toolbar-tools" style="justify-content: space-around;">
+                <!--                <md-button aria-label="options" class="md-icon-button"> 
+                                    <md-icon style="display: unset">
+                                         Put what ever youwant here 
+                                        <i class="material-icons">&#xE5D2;</i>
+                                    </md-icon>
+                                </md-button>   -->
+                <md-button aria-label="check all" class="md-icon-button" ng-click="checkAll()">
+                    <img ng-show="!all" class="png-icon" src="icons/select-all.png" style="width: 24px; height: 24px;">
+                    <img ng-show="all" class="png-icon" src="icons/deselect-all.png" style="width: 24px; height: 24px;">
+                </md-button>
+                <md-button aria-label="gender pie" class="md-icon-button" ng-click="chart()">
+                    <i class="fa fa-pie-chart fa-2x" aria-hidden="true"></i>
+                </md-button>
+                <md-button aria-label="fiter by all" class="md-icon-button" ng-click="filterAll()">
+                    <i class="fa fa-venus-mars fa-2x" aria-hidden="true"></i>
+                </md-button>
+                <md-button aria-label="filer by female" class="md-icon-button" ng-click="filterByFemale()">
+                    <i class="fa fa-venus fa-2x" aria-hidden="true"></i>
+                </md-button>
+                <md-button aria-label="filer by male" class="md-icon-button" ng-click="filterByMale()">
+                    <i class="fa fa-mars fa-2x" aria-hidden="true"></i>
+                </md-button>
+            </md-fab-actions>
+        </md-toolbar>
+    </md-fab-toolbar>
+
+
+    <modal id="pending-gender-graphs" attachTo="">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="border: 1px solid">
+                    <nvd3 options="options" data="data" class="with-3d-shadow with-transitions" config="{refreshDataOnly: false, deepWatchData: true}"></nvd3>
+
+                </div>
+                <div style="border: 1px solid">
+                    <nvd3 options="options" data="data1" class="with-3d-shadow with-transitions" config="config"></nvd3>
+
+                </div>
+                <button ng-click="closeModal('pending-gender-graphs');">סגור</button>
+            </div>
+        </div>
+        <div class="modal-background"></div>
+    </modal>  
+</div>
+
+
+
+

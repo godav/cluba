@@ -1,0 +1,40 @@
+<div  layout="column" md-theme="altTheme" class="md-primary gradient content-middle" style="color:white;">
+
+    <div layout="row" class="rtl text-middle" style="height: 20%">
+
+        <div flex style="padding-right: 11px;"> 
+            <span class="md-headline">{{currentClub.name}}</span><br>
+            <span class="md-subhead" ng-bind="currentClub.address.city">{{currentClub.address.city}}</span>
+        </div>
+        <div flex>   <div  class="md-media-sm card-media "><img id="mainavatar" ng-src="{{currentClub.clubPicture}}"></div></div>
+        <div flex></div>
+    </div>
+    
+        <md-content class="md-padding">
+
+        <div class="ext-content">
+            <div ui-view></div>
+            <!--  External content for `<span>{{currentNavItem}}</span>`. -->
+
+        </div>
+
+
+    </md-content>
+</div>
+
+<!--<div layout="column" md-theme="altTheme" class="md-primary gradient content-middle" style="color:white; height: 20%;">-->
+<!--    <div class="line-inner-shadow">
+    </div>
+    <div class="card-media smartline">
+
+        <div class="octo" style="background:url('{{currentClub.clubPicture}}');     background-position: center;
+             background-size: cover;">
+            <div class="octo1">
+
+            </div>
+        </div>
+    </div>-->
+
+
+
+<!--</div>-->

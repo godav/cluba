@@ -1,0 +1,99 @@
+<div layout="column" class="gradient content-middle" style="color:white; height:20%;">
+
+    <div layout="row" class="rtl text-middle">
+    	 
+        <div flex style="padding-right: 11px;"> 
+            <span class="md-headline"> הפרופיל האישי</span><br>
+            <span class="md-subhead" ng-bind="name">{{name}}</span>
+        </div>
+        <div flex>  <div  class="md-media-sm card-media " style="position: relative;"><img id="mainavatar" ng-src="{{picture}}">
+				<md-button style="position: absolute;
+				bottom: -10px;
+				right: -20px; background: #de86de!important;" class="md-fab md-primary md-mini" aria-label="New">
+					<md-icon aria-label="edit" class="material-icons " ui-sref="clubears.profileUpdate">
+						&#xE3C9;
+					</md-icon>
+				</md-button></img>
+			</div></div>
+  <div flex></div>
+    </div>
+			
+
+	</div>
+</div>
+
+<!-- <div layout="row" layout-align="start center" >
+<div  >
+<span ng-show="status === 'רווק'" class="status-green profile-status"> {{status}} </span>
+<span ng-show="status === 'תפוס'" class="status-red profile-status"> {{status}} </span>
+</div>
+<div >
+<span ng-show="gender === 'בן'" class="status-blue profile-status" ng-bind="gender"> {{gender}} </span>
+<span ng-show="gender === 'בת'" class="status-pink profile-status" ng-bind="gender"> {{gender}} </span>
+</div>
+<div>
+<span  class="status-purple profile-status"> {{age}} </span>
+
+</div>
+</div> -->
+
+<!--  <div layout="row" layout-align="end end" >
+<a class="md-raised md-button" ui-sref="profileUpdate">ערוך פרופיל</a>
+
+</div>-->
+	
+
+			<md-chips class="layout-row"  layout-align="center center"
+
+ id="profile-chips">
+								<md-chip class="status-purple profile-status">
+					{{age}}
+				</md-chip>
+				<md-chip  ng-show="gender === 'בן'" class="status-blue profile-status" ng-bind="gender">
+					{{status}}
+				</md-chip>
+				<md-chip ng-show="gender === 'בת'" class="status-pink profile-status" ng-bind="gender">
+					{{status}}
+				</md-chip>
+				<md-chip ng-show="status === 'רווק'" class="status-green profile-status">
+					{{status}}
+				</md-chip>
+				<md-chip ng-show="status === 'תפוס'" class="status-red profile-status">
+					{{status}}
+				</md-chip>
+
+
+			</md-chips>
+
+<div class="ext-content">
+	<div ng-controller="profileImagesCtrl">
+				<md-grid-list
+		md-cols-gt-md="12" md-cols="2" md-cols-md="8"
+		md-row-height-gt-md="1:1" md-row-height="4:3"
+		md-gutter-gt-md="20px" md-gutter-md="8px" md-gutter="4px">
+			<md-grid-tile
+			ng-repeat="brick in bricks"
+			style="
+			background:url('{{brick}}');
+			background-position: center;
+    background-size: cover;
+			"
+			md-colspan-gt-sm="{{tile.colspan}}"
+			md-rowspan-gt-sm="{{tile.rowspan}}" ng-click="showConfirm($event)"></md-grid-tile>
+		</md-grid-list>
+		<div class="masonry">
+			<div class="item" ng-repeat="brick in bricks">
+
+				<img ng-src="{{ brick}}" alt="A masonry brick" class="profile-image"><i class="material-icons img-logo">&#xE889;</i></img>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!--  External content for `<span>{{currentNavItem}}</span>`. -->
+
+</div>
+
+</md-content>
+</div>

@@ -1,0 +1,19 @@
+
+<div ng-controller="mainHistoryCtrl">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch ng-repeat="his in history" class="rtl">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{his.name}}</span>
+                <span class="md-subhead"> קילומטר {{his.distance}}</span>
+            </md-card-title-text>
+            <md-card-title-media>
+                <div class="md-media-sm card-media"><img ng-src="{{his.photo}}"></div>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="right">
+            <md-button><md-icon md-font-set="material-icons">&#xE56A;</md-icon></md-button>  <!-- enter to club -->
+            <md-button><md-icon md-font-set="material-icons">&#xE866;</md-icon></md-button>  <!-- add to favorites -->
+        </md-card-actions>
+    </md-card> 
+</div>
+

@@ -1,0 +1,117 @@
+<md-toolbar style="color:white;" id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-tooltip>
+                Side Panel
+            </md-tooltip>
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex" style="text-align: center;">הרשאות</span>
+
+        <md-button form="clubProfile" type="submit" class="md-icon-button" aria-label="Done" ng-click="updatePermmisions()">
+            <md-icon class="material-icons"><i class="material-icons">&#xE876;</i></md-icon>
+        </md-button>
+
+    </div>
+
+
+</md-toolbar>
+<md-content flex layout-padding class="rtl" md-theme="altTheme" id="managers-permmisions">
+
+    <div class="flex" style="height: 5%"></div>
+
+
+
+    <md-input-container class="md-block" id="po-permision">
+        <label style="font-size: 25px;">הוספת מנהלים</label>
+        <md-chips class="custom-chips" ng-model="selectedManagers" md-autocomplete-snap md-removable="true" readonly="false">
+            <md-autocomplete 
+                md-selected-item="selectedManager" 
+                md-search-text="searchText" 
+                md-items="manager in updateUsers(searchText)"                                   
+                md-item-text="manager.name" 
+                md-min-length="1"           
+                md-no-cache="true"
+                md-delay="150">  
+
+                <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i" ng-bind="manager.name">{{manager.name}}</span>
+
+                </md-item-template>
+                <md-not-found>
+                    המשתמש אינו במערכת!     
+                </md-not-found>
+            </md-autocomplete>
+            <md-chip-template>
+                <span>
+                    <strong>{{$chip.name}}</strong>
+                </span>
+            </md-chip-template>
+            <button md-chip-remove class="md-primary managerchip" ng-hide="checkCurrentManager($chip)">
+                <md-icon md-svg-icon="md-close"></md-icon>
+            </button>
+        </md-chips>  
+    </md-input-container>
+
+    <div class="flex" style="height: 8%"></div>
+
+    <md-input-container class="md-block" id="po-permision">
+        <label style="font-size: 25px;">הוספת יחצנים</label>
+        <md-chips class="custom-chips" ng-model="selectedPOS" md-autocomplete-snap md-removable="true" readonly="false">
+            <md-autocomplete 
+                md-selected-item="selectedPO" 
+                md-search-text="searchText" 
+                md-items="po in updateUsers(searchText)"                                   
+                md-item-text="po.name" 
+                md-min-length="1"           
+                md-no-cache="true"
+                md-delay="150">  
+
+                <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i" ng-bind="po.name">{{po.name}}</span>
+
+                </md-item-template>
+                <md-not-found>
+                    המשתמש אינו במערכת!     
+                </md-not-found>
+            </md-autocomplete>
+            <md-chip-template>
+                <span>
+                    <strong>{{$chip.name}}</strong>
+                </span>
+            </md-chip-template>
+             <button md-chip-remove class="md-primary managerchip">
+                <md-icon md-svg-icon="md-close"></md-icon>
+            </button>
+        </md-chips>  
+    </md-input-container>
+
+
+</md-content>
+
+
+<footer>
+    <md-toolbar style="background-color:whitesmoke;">
+        <div layout="row" layout-align="center center" flex>
+            <md-button class="md-primary"  ng-disabled="!club.active">
+                הרשאות
+            </md-button>
+
+            <md-button class="md-primary" ng-click="goProfile()">
+                פרופיל
+            </md-button>
+
+            <md-button class="md-primary" ui-sref="managment.stats"  ng-disabled="!club.active">
+                סטטיסטיקות
+            </md-button>
+
+            <md-button class="md-primary font-bold" ng-click="goParties()"  ng-disabled="!club.active">
+                מסיבות והרשמות
+            </md-button>
+        </div>
+    </md-toolbar>
+</footer>
+

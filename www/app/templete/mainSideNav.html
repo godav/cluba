@@ -1,0 +1,101 @@
+
+<md-sidenav class="sidenavhead md-sidenav-left md-whiteframe-z2" md-component-id="left" >
+		<md-toolbar layout="row" md-theme="altTheme" class="md-primary">
+			<div class="md-toolbar-tools sidenavhead">
+				<span class="margin-left-1" ><h1>C</h1></span>
+				<span><h3>lu</h3></span>
+				<span><h1>B</h1></span>
+				<span><h3>ears</h3></span>
+				<span flex></span>
+				<md-button class="md-icon-button" aria-label="Close Side Panel" ng-click="closeSideNavPanel()">
+					<md-tooltip>
+						סגירת פאנל צד
+					</md-tooltip>
+					<md-icon class="md-default-theme" class="material-icons">
+						&#xE5CD;
+					</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-content class="sidenav" layout-padding="">
+			<md-list class="rtl sidenavtext">
+
+				<!-- pay attantion from class margin-left-32. used to help in hebrew language -->
+							
+	
+				<md-list-item>
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons">
+						&#xE8B8;
+					</md-icon>
+					<p ui-sref="clubears.main.clubes" ng-click="closeSideNavPanel()">
+						ראשי
+					</p>
+
+				</md-list-item>
+		
+ 
+				<md-list-item ng-show="currentUser.role =='1'">
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons" ng-click="closeSideNavPanel()">
+						&#xE7FD;
+					</md-icon>
+					<p ui-sref="superuser" ng-click="closeSideNavPanel()">
+						הוספת הרשאות ופתיחת מועדון
+					</p>
+
+				</md-list-item>
+
+				<md-list-item ng-show="currentUser.role">
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons"ng-click="closeSideNavPanel()">
+						&#xE7FD;
+					</md-icon>
+					<p ui-sref="managment" ng-click="closeSideNavPanel()">
+						פאנל לבעלי מועדון
+					</p>
+
+				</md-list-item>
+
+
+				<md-list-item >
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons" ui-sref="clubears.profile" ng-click="closeSideNavPanel()">
+						&#xE7FD;
+					</md-icon>
+					<p ui-sref="clubears.profile" ng-click="closeSideNavPanel()">
+						פרופיל
+					</p>
+
+				</md-list-item>
+
+			
+
+				<md-list-item>
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons">
+						&#xE8B8;
+					</md-icon>
+					<p>
+						הגדרות
+					</p>
+
+				</md-list-item>
+		
+
+				<md-list-item>
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons">
+						&#xE88F;
+					</md-icon>
+					<p ui-sref="clubears.aboutus" ng-click="closeSideNavPanel()">
+						אודות
+					</p>
+
+				</md-list-item>
+				<md-list-item>
+					<md-icon class="sidenav md-default-theme margin-left-32" class="material-icons">
+						&#xE0AF;
+					</md-icon>
+					<p ui-sref="clubears.contact" ng-click="closeSideNavPanel()">
+						בעל עסק
+					</p>
+
+				</md-list-item>
+			</md-list>
+		</md-content>
+	</md-sidenav>

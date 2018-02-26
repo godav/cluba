@@ -1,0 +1,26 @@
+<div ng-controller="clubAboutCtrl">
+		<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch class="rtl">
+		
+		<md-card-title>
+			<md-card-title-text>
+				<span class="md-headline">קצת עלינו</span>
+			
+			</md-card-title-text>
+		</md-card-title>
+		<md-card-actions layout="row" layout-align="start center">
+			
+			<md-button>
+				<i class="material-icons">&#xE89C;</i>הספייס שלנו
+			</md-button>
+			<md-button>
+				<i class="material-icons">&#xE55D;</i>ניווט למועדון
+			</md-button>
+		</md-card-actions>
+		<md-card-content>
+			<p>
+				{{currentClub.description}}
+			</p>
+
+		</md-card-content>
+
+	</md-card></div>

@@ -1,0 +1,52 @@
+<md-toolbar ng-show="show">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-tooltip>
+                Side Panel
+            </md-tooltip>
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <md-button class="md-icon-button" aria-label="back" ng-click="back()">
+            <md-icon class="material-icons">
+                <i class="material-icons">&#xE5C4;</i>
+            </md-icon>
+        </md-button>
+
+    </div>
+
+</md-toolbar>
+
+<md-content flex layout-padding class="rtl" md-theme="altTheme" ng-show="show">
+    <md-toolbar class="md-primary gradient _md _md-toolbar-transitions">
+        <div class="md-toolbar-tools rtl">
+            <h2 class="md-flex">המועדונים שלי</h2>
+        </div>
+    </md-toolbar>
+    <md-list class="rtl" >
+        <md-list-item ng-repeat="club in clubes" ng-hide="checkRole(club)" ng-click="editClub(club)">
+            <md-icon class="md-default-theme margin-left-32" class="material-icons">
+                &#xE544;
+            </md-icon>
+            <p class="rtl" >
+                {{club.name}}
+            </p>
+            <div class="md-secondary">
+                <img style='width: 60%' ng-src="{{club.imageLogo}}">
+            </div>
+        </md-list-item>
+        <md-divider></md-divider>
+    </md-list>
+
+
+</md-content>
+
+<div layout="column" layout-fill ui-view ng-show="!show"></div>
+
+
+
+<main-side-nav></main-side-nav>

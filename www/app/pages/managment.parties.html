@@ -1,0 +1,108 @@
+<md-toolbar style="color:white;" id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-show="partiesShow">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-tooltip>
+                Side Panel
+            </md-tooltip>
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <md-button class="md-icon-button" aria-label="back" ng-click="back()">
+            <md-icon class="material-icons">
+                <i class="material-icons">&#xE5C4;</i>
+            </md-icon>
+        </md-button>
+
+    </div>
+
+    <md-content>
+        <div layout="row" class="club-sub-head" >
+            <div flex="20">
+                <span class="club-name" >תאריך</span>
+            </div>
+            <div flex="40">
+                <span class="club-name" >שם הליין</span>
+            </div>
+            <div flex="15">
+                <span class="event-panding" >נרשמו</span>
+            </div>
+            <div flex="15">
+                <span class="event-approved">אושרו</span>
+            </div>
+            <div flex="10">
+                <span class="club-reg-btn1">עריכה</span>
+            </div>
+        </div>
+    </md-content>
+</md-toolbar>
+
+<div scroll-headline-managment id="managment-content" flex style="overflow: auto; position: relative !important;" ng-clock  ng-show="partiesShow">
+    <div ng-repeat="event in events" >	
+        <hr ng-if="$first" class="club-hr-no-top" >
+        <hr ng-if="!$first" class="club-hr">
+        <div layout="row" class="club-list">
+
+            <div flex="20" layout="row" style="margin-top: 8px; margin-bottom: 8px;">
+                <span class="club-name" >{{event.eDate| date:'dd/MM/yy'}}</span>
+            </div>
+            <div flex="40" layout="row" style="margin-top: 8px; margin-bottom: 8px;">
+                <span class="club-name" >{{event.name}}</span>
+            </div>
+            <div flex="15">
+                <md-button class="md-fab md-mini" ng-click="pending(event.$id)" style="margin: 0px !important; background-color: orange !important;" aria-label="Eat cake">
+                    {{event.pending.all}}
+                </md-button> 
+                <!--<span class="club-name circle-padding" >{{event.price}}</span>-->
+            </div>
+            <div flex="15">
+                <md-button class="md-fab md-mini" ng-click="approved(event.$id)" style="margin: 0px !important; background-color: green !important;" aria-label="Eat cake">
+                    {{event.approved.all}}
+                </md-button>
+                <!--<span class="event-approved circle-approved ">{{event.minAge}} </span>-->
+            </div>
+            <div flex="10" layout="row">
+
+                <md-icon class="material-icons" ng-click="edit(event.$id)">
+                    <span class="club-reg-btn1"><i class="material-icons">&#xE3C9;</i></span>
+                </md-icon>
+
+            </div>          
+        </div>
+        <hr ng-if="$last" class="club-hr-no-bottom">
+    </div>
+
+</div>
+
+<md-button class="md-fab  md-mini md-fab-bottom-right fixed-fab-right" ng-click="newEvent()" ng-show="partiesShow">
+    <md-icon class="material-icons">
+        <i class="material-icons">&#xE145;</i>
+    </md-icon>
+</md-button>
+
+<footer  ng-show="partiesShow && role < 3">
+    <md-toolbar style="background-color:whitesmoke;">
+        <div layout="row" layout-align="center center" flex>
+            <md-button class="md-primary" ng-click="goPermissions()">
+                הרשאות
+            </md-button>
+
+            <md-button class="md-primary" ng-click="goProfile()">
+                פרופיל
+            </md-button>
+
+            <md-button class="md-primary" ui-sref="managment.stats">
+                סטטיסטיקות
+            </md-button>
+
+            <md-button class="md-primary font-bold">
+                מסיבות והרשמות
+            </md-button>
+        </div>
+    </md-toolbar>
+</footer>
+
+<div layout="column" id="subParties" layout-fill ui-view ng-show="!partiesShow"></div>

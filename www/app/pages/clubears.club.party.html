@@ -1,0 +1,43 @@
+ 
+<md-content id="managment-toolbar">
+    <div layout="row" class="club-sub-head">
+        <div flex="30">
+            <span class="club-name" >תאריך</span>
+        </div>
+        <div flex="40">
+            <span class="club-name" >שם הליין</span>
+        </div>
+        <div flex="15">
+            <span class="club-name" >גילאים</span>
+        </div>
+        <div flex="15">
+            <span class="club-name">הרשם</span>
+        </div>
+    </div>
+</md-content>
+
+<div scroll-with-headline id="managment-content" flex style="overflow: auto; position: relative !important;" ng-clock>
+    <div ng-repeat="event in clubEvents" class="rtl" >	
+        <hr ng-if="$first" class="club-hr-no-top" >
+        <hr ng-if="!$first" class="club-hr">
+        <div layout="row" class="club-list">
+
+            <div flex="30" class="vertical-text">
+                <span class="club-name" >{{event.eDate| date:'dd/MM/yy'}}</span>
+            </div>
+            <div flex="40" class="vertical-text">
+                <span class="club-name" >{{event.name}}</span>
+            </div>
+            <div flex="15" class="vertical-text">
+                <span class="club-name" >+{{event.minAge}}</span>
+            </div>
+
+            <div flex="15">
+                <md-button style="margin: 0 auto" aria-label="calendar" class="md-icon-button" ng-click="showConfirm(event.$id, $event)">
+                   <i ng-class="userRegisterd[event.$id] ? 'club-user-registered fa fa-calendar-check-o fa-15x' : 'club-user-unregistered fa fa-calendar-plus-o fa-15x'"></i>
+                </md-button>
+            </div>
+        </div>
+        <hr ng-if="$last" class="club-hr-no-bottom">
+    </div>
+</div>

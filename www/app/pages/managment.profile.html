@@ -1,0 +1,181 @@
+<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-tooltip>
+                Side Panel
+            </md-tooltip>
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <md-button form="clubProfile" type="submit" class="md-icon-button" aria-label="Done" ng-click="updateClub()">
+            <md-icon class="material-icons"><i class="material-icons">&#xE876;</i></md-icon>
+        </md-button>
+
+    </div>
+</md-toolbar>
+
+<div class="picture-container">
+
+
+    <img class="image-profile" ng-src="{{club.clubPicture}}" alt="Club picture">
+
+    <md-button style="position: absolute; bottom: -20px; background: #de86de!important;" class="md-fab md-primary md-mini" aria-label="New">
+        <label for="pictureUpload">
+            <md-icon aria-label="edit" class="material-icons">&#xE3C9;</md-icon> 
+        </label>
+    </md-button>
+    <input id="pictureUpload"  
+           type="file" accept="image/*" 
+           image="image2"
+           resize-max-height="270"
+           resize-max-width="480"
+           resize-quality="0.3"  
+           style="display:none;">
+
+</div>
+
+
+
+<md-content flex layout-padding class="rtl" md-theme="altTheme" id="managment-profile">
+    <form id="clubProfile" name="clubForm" novalidate >
+
+        <div class="logo-container" layout="row" layout-align="space-around  center">
+            <div class="">
+                <md-button style="background: #de86de!important; margin:0" class="md-raised md-primary" aria-label="New">
+                    <label for="logoUpload">
+                        שנה לוגו 
+                    </label>
+                </md-button>
+                <input id="logoUpload"  
+                       type="file" accept="image/*" 
+                       image="imageLogo"
+                       resize-max-height="150"
+                       resize-max-width="300"
+                       resize-quality="0.3"  
+                       style="display:none;">
+            </div>
+            <div class="logo-style" style="background: url('{{club.clubLogo}}')">
+
+
+            </div>
+        </div>
+
+        <md-input-container  class="md-block" style="padding-bottom: 25px;">
+            <label>שם המועדון</label>
+            <input ng-model="club.name" required md-no-asterisk name="clubName" blacklist="חדש,new">
+            <div ng-messages="clubForm.clubName.$error" ng-if="clubForm.clubName.$invalid && (clubForm.$submitted || clubForm.clubName.$touched || eventForm.clubName.$dirty)" >
+                <div ng-message="required">נא לבחור שם למועדון!</div>
+                <div ng-message="blacklist">החלף את שם ברירת המחדל!</div>
+            </div>
+
+        </md-input-container>
+
+
+        <md-input-container class="md-block" style="padding-bottom: 25px;">
+            <label>כתובת המועדון</label>
+            <input vs-google-autocomplete 
+                   ng-model="club.address.name"                
+                   vs-place-id="club.address.placeId" 
+                   vs-street-number="club.address.streetNumber" 
+                   vs-street="club.address.street" 
+                   vs-city="club.address.city" 
+                   vs-state="club.address.state"
+                   vs-country-short="club.address.countryCode" 
+                   vs-country="club.address.country" 
+                   vs-latitude="club.location.lat" 
+                   vs-longitude="club.location.long" 
+                   type="text" 
+                   name="address"
+                   id="address1" 
+                   class="form-control" 
+                   placeholder="נא להכניס כתובת מדוייקת"
+                   md-no-asterisk
+                   required>
+            <div ng-messages="clubForm.address.$error" ng-if="clubForm.address.$invalid && (clubForm.$submitted || clubForm.address.$touched || eventForm.address.$dirty)" >
+                <div ng-message="required">נא להזין את כתובת המועדון!</div>
+                <div ng-message="city">עיר לא תקינה!</div>
+                <div ng-message="street">רחוב לא תקין!</div>
+                <div ng-message="streetNumber">חסר מספר רחוב!</div>
+                <div ng-message="country">חסר מדינה!</div>
+            </div>
+        </md-input-container>
+
+
+
+        <md-input-container flex="40" style="padding-bottom: 25px;">
+            <label>מס אורחים מקסימלי</label>
+            <input ng-model="club.capacity" type="number" required md-no-asterisk name="capacity" ng-max="3000">
+            <div ng-messages="clubForm.capacity.$error">
+                <div ng-message="required">נא להקליד כמות מקסימלית של בליינים במועדון!</div>
+                <div ng-message="number">ספרות בלבד!</div>
+                <div ng-message="max">לא הגזמנו?!</div>
+            </div>
+        </md-input-container>
+
+
+        <md-input-container class="md-block">
+            <label>תיאור המועדון</label>
+            <textarea ng-model="club.description" ng-maxlength="200" md-maxlength="200" rows="1" md-select-on-focus name="description"></textarea>
+            <div ng-messages="clubForm.description.$error">
+                <div ng-message="md-maxlength">נא להקליד עד 200 תוים בלבד!</div>
+            </div>
+        </md-input-container>
+    </form>
+
+    <md-input-container class="md-block" id="po-permision">
+        <label>הוספת יחצנים</label>
+        <md-chips ng-model="selectedUsers" md-autocomplete-snap>
+            <md-autocomplete 
+                md-selected-item="selectedItem" 
+                md-search-text="searchText" 
+                md-items="user in updateUsers(searchText)"                                   
+                md-item-text="user.name" 
+                md-min-length="1"           
+                md-no-cache="true"
+                md-delay="150">  
+
+                <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i" ng-bind="user.name">{{user.name}}</span>
+
+                </md-item-template>
+                <md-not-found>
+                    המשתמש אינו במערכת!     
+                </md-not-found>
+            </md-autocomplete>
+            <md-chip-template>
+                <span>
+                    <strong>{{$chip.name}}</strong>
+                </span>
+            </md-chip-template>
+        </md-chips>  
+    </md-input-container>
+
+
+</md-content>
+
+<footer>
+    <md-toolbar style="background-color:whitesmoke;">
+        <div layout="row" layout-align="center center" flex>
+            
+            <md-button class="md-primary md-disabled" ng-disabled="!club.active" ng-click="goPermissions()">
+                הרשאות
+            </md-button>
+
+            <md-button class="md-primary font-bold md-disabled" >
+                פרופיל
+            </md-button>
+
+            <md-button class="md-primary" ui-sref="managment.stats" ng-disabled="!club.active">
+                סטטיסטיקות
+            </md-button>
+
+            <md-button class="md-primary" ng-click="goParties()"  ng-disabled="!club.active">
+                מסיבות והרשמות
+            </md-button>
+        </div>
+    </md-toolbar>
+</footer>

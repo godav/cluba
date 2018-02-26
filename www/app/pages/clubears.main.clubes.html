@@ -1,0 +1,30 @@
+
+
+ 
+
+        <div  ng-repeat="club in clubes">
+            <hr ng-if="$first" class="user-hr" >
+            <hr ng-if="!$first" class="user-hr">
+            <div layout="row" class="club-list">
+
+                <div flex="30">
+                    <div  class="md-media-sm card-media "><img style='width: 60%' ng-src="{{club.imageLogo}}">
+                    </div>
+                </div>
+                <div flex="40">
+                    <span class="md-subhead club-name" >{{club.name}}</span>
+                </div>
+                <div flex="20">
+                    <span class="md-subhead club-distance">{{club.distance}} ק"מ </span>
+                </div>
+                <div flex="10">
+                    <md-icon class="material-icons" ng-click="enterClub(club)">
+                        <span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE88F;</i></span>
+                    </md-icon>
+                </div>
+            </div>
+            <hr ng-if="$last" class="club-hr-bottom">
+        </div>
+ 
+
+

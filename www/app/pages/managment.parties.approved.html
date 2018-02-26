@@ -1,0 +1,124 @@
+<md-toolbar style="color:white;" id="pending-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-show="!partiesShow">
+    <div class="md-toolbar-tools gradient">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
+            <md-icon class="md-default-theme" class="material-icons">
+                &#xE5D2;
+            </md-icon>
+        </md-button>
+
+        <span flex="" class="flex"></span>
+
+        <md-button class="md-icon-button" aria-label="back" ng-click="back()">
+            <md-icon class="material-icons">
+                <i class="material-icons">&#xE5C4;</i>
+            </md-icon>
+        </md-button>
+
+
+    </div>
+
+    <md-content>
+        <div layout="row" class="club-sub-head" >
+            <div flex="25">
+                <span class="club-name" >תמונה</span>
+            </div>
+            <div flex="45">
+                <span class="club-name" >שם</span>
+            </div>
+            <div flex="15">
+                <span class="event-panding" >מין</span>
+            </div>
+
+            <div flex="15">
+                <span class="club-reg-btn1">אישור</span>
+            </div>
+        </div>
+    </md-content>
+</md-toolbar>
+<div  id="toast-content" style="position: relative;">   </div>
+<div scroll-headline-pending id="pending-content" flex style="overflow: auto;" ng-clock  ng-show="!partiesShow">
+
+    <div ng-repeat="user in users" >	
+        <hr ng-if="$first" class="user-hr-no-top" >
+        <hr ng-if="!$first" class="user-hr">
+        <div layout="row" class="user-list" ng-class="user.group % 2 === 0 ? 'even-line' : 'odd-line'">
+
+            <div flex="25" layout="row" >
+                <img ng-src='{{user.picture}}' class="avatar" ng-click="showConfirm($event, user)"> 
+            </div>
+            <div flex="45" layout="row">
+                <span class="user-name vertical-text" >{{user.name}}</span>
+            </div>
+            <div flex="15" layout="row">
+                <span class="user-name vertical-text" ><i ng-if="user.gender === 'male'" class="fa fa-mars" style="font-size:24px"></i><i  ng-if="user.gender === 'female'" class="fa fa-venus" style="font-size:24px"></i></span>
+            </div>
+            <div flex="15" layout="row">
+                <md-checkbox ng-disabled="user.entered" ng-model="user.entered" aria-label="Checkbox 1"  ng-change="changeState(user)"></md-checkbox>
+
+            </div>          
+        </div>
+        <hr ng-if="$last" class="user-hr-no-bottom">
+
+
+    </div>
+
+
+    <md-fab-toolbar ng-show="!showSearchBar()"  ng-class="isOpen ? 'toolbar-open' : 'toolbar-close'" md-open="isOpen" md-direction="left" count="countt" id="fab-tool">
+        <md-fab-trigger class="align-with-text" style="right: 35px;">
+            <md-button aria-label="options" class="md-fab md-mini md-primary"> 
+                <md-icon style="display: unset">
+                    <!-- Put what ever youwant here -->
+                    <i class="material-icons">&#xE5D2;</i>
+                </md-icon>
+
+            </md-button>
+        </md-fab-trigger>
+
+        <md-toolbar>
+            <md-fab-actions class="md-toolbar-tools" style="justify-content: space-around;">
+                <md-button aria-label="search" class="md-icon-button" ng-click="initiateSearch()">
+                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                </md-button>
+                <md-button aria-label="fiter by all" class="md-icon-button" ng-click="filterAll()">
+                    <i class="fa fa-venus-mars fa-2x" aria-hidden="true"></i>
+                </md-button>                
+                <md-button aria-label="gender pie" class="md-icon-button" ng-click="chart()">
+                    <i class="fa fa-pie-chart fa-2x" aria-hidden="true"></i>
+                </md-button>
+            </md-fab-actions>
+        </md-toolbar>
+    </md-fab-toolbar>
+
+    <!-- Search bar -->
+    <div ng-show="showSearchBar()" class="md-toolbar-tools search-bar">
+        <md-button class="md-icon-button" ng-click="endSearch()">
+            <md-icon>close</md-icon>
+        </md-button>
+
+        <!-- Input Text -->
+        <md-input-container flex>
+            <!-- <label for="search">Search</label> -->
+            <input aria-label="search" id="search-input" type="text" ng-model="search" focus-me="showSearchBar()" style="text-align: right;" ng-model-options="{debounce: 500}"/>
+        </md-input-container>
+
+        <md-button class="md-icon-button" ng-click="submit()">
+            <md-icon>search</md-icon>
+        </md-button>
+    </div>
+
+    <div ng-show="noData" class="no-data"><span>אין משתמשים תואמים</span></div>
+    
+    <modal id="pending-gender-graphs" attachTo="">
+        <div class="modal">
+            <div class="modal-body">
+                <div style="border: 1px solid">
+                    <nvd3 id="genderEnteredGraph" api="api" options="options" data="data" class="with-3d-shadow with-transitions" config="config" ></nvd3>
+
+                </div>
+    
+                <button ng-click="closeModal('pending-gender-graphs');">סגור</button>
+            </div>
+        </div>
+        <div class="modal-background"></div>
+    </modal>  
+</div>

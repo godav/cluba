@@ -1,0 +1,35 @@
+<div ng-controller="picturesCtrl as picture">
+	<md-content layout-padding>
+		<md-grid-list
+		md-cols-gt-md="12" md-cols="2" md-cols-md="8"
+		md-row-height-gt-md="1:1" md-row-height="4:3"
+		md-gutter-gt-md="20px" md-gutter-md="8px" md-gutter="4px">
+			<md-grid-tile
+			ng-repeat="tile in picture.colorTiles"
+			ng-style="{
+			'background': tile.color
+			}"
+			md-colspan-gt-sm="{{tile.colspan}}"
+			md-rowspan-gt-sm="{{tile.rowspan}}" ng-click="showConfirm($event)"></md-grid-tile>
+		</md-grid-list>
+	</md-content>
+
+</div>
+<script type="text/ng-template" id="dialog1.tmpl.html">
+  <md-dialog ng-cloak>
+  <form>
+    <md-dialog-content>
+    <md-button ng-click="hide()">X</md-button>
+      <div class="md-dialog-content">
+      	
+        <img ng-src="img/avatar.png">
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="hide()">Hide</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
+</script>
+    </div>

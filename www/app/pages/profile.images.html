@@ -1,0 +1,24 @@
+<div ng-controller="profileImagesCtrl">
+	<!--<div class="masonry">
+		<div class="item" ng-repeat="brick in bricks">
+
+			 	<img ng-src="{{ brick }}" alt="A masonry brick" class="profile-image">  <i class="material-icons img-logo">&#xE889;</i></img>
+
+          </div>
+
+    
+	</div>-->
+		
+		
+		
+				<md-grid-list
+		md-cols-gt-md="12" md-cols="2" md-cols-md="8"
+		md-row-height-gt-md="1:1" md-row-height="4:3"
+		md-gutter-gt-md="20px" md-gutter-md="8px" md-gutter="4px">
+			<md-grid-tile
+			ng-repeat="brick in bricks"
+			
+			md-colspan-gt-sm="12"
+			ng-click="showConfirm($event)"></md-grid-tile>
+		</md-grid-list>
+	</div>
