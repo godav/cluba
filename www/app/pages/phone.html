@@ -32,14 +32,24 @@
             <label>קוד אימות</label>
             <input type="number" ng-model="verificationCode" md-no-asterisk  ng-change="checkCode()" name="verificationCode" >    
         </md-input-container>
-        
-        <div style="text-align:center;">
-        <!-- Button that triggers code verification -->
-        <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" ng-disabled="!codeComplete">אמת טלפון</button>
 
-        <!-- Button to cancel code verification -->
-        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="">ביטול</button>
+        <div style="text-align:center;">
+            <!-- Button that triggers code verification -->
+            <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" ng-disabled="!codeComplete">אמת טלפון</button>
+
+            <!-- Button to cancel code verification -->
+            <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="cancelVerification()">ביטול</button>
         </div>
+
+
+
+        <div class="verification-resend" ng-click="signInSub()">
+            <i class="fa fa-comment-o" aria-hidden="true" style="padding-left: 10px;"></i>
+            <p style="display: inline-block;">שלחו קוד אימות חדש</p>
+            <p ng-show="!isSent" style="display: block;margin: 0!important;text-align: left;color: green;font-weight: 800;">הקוד נשלח</p>
+        </div>
+
+
     </form>
 
 </md-content>

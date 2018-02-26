@@ -1,22 +1,26 @@
 (function () {
 
     angular.module('app').controller("phoneCtrl",
-            function ($scope, $state, Auth, USERS, userObj, currentAuth, $location, $window) {
+            function ($scope, $state, Auth, $mdDialog, userObj, currentAuth, $location, $window, $timeout) {
 
                 // initialize all of the important varibles at controller load.
                 // https://github.com/jestcastro/cordova-plugin-firebase#phone-authentication
                 // keytool -exportcert -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore -list -v
 
+                function init()
+                {
+                    $scope.tel = '';
+                    $scope.verificationCode = '';
+                    $scope.isPhoneOK = false;
+                    $scope.countryId = '';               // for now put only israel for testing later their is plugin of google to get all countries.
+                    $scope.userPhone = '';
+                    $scope.isSignIn = true;
+                    $scope.isVerification = false;
+                    $scope.credential = null;
+                    $scope.isSent = true;
+                }
 
-                $scope.tel = '';
-                $scope.verificationCode = '';
-                $scope.isPhoneOK = false;
-                $scope.countryId = '';               // for now put only israel for testing later their is plugin of google to get all countries.
-                $scope.userPhone = '';
-                $scope.isSignIn = true;
-                $scope.isVerification = false;
-                $scope.credential = null;
-
+                init();
 
                 $scope.checkPhone = function (a) {
 
@@ -51,7 +55,7 @@
 
                 $scope.checkCode = function () {
 
-                    if ($scope.verificationCode.toString().length !== 6) {
+                    if (!$scope.verificationCode || $scope.verificationCode.toString().length !== 6) {
                         $scope.codeComplete = false;
                     } else {
                         $scope.codeComplete = true;
@@ -71,10 +75,21 @@
                         console.log('send');
                         console.log(credential);
                         $scope.credential = credential;
+
+                        if ($scope.isVerification) {
+                            $scope.isSent = false;
+                            $timeout(function () {
+                                $scope.isSent = true;
+                            }, 3000);
+                        }
                         $scope.$apply(function () {
                             console.log('in apply');
+
                             updateVerificationCodeFormUi();
                             updateSignInFormUi();
+
+
+
                         });
                         // ask user to input verificationCode:
                         console.log('after applly');
@@ -110,13 +125,107 @@
                         console.log(angular.equals(error.code, "auth/provider-already-linked"));
                         if (angular.equals(error.code, "auth/provider-already-linked")) {
                             console.log('in if');
-                             console.log(userObj);
-                               console.log($scope.userPhone);
+                            console.log(userObj);
+                            console.log($scope.userPhone);
                             userObj.phone = $scope.userPhone;
                             userObj.$save();
-                           $state.go('clubears.main.clubes');  
+                            $state.go('clubears.main.clubes');
+                        } else if (angular.equals(error.code, "auth/credential-already-in-use")) {
+
+
+                            // Appending dialog to document.body to cover sidenav in docs app
+                            // Modal dialogs should fully cover application
+                            // to prevent interaction outside of dialog
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                    .clickOutsideToClose(true)
+                                    .title('אימות טלפון')
+                                    .textContent('מספר טלפון זה אומת כבר על ידי משתמש אחר, יש לאמת את מספר הטלפון מחדש!')
+                                    .ariaLabel('אזהרה')
+                                    .ok('הבנתי')
+                                    // You can specify either sting with query selector
+                                    .openFrom('#right')
+                                    // or an element
+                                    .closeTo(angular.element(document.querySelector('#left')))
+
+                                    ).then(function () {
+
+                                init();
+
+                            });
+
+
+                        } else if (angular.equals(error.code, "auth/code-expired")) {
+
+
+                            // Appending dialog to document.body to cover sidenav in docs app
+                            // Modal dialogs should fully cover application
+                            // to prevent interaction outside of dialog
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                    .clickOutsideToClose(true)
+                                    .title('אימות טלפון')
+                                    .textContent('קוד האימות שהוקלד פג תוקף. נא אמתו את הקוד מחדש על מנת לנסות שוב.')
+                                    .ariaLabel('אזהרה')
+                                    .ok('הבנתי')
+                                    // You can specify either sting with query selector
+                                    .openFrom('#right')
+                                    // or an element
+                                    .closeTo(angular.element(document.querySelector('#left')))
+
+                                    ).then(function () {
+
+                                $scope.verificationCode = '';
+                                $scope.codeComplete = false;
+
+                            });
+
+
+                        } else if (angular.equals(error.code, "auth/invalid-verification-code")) {
+
+
+                            // Appending dialog to document.body to cover sidenav in docs app
+                            // Modal dialogs should fully cover application
+                            // to prevent interaction outside of dialog
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                    .clickOutsideToClose(true)
+                                    .title('אימות טלפון')
+                                    .textContent('קוד האימות שהוקלד אינו תקין, נא לנסות מחדש!')
+                                    .ariaLabel('אזהרה')
+                                    .ok('הבנתי')
+                                    // You can specify either sting with query selector
+                                    .openFrom('#right')
+                                    // or an element
+                                    .closeTo(angular.element(document.querySelector('#left')))
+
+                                    ).then(function () {
+
+                                $scope.verificationCode = '';
+                                $scope.codeComplete = false;
+
+                            });
+
+
                         } else {
-                            console.log('account linking error');
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                    .clickOutsideToClose(true)
+                                    .title('אימות טלפון')
+                                    .textContent('אירעה שגיאה באימות הקוד, אנא נסו שוב מאוחר יותר!')
+                                    .ariaLabel('אזהרה')
+                                    .ok('הבנתי')
+                                    // You can specify either sting with query selector
+                                    .openFrom('#right')
+                                    // or an element
+                                    .closeTo(angular.element(document.querySelector('#left')))
+
+                                    ).then(function () {
+
+                                $scope.verificationCode = '';
+                                $scope.codeComplete = false;
+
+                            });
 
                         }
                     });
@@ -129,9 +238,7 @@
                  */
                 $scope.cancelVerification = function () {
 
-                    $scope.credential = null;
-                    updateVerificationCodeFormUi();
-                    updateSignInFormUi();
+                    init();
                 };
 
                 /**

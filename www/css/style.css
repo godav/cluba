@@ -1366,3 +1366,11 @@ md-dialog-actions {
     left: 8px !important;
 
 }
+
+.verification-resend{
+    font-size: 0.8em;
+    bottom: 2%;
+    left: 5%;
+    position: fixed;
+    outline-width: 0px !important;
+}

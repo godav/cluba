@@ -45,7 +45,8 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     },
                     userObj: function (USERS, currentAuth) {
                         return USERS.getUser(currentAuth.uid);
-                    }
+                    },
+                    
 
                 }
             })

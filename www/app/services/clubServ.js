@@ -96,13 +96,30 @@
                     };
 
                     this.GetClubesNearBy = function () {
+                        console.log('enter function');
                         var one = $q.defer();
-                        var clubes = $firebaseArray(ClubesRef);
-                        clubes.$loaded().then(function () {
-                            one.resolve(clubes);
-                        });
-                        // Avner remmber that you didn't handle errores in load userr object. For later add catch
+                        var onSuccess = function (position) {
+                            console.log('enter success');
+                              console.log(position);
+                            var starCountRef = firebase.database().ref('geoClubes');
+                            starCountRef.on('value', function (snapshot) {
+                                console.log(snapshot.val());
+                                var clubes = geolib.orderByDistance({latitude: position.coords.latitude, longitude: position.coords.longitude}, snapshot.val());
+                                one.resolve(clubes);
+                            });
+                        };
+
+                        // onError Callback receives a PositionError object
+                        //
+                        function onError(error) {
+                            alert('code: ' + error.code + '\n' +
+                                    'message: ' + error.message + '\n');
+                        }
+
+                        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
                         return one.promise;
+
                     };
                 }
                 ;

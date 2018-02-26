@@ -2,3 +2,4 @@ node_modules/
 plugins/
 google-services.json
 nbproject/
+platforms/
