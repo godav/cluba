@@ -7,10 +7,7 @@
             <hr ng-if="!$first" class="user-hr">
             <div layout="row" class="club-list">
 
-                <div flex="30">
-                    <div  class="md-media-sm card-media "><img style='width: 60%' ng-src="{{club.imageLogo}}">
-                    </div>
-                </div>
+                <div flex="30" back-img="{{club.logo}}"></div>
                 <div flex="40">
                     <span class="md-subhead club-name" >{{club.name}}</span>
                 </div>

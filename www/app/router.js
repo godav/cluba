@@ -38,14 +38,14 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 url: "/clubears",
                 abstract: true,
                 templateUrl: "app/pages/clubears.html",
-                controller: "clubearsCtrl",
+                controller: "clubears.Ctrl",
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
                     userObj: function (USERS, currentAuth) {
                         return USERS.getUser(currentAuth.uid);
-                    },
+                    }
                     
 
                 }
@@ -120,7 +120,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 url: "/main",
                 abstract: true,
                 templateUrl: "app/pages/clubears.main.html",
-                controller: "mainCtrl",
+                controller: "clubears.main.Ctrl",
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
@@ -130,13 +130,13 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
             .state('clubears.main.clubes', {
                 url: "/clubes",
                 templateUrl: "app/pages/clubears.main.clubes.html",
-                controller: 'mainClubesCtrl',
+                controller: 'clubears.main.clubes.Ctrl',
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    clubesNearBy: function (CLUBES) {
-                        return CLUBES.GetClubesNearBy();
+                    clubesNearBy: function (GEOLOCATION) {
+                        return GEOLOCATION.GetClubesNearBy();
                     }
                 }
             })
@@ -336,13 +336,13 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    currentClub: function ($stateParams, CLUBES, $q, $state) {
+                    currentClub: function ($stateParams, CLUBES, $q) {
                         if (!$stateParams.clubId || !$stateParams.role) {
                             return $q.reject({code: 'MANAGMENT'});
                         } else
                             return CLUBES.GetOneClub($stateParams.clubId);
                     },
-                    clubPO: function ($stateParams, CLUBES, $q, $state) {
+                    clubPO: function ($stateParams, CLUBES, $q) {
                         if (!$stateParams.clubId || !$stateParams.role) {
 //                              $state.go('managment');
                             return $q.reject({code: 'MANAGMENT'});
@@ -350,7 +350,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                             return CLUBES.GetClubPOActive($stateParams.clubId);
                     }
                 },
-                controller: "managmentProfileCtrl"
+                controller: "managment.profile.Ctrl"
             })
             .state('managment.permmisions', {
                 url: "/permmisions",
@@ -371,14 +371,12 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     },
                     clubPOS: function ($stateParams, CLUBES, $q) {
                         if (!$stateParams.clubId || !$stateParams.role) {
-//                              $state.go('managment');
                             return $q.reject({code: 'MANAGMENT'});
                         } else
                             return CLUBES.GetClubPOActive($stateParams.clubId);
                     },
                     ClubManagers: function ($stateParams, CLUBES, $q) {
                         if (!$stateParams.clubId || !$stateParams.role) {
-//                              $state.go('managment');
                             return $q.reject({code: 'MANAGMENT'});
                         } else
                             return CLUBES.GetClubManagersActive($stateParams.clubId);
@@ -432,7 +430,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
             .state('clubears.club', {
                 url: "/club",
                 templateUrl: "app/pages/clubears.club.html",
-                controller: 'clubesCtrl',
+                controller: 'clubears.club.Ctrl',
                 params: {
                     clubId: null
                 },

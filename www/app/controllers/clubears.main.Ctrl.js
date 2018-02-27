@@ -1,6 +1,6 @@
 (function () {
 
-    angular.module('app').controller('mainCtrl',
+    angular.module('app').controller('clubears.main.Ctrl',
             function ($scope, currentAuth) {
 
                 $scope.currentNavItem = "clubes";

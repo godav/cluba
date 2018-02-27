@@ -95,32 +95,6 @@
 
                     };
 
-                    this.GetClubesNearBy = function () {
-                        console.log('enter function');
-                        var one = $q.defer();
-                        var onSuccess = function (position) {
-                            console.log('enter success');
-                              console.log(position);
-                            var starCountRef = firebase.database().ref('geoClubes');
-                            starCountRef.on('value', function (snapshot) {
-                                console.log(snapshot.val());
-                                var clubes = geolib.orderByDistance({latitude: position.coords.latitude, longitude: position.coords.longitude}, snapshot.val());
-                                one.resolve(clubes);
-                            });
-                        };
-
-                        // onError Callback receives a PositionError object
-                        //
-                        function onError(error) {
-                            alert('code: ' + error.code + '\n' +
-                                    'message: ' + error.message + '\n');
-                        }
-
-                        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-
-                        return one.promise;
-
-                    };
                 }
                 ;
             });

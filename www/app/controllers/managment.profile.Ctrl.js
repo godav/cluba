@@ -1,6 +1,6 @@
 angular
         .module('app')
-        .controller('managmentProfileCtrl', function ($scope, $timeout, $clubToast, $state, $stateParams, currentClub, $q, clubPO) {
+        .controller('managment.profile.Ctrl', function ($scope, $timeout, $clubToast, $state, $stateParams, currentClub, $q, clubPO) {
 
 
             var root = firebase.database().ref();

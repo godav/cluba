@@ -1,7 +1,7 @@
 (function () {
 
     angular.module('app')
-            .controller('clubearsCtrl',
+            .controller('clubears.Ctrl',
                     function ($scope, currentAuth, userObj, $mdPanel, $state) {
                         $scope._mdPanel = $mdPanel;
                         $scope.openFrom = 'button';
