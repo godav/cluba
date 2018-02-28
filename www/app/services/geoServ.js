@@ -42,8 +42,10 @@
                     function calcDistance(latitude, longitude, clubes) {
                         var arr = [];
                         for (var key in clubes) {
-                            var distance = PythagorasEquirectangular(latitude, longitude, clubes[key].latitude, clubes[key].longitude);
-                            arr.push({id: key, name: clubes[key].name, logo: clubes[key].clubLogo, distance: distance.toFixed(1)});
+                            if (clubes[key].active) {
+                                var distance = PythagorasEquirectangular(latitude, longitude, clubes[key].latitude, clubes[key].longitude);
+                                arr.push({id: key, name: clubes[key].name, logo: clubes[key].clubLogo, distance: distance.toFixed(1)});
+                            }
                         }
                         return arr.sort(function (a, b) {
                             return a.distance - b.distance;

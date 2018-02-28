@@ -6,6 +6,7 @@
 
                     var ClubesRef = firebase.database().ref('clubes');
                     var ClubPOList = firebase.database().ref('clubPO');
+                     var geoClubes = firebase.database().ref('geoClubes');
                     var array = null;
 //                    		https://codepen.io/elliotmendiola/pen/JNYoNj	               
 
@@ -20,12 +21,21 @@
                             address: {},
                             clubPicture: "img/empty-club.jpg",
                             clubLogo: "img/empty-logo.png",
-                            description: null
+                            description: ""
                         };
                         clubObj.address.name = "";
                         clubObj.address = {placeId: "", streetNumber: "", street: "", city: "", state: "", countryCode: "", country: ""};
                         clubObj.location = {lat: "", long: ""};
                         var newClub = clubRef.push(clubObj);
+                        console.log(newClub.key);
+                        var geoClub = geoClubes.child(newClub.key);
+                        var geoObj = {
+                            active: false,
+                            name: clubObj.name,
+                            logo: clubObj.clubLogo
+
+                        };
+                        geoClub.update(geoObj);
                         return newClub;
                     };
 

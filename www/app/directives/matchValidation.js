@@ -9,7 +9,7 @@ angular.module('app')
                     ngModel.$parsers.unshift(function (value) {
                         var valid = blacklist.indexOf(value) === -1;
                         ngModel.$setValidity('blacklist', valid);
-                        return valid ? value : undefined;
+                        return value;
                     });
 
                     //For model -> DOM validation

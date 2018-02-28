@@ -11,7 +11,7 @@
 
         <span flex="" class="flex"></span>
 
-        <md-button form="clubProfile" type="submit" class="md-icon-button" aria-label="Done" ng-click="updateClub()">
+        <md-button ng-disabled="!updated" form="clubProfile" type="submit" class="md-icon-button" aria-label="Done" ng-click="updateClub()">
             <md-icon class="material-icons"><i class="material-icons">&#xE876;</i></md-icon>
         </md-button>
 
@@ -67,7 +67,7 @@
         <md-input-container  class="md-block" style="padding-bottom: 25px;">
             <label>שם המועדון</label>
             <input ng-model="club.name" required md-no-asterisk name="clubName" blacklist="חדש,new">
-            <div ng-messages="clubForm.clubName.$error" ng-if="clubForm.clubName.$invalid && (clubForm.$submitted || clubForm.clubName.$touched || eventForm.clubName.$dirty)" >
+            <div class="fix-message" ng-messages="clubForm.clubName.$error || clubForm.clubName.$invalid">
                 <div ng-message="required">נא לבחור שם למועדון!</div>
                 <div ng-message="blacklist">החלף את שם ברירת המחדל!</div>
             </div>
@@ -95,7 +95,7 @@
                    placeholder="נא להכניס כתובת מדוייקת"
                    md-no-asterisk
                    required>
-            <div ng-messages="clubForm.address.$error" ng-if="clubForm.address.$invalid && (clubForm.$submitted || clubForm.address.$touched || eventForm.address.$dirty)" >
+            <div class="fix-message" ng-messages="clubForm.address.$error" ng-if="clubForm.address.$invalid && (clubForm.$submitted || clubForm.address.$touched || eventForm.address.$dirty)" >
                 <div ng-message="required">נא להזין את כתובת המועדון!</div>
                 <div ng-message="city">עיר לא תקינה!</div>
                 <div ng-message="street">רחוב לא תקין!</div>
@@ -107,9 +107,9 @@
 
 
         <md-input-container flex="40" style="padding-bottom: 25px;">
-            <label>מס אורחים מקסימלי</label>
+            <label>תפוסה מירבית</label>
             <input ng-model="club.capacity" type="number" required md-no-asterisk name="capacity" ng-max="3000">
-            <div ng-messages="clubForm.capacity.$error">
+            <div class="fix-message" ng-messages="clubForm.capacity.$error">
                 <div ng-message="required">נא להקליד כמות מקסימלית של בליינים במועדון!</div>
                 <div ng-message="number">ספרות בלבד!</div>
                 <div ng-message="max">לא הגזמנו?!</div>
@@ -125,36 +125,6 @@
             </div>
         </md-input-container>
     </form>
-
-    <md-input-container class="md-block" id="po-permision">
-        <label>הוספת יחצנים</label>
-        <md-chips ng-model="selectedUsers" md-autocomplete-snap>
-            <md-autocomplete 
-                md-selected-item="selectedItem" 
-                md-search-text="searchText" 
-                md-items="user in updateUsers(searchText)"                                   
-                md-item-text="user.name" 
-                md-min-length="1"           
-                md-no-cache="true"
-                md-delay="150">  
-
-                <md-item-template>
-                    <span md-highlight-text="searchText" md-highlight-flags="^i" ng-bind="user.name">{{user.name}}</span>
-
-                </md-item-template>
-                <md-not-found>
-                    המשתמש אינו במערכת!     
-                </md-not-found>
-            </md-autocomplete>
-            <md-chip-template>
-                <span>
-                    <strong>{{$chip.name}}</strong>
-                </span>
-            </md-chip-template>
-        </md-chips>  
-    </md-input-container>
-
-
 </md-content>
 
 <footer>

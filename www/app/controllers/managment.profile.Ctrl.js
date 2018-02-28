@@ -4,95 +4,33 @@ angular
 
 
             var root = firebase.database().ref();
-//            var clubRef = root.child('clubes');
-            var rolesRef = root.child('roles');
-            var UsersRef = root.child('users');
-            var clubPORef = root.child('clubPO');      // new node for saving the relation between club and po in club
-//            var rolesRef = firebase.database().ref('roles');
+
+            var initialClub = {
+                address: currentClub.address,
+                capacity: currentClub.capacity,
+                clubLogo: currentClub.clubLogo,
+                clubPicture: currentClub.clubPicture,
+                location: currentClub.location,
+                name: currentClub.name,
+                description: currentClub.description
+            };
             $scope.club = currentClub;
-            $scope.selectedItem = null;
-            $scope.searchText = null;
 
+            $scope.updated = false;
+            $scope.geoUpdate = false;
 
-            $scope.selectedUsers = clubPO;
-
-            var po_removed = [];                // use to disable po the dis granted permmision to a club
-            var po_added = [];                // use to add new po to granted permmision to a club
-            var po_updated = false;             // used to check if po permision updated
-
-
+            $scope.updatedFlags = {
+                name: false,
+                lat: false,
+                long: false,
+                capacity: false,
+                description: false,
+                logo: false,
+                picture: false
+            };
 
             $scope.image2 = {};
             $scope.imageLogo = {};
-
-            $scope.check = function () {
-                console.log($scope.club.address);
-            };
-
-            // this function handle the PO permission adding and removing from chip
-            function update_po_role()
-            {
-                if (po_updated) {
-
-
-                    po_added.forEach(function (item) {
-                        var userRef = rolesRef.child(item.key);
-                        var newClubRole = userRef.child($scope.club.$id);
-                        //check what permision user have in club, if not assign PO permision
-                        newClubRole.once("value", function (snapshot) {
-
-                            if (snapshot.val() === null || (snapshot.val().active === false && snapshot.val().role === 3))
-                            {
-                                clubPORef.child($scope.club.$id).child(item.key).update({
-                                    active: true,
-                                    name: item.name
-                                });
-
-                                newClubRole.update({
-                                    role: 3,
-                                    active: true
-                                });
-                            }
-                        });
-                        //check what permision user have, if not assign PO permision
-                        var usersRef = UsersRef.child(item.key).child('role');
-                        usersRef.once("value", function (snapshot) {
-
-                            if (snapshot.val() === null)
-                                usersRef.update({"role": 3});
-                        });
-                    });
-
-
-                    po_removed.forEach(function (item) {
-                        console.log(item);
-                        var userRef = rolesRef.child(item.key);
-                        var newClubRole = userRef.child($scope.club.$id);
-                        //check what permision user have in club, if not assign PO permision
-                        newClubRole.once("value", function (snapshot) {
-
-                            if (snapshot.val().active === true && snapshot.val().role === 3)
-                                newClubRole.update({
-                                    role: 3,
-                                    active: false
-                                });
-                        });
-
-                        clubPORef.child($scope.club.$id).child(item.key).once("value", function (snapshot) {
-
-                            if (snapshot.val().active)
-                                clubPORef.child($scope.club.$id).child(item.key).update({
-                                    active: false
-                                });
-                        });
-
-                        // still need to take care in user role in the users node ( Avner remember to deal with it).
-                    });
-
-                }
-            }
-
-
 
             $scope.updateClub = function () {
                 console.log($scope.clubForm.$valid);
@@ -101,7 +39,7 @@ angular
                     if (angular.equals($scope.image2, {}) && angular.equals($scope.imageLogo, {}))
                     {
                         saveClub();
-                        
+
                     } else if (!angular.equals($scope.image2, {}) && angular.equals($scope.imageLogo, {}))
                     {
 
@@ -109,7 +47,7 @@ angular
                         imagesRef.putString($scope.image2.resized.dataURL, 'data_url').then(function (snapshot) {
 
                             $scope.club.clubPicture = snapshot.metadata.downloadURLs[0];
-                            
+
                             saveClub();
                             clearImage();
 
@@ -124,7 +62,7 @@ angular
                         logoRef.putString($scope.imageLogo.resized.dataURL, 'data_url').then(function (snapshot) {
 
                             $scope.club.imageLogo = snapshot.metadata.downloadURLs[0];
-                            
+
                             saveClub();
                             clearLogo();
 
@@ -143,11 +81,11 @@ angular
                             imagesRef.putString($scope.image2.resized.dataURL, 'data_url').then(function (snapshot) {
 
                                 $scope.club.clubPicture = snapshot.metadata.downloadURLs[0];
-                                
+
                                 saveClub();
                                 clearImage();
                                 clearLogo();
-                                
+
                             }), function (error) {
                                 $clubToast.show('חלה שגיאה בהעלאת התמונה!', 'clubProfile', 'error');
                                 console.log(error);
@@ -182,49 +120,34 @@ angular
 
             function saveClub()
             {
-                $scope.club.active = true;
-                var cTime = new Date();
-                $scope.club.open = cTime.getTime();
+                if (!$scope.club.active) {
+                    var cTime = new Date();
+                    $scope.club.open = cTime.getTime();
+                    $scope.club.active = true;
+                }
                 $scope.club.$save().then(function () {
-                    update_po_role();
+                    console.log($scope.club);
+                    if ($scope.geoUpdate)
+                    {
+                        var geoClub = root.child('geoClubes').child($scope.club.$id);
+                        var geoObj = {
+                            active: true,
+                            name: $scope.club.name,
+                            logo: $scope.club.clubLogo,
+                            latitude: $scope.club.location.lat,
+                            longitude: $scope.club.location.long
+
+                        };
+                        geoClub.update(geoObj);
+                    }
                     $clubToast.show('פרופיל המועדון עודכן', 'clubProfile', 'success');
                 }, function (error) {
                     $clubToast.show('חלה שגיאה בעדכון!', 'clubProfile', 'error');
                     console.log(error);
                 });
+
+
             }
-
-            $scope.$watchCollection('selectedUsers', function (newVal, oldVal) {
-                // A chip has been removed if oldVal is greater in size than newVal
-                if (angular.isArray(oldVal) && oldVal.length > newVal.length) {
-                    // Find the item(s) in oldVal that does
-                    // not exist anymore in newVal.
-                    var diff = oldVal.filter(function (a) {
-                        return newVal.filter(function (b) {
-                            return a === b;
-                        }).length === 0;
-                    });
-
-                    if (diff.length === 1) {
-                        po_removed.push(diff[0]);
-                        po_updated = true;
-                    }
-                } else if (angular.isArray(oldVal) && oldVal.length < newVal.length) {
-                    // Find the item(s) in oldVal that does
-                    // not exist anymore in newVal.
-                    var diff = newVal.filter(function (a) {
-                        return oldVal.filter(function (b) {
-                            return a === b;
-                        }).length === 0;
-                    });
-
-                    if (diff.length === 1) {
-                        po_added.push(diff[0]);
-                        po_updated = true;
-                    }
-                }
-
-            });
 
             $scope.$watch('image2', function () {
                 console.log($scope.image2);
@@ -237,7 +160,7 @@ angular
                     console.log('in elsse');
                     $scope.clubPicture = "img/empty-club.jpg";
                 }
-            });
+            }, true);
 
             $scope.$watch('imageLogo', function () {
                 if ($scope.imageLogo.resized && $scope.imageLogo.resized.dataURL) {
@@ -248,35 +171,150 @@ angular
                     });
                 } else
                     $scope.clubLogo = "img/empty-logo.png";
-            });
+            }, true);
 
-            $scope.$watch('club.address.city', function () {
+            $scope.$watch('club.address.city', function (newVal, oldVal) {
                 $timeout(function () {
                     $scope.clubForm.address.$setValidity("city", $scope.club.address.city !== undefined && $scope.club.address.city !== "");
                     $scope.$apply();
                 });
             });
 
-            $scope.$watch('club.address.street', function () {
+            $scope.$watch('club.address.street', function (newVal, oldVal) {
                 $timeout(function () {
                     $scope.clubForm.address.$setValidity("street", $scope.club.address.street !== undefined && $scope.club.address.street !== "");
                     $scope.$apply();
                 });
             });
 
-            $scope.$watch('club.address.country', function () {
+            $scope.$watch('club.address.country', function (newVal, oldVal) {
                 $timeout(function () {
                     $scope.clubForm.address.$setValidity("country", $scope.club.address.country !== undefined && $scope.club.address.country !== "");
                     $scope.$apply();
                 });
             });
 
-            $scope.$watch('club.address.streetNumber', function () {
+            $scope.$watch('club.address.streetNumber', function (newVal, oldVal) {
                 $timeout(function () {
                     $scope.clubForm.address.$setValidity("streetNumber", $scope.club.address.streetNumber !== undefined && $scope.club.address.streetNumber !== "");
                     $scope.$apply();
                 });
             });
+
+            $scope.$watch('club.name', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+                console.log(newVal);
+                console.log(oldVal);
+                console.log(initialClub.name);
+                if (newVal !== oldVal && newVal !== initialClub.name) {
+                    $scope.updatedFlags.name = true;
+                } else if (newVal === initialClub.name)
+                {
+                    $scope.updatedFlags.name = false;
+                }
+            });
+
+            $scope.$watch('club.clubPicture', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.clubPicture) {
+                    $scope.updatedFlags.picture = true;
+                } else if (newVal === initialClub.clubPicture)
+                {
+                    $scope.updatedFlags.picture = false;
+                }
+            });
+
+            $scope.$watch('club.clubLogo', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.clubLogo) {
+                    $scope.updatedFlags.logo = true;
+                } else if (newVal === initialClub.clubLogo)
+                {
+                    $scope.updatedFlags.logo = false;
+                }
+            });
+
+            $scope.$watch('club.capacity', function (newVal, oldVal) {
+
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.capacity) {
+                    $scope.updatedFlags.capacity = true;
+                } else if (newVal === initialClub.capacity)
+                {
+                    $scope.updatedFlags.capacity = false;
+                }
+            });
+
+
+            $scope.$watch('club.description', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.description) {
+                    $scope.updatedFlags.description = true;
+                } else if (newVal === initialClub.description)
+                {
+                    $scope.updatedFlags.description = false;
+                }
+            });
+
+            $scope.$watch('club.location.lat', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.location.lat) {
+                    $scope.updatedFlags.lat = true;
+                } else if (newVal === initialClub.location.lat)
+                {
+                    $scope.updatedFlags.lat = false;
+                }
+            });
+
+            $scope.$watch('club.location.long', function (newVal, oldVal) {
+                if (!newVal)
+                    newVal = '';
+                if (!oldVal)
+                    oldVal = '';
+
+                if (newVal !== oldVal && newVal !== initialClub.location.long) {
+                    $scope.updatedFlags.long = true;
+                } else if (newVal === initialClub.location.long)
+                {
+                    $scope.updatedFlags.long = false;
+                }
+            });
+
+
+            $scope.$watch('updatedFlags', function (newVal, oldVal) {
+                console.log('updatedFlags');
+                console.log(newVal);
+                console.log(oldVal);
+
+                if (!newVal.name && !newVal.lat && !newVal.long && !newVal.capacity && !newVal.description && !newVal.logo && !newVal.picture)
+                    $scope.updated = false;
+                else
+                    $scope.updated = true;
+            }, true);
+
 
             $scope.goParties = function () {
                 $state.go('managment.parties', {clubId: $stateParams.clubId, role: $stateParams.role});
@@ -284,42 +322,6 @@ angular
 
             $scope.goPermissions = function () {
                 $state.go('managment.permmisions', {clubId: $stateParams.clubId, role: $stateParams.role});
-            };
-
-
-
-            /* Functions that handels PO permissions to a club */
-
-            $scope.isEmpty = function () {
-                if ($scope.selectedUsers.length > 0)
-                    return false;
-                else
-                    return true;
-            };
-
-            function getUsers(searchText) {
-                var one = $q.defer();
-                var users = [];
-                UsersRef
-                        .orderByChild('phone')
-                        .startAt(searchText)
-                        .endAt(searchText + "\uf8ff")
-                        .once('value', function (snapshot) {
-                            snapshot.forEach(function (childSnapshot) {
-                                rolesRef.child(childSnapshot.key).child(currentClub.$id).once("value", function (snapshot) {
-
-                                    if (snapshot.val() === null || (snapshot.val().active === false && snapshot.val().role === 3))
-                                        users.push({"key": childSnapshot.key, "name": childSnapshot.val().first_name + " " + childSnapshot.val().last_name});
-                                    one.resolve(users);
-                                });
-                            });
-                        });
-                return one.promise;
-            }
-
-            $scope.updateUsers = function (searchText) {
-                var results = searchText ? getUsers(searchText) : [];
-                return results;
             };
 
         });

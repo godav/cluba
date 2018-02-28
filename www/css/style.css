@@ -1374,3 +1374,14 @@ md-dialog-actions {
     position: fixed;
     outline-width: 0px !important;
 }
+
+.truncate-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+}
+
+.fix-message{
+    display: inline-block !important;
+}
