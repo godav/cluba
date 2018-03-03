@@ -71,7 +71,7 @@
                                 zIndex: 150,
                                 clickOutsideToClose: true,
                                 clickEscapeToClose: true,
-                                hasBackdrop: true,
+                                hasBackdrop: true
                             };
 
                             this._mdPanel.open(config);

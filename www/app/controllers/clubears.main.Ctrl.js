@@ -7,6 +7,6 @@
 
                 $scope.name = currentAuth.displayName;
 
-                $scope.picture = currentAuth.photoURL;
+                $scope.picture = currentAuth.providerData[0].photoURL;
             });
 })();
