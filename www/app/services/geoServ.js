@@ -1,11 +1,11 @@
 (function () {
 
     angular.module('app').
-            service("GEOLOCATION", function ($firebaseObject, $firebaseArray, Auth, $q) {
+            service("GEOLOCATION", function ($firebaseObject, $firebaseArray, Auth, $q, $rootScope) {
                 if (Auth) {
 
                     var ClubesRef = firebase.database().ref('geoClubes');
-                    this.watchId
+
 
                     // Convert Degress to Radians
                     function Deg2Rad(deg) {
@@ -54,20 +54,23 @@
                     }
 
                     this.GetUserLocation = function () {
-                        var one = $q.defer();
-                        var onSuccess = function (position) {                        
-                                one.resolve(position);
-                        
-                        };
-
-                        // onError Callback receives a PositionError object
-                        //
-                        function onError(error) {
-                            alert('code: ' + error.code + '\n' +
-                                    'message: ' + error.message + '\n');
-                        }
-                        navigator.geolocation.position(onSuccess, onError);
-                        return one.promise;
+//                        var one = $q.defer();
+//                        var onSuccess = function (position) {                        
+//                                one.resolve(position);
+//                        
+//                        };
+//
+//                        // onError Callback receives a PositionError object
+//                        //
+//                        function onError(error) {
+//                            alert('code: ' + error.code + '\n' +
+//                                    'message: ' + error.message + '\n');
+//                        }
+//                        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+//                        return one.promise;
+                        console.log('in get location');
+                        console.log($rootScope.position);
+                        return $rootScope.position;
 
                     };
 
@@ -75,11 +78,11 @@
                     this.GetClubesNearBy = function (position) {
                         var one = $q.defer();
 
-                            ClubesRef.once('value').then(function (snapshot) {
-                                var clubes = calcDistance(position.coords.latitude, position.coords.longitude, snapshot.val());
-                                one.resolve(clubes);
-                            });
-          
+                        ClubesRef.once('value').then(function (snapshot) {
+                            var clubes = calcDistance(position.coords.latitude, position.coords.longitude, snapshot.val());
+                            one.resolve(clubes);
+                        });
+
                         return one.promise;
 
                     };

@@ -37,33 +37,41 @@
                 });
     });
 
-    club.config(["$q", function ($q) {
-            
-            var one = $q.defer();
-            var onSuccess = function (position) {
-                one.resolve(position);
+    club.run(["$rootScope", function ($rootScope) {
 
+            var watchOptions = {
+                timeout: 60 * 60 * 1000,
+                maxAge: 0,
+                enableHighAccuracy: true
+            };
+
+            var onSuccess = function (position) {
+                console.log('position old');
+                console.log($rootScope.currentPosition);
+                $rootScope.currentPosition = position;
+                console.log('position update');
+                console.log($rootScope.currentPosition);
             };
 
             // onError Callback receives a PositionError object
             //
             function onError(error) {
-                alert('code: ' + error.code + '\n' +
+                console.log('code: ' + error.code + '\n' +
                         'message: ' + error.message + '\n');
             }
-            navigator.geolocation.position(onSuccess, onError);
-            return one.promise;
-            
+            navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
+
+
         }]);
 
 
     // UI.ROUTER STUFF
     club.run(["$rootScope", "$state", function ($rootScope, $state) {
-            $rootScope = 
-                    $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
-                        console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-                        $rootScope.spinnerActive = true;
-                    });
+
+            $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
+                console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+                $rootScope.spinnerActive = true;
+            });
             $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {
                 console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
                 if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))
