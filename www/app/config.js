@@ -37,14 +37,33 @@
                 });
     });
 
+    club.config(["$q", function ($q) {
+            
+            var one = $q.defer();
+            var onSuccess = function (position) {
+                one.resolve(position);
+
+            };
+
+            // onError Callback receives a PositionError object
+            //
+            function onError(error) {
+                alert('code: ' + error.code + '\n' +
+                        'message: ' + error.message + '\n');
+            }
+            navigator.geolocation.position(onSuccess, onError);
+            return one.promise;
+            
+        }]);
+
 
     // UI.ROUTER STUFF
     club.run(["$rootScope", "$state", function ($rootScope, $state) {
-
-            $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
-                console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-                $rootScope.spinnerActive = true;
-            });
+            $rootScope = 
+                    $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
+                        console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+                        $rootScope.spinnerActive = true;
+                    });
             $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {
                 console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
                 if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))

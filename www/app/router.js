@@ -126,8 +126,11 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    clubesNearBy: function (GEOLOCATION) {
-                        return GEOLOCATION.GetClubesNearBy();
+                    currentLocation: function (GEOLOCATION) {
+                        return GEOLOCATION.GetUserLocation();
+                    },                    
+                    clubesNearBy: function (GEOLOCATION,currentLocation) {
+                        return GEOLOCATION.GetClubesNearBy(currentLocation);
                     }
                 }
             })
