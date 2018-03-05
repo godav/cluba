@@ -5,46 +5,67 @@
         (function () {
             "use strict";
 
-            document.addEventListener('deviceready', onDeviceReady.bind(this), false);
+            window.onload = function () {
+                // get injector object
+                var initInjector = angular.injector(['fsCordova']);
 
-            function onDeviceReady() {
-                // Handle the Cordova pause and resume events
-                document.addEventListener('pause', onPause.bind(this), false);
-                document.addEventListener('resume', onResume.bind(this), false);
+                // extract necessary angular services
+                var CordovaService = initInjector.get('CordovaService');
 
-                // onSuccess Callback
-                // This method accepts a Position object, which contains the
-                // current GPS coordinates
-                //
-//                var onSuccess = function (position) {
-//                    console.log('Latitude: ' + position.coords.latitude + '\n' +
-//                            'Longitude: ' + position.coords.longitude + '\n' +
-//                            'Altitude: ' + position.coords.altitude + '\n' +
-//                            'Accuracy: ' + position.coords.accuracy + '\n' +
-//                            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-//                            'Heading: ' + position.coords.heading + '\n' +
-//                            'Speed: ' + position.coords.speed + '\n' +
-//                            'Timestamp: ' + position.timestamp + '\n');
-//                };
-//
-//                // onError Callback receives a PositionError object
-//                //
-//                function onError(error) {
-//                    alert('code: ' + error.code + '\n' +
-//                            'message: ' + error.message + '\n');
-//                }
-//
-//                navigator.geolocation.getCurrentPosition(onSuccess, onError);;
-            }
-            ;
+                // do operations before bootstrap
+                // 
+                // 
 
-            function onPause() {
-                // TODO: This application has been suspended. Save application state here.
-            }
-            ;
+                CordovaService.ready.then(function (cordova) {
+                    // Cordova is ready
+                    console.log(cordova);
+                    navigator.splashscreen.hide();
+                }, function (error) {
+                    console.log(error);
+                });
 
-            function onResume() {
-                // TODO: This application has been reactivated. Restore application state here.
-            }
-            ;
-        })();
+//                // get user sign in status
+//                $http({
+//                    url: 'https://api.mysite.com/auth/user/basic',
+//                    method: 'GET',
+//                    headers: {
+//                        'x-auth-token': localStorage.getItem('auth-token')
+//                    }
+//                })
+//                        // when first request resolves
+//                        // store user sign in status and other info
+//                        // as a constant in `config` module
+//                        .then(
+//                                // signed in {statusCode : 200} // OK
+//                                        function (res) {
+//                                            angular.module('config').constant('__user', {
+//                                                $state: 'signed',
+//                                                $accType: res.data.accountType,
+//                                                $accData: res.data
+//                                            });
+//                                        },
+//                                        // not signed in {statusCode : 403} // Forbidden
+//                                                function () {
+//                                                    angular.module('config').constant('__user', {
+//                                                        $state: 'unsigned'
+//                                                    });
+//                                                }
+//                                        )
+//                                                // resolves on either success or failed response
+//                                                // of previous authentication request 
+//                                                .then(function () {
+//                                                    // start bootstrapping
+//                                                    angular.bootstrap(document, ['myApp']);
+//                                                    // add `_splash_fade_out` class to splash screen
+//                                                    // when resolved after animation complete, remove element from DOM
+//                                                    $animate
+//                                                            .addClass(angular.element('splash-screen'), '_splash_fade_out')
+//                                                            .then(function () {
+//                                                                angular.element('splash-screen').remove();
+//                                                            });
+//                                                });
+                                    };
+
+
+
+                        })();

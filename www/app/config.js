@@ -21,7 +21,8 @@
         "imageupload",
         "nvd3",
         "nvd3ChartDirectives",
-        "ngIntlTelInput"
+        "ngIntlTelInput",
+        "fsCordova"
     ]);
 
     club.factory("Auth", ["$firebaseAuth",
@@ -30,39 +31,27 @@
         }
     ]);
 
+
+
     club.config(function (ngIntlTelInputProvider) {
+
+
         ngIntlTelInputProvider.set(
                 {
                     utilsScript: 'js/utils.js'
                 });
-    });
-
-    club.run(["$rootScope", function ($rootScope) {
-
-            var watchOptions = {
-                timeout: 60 * 60 * 1000,
-                maxAge: 0,
-                enableHighAccuracy: true
-            };
-
-            var onSuccess = function (position) {
-                console.log('position old');
-                console.log($rootScope.currentPosition);
-                $rootScope.currentPosition = position;
-                console.log('position update');
-                console.log($rootScope.currentPosition);
-            };
-
-            // onError Callback receives a PositionError object
-            //
-            function onError(error) {
-                console.log('code: ' + error.code + '\n' +
-                        'message: ' + error.message + '\n');
-            }
-            navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
+    })
+            .config(function ($mdThemingProvider, $mdDateLocaleProvider) {
+                $mdThemingProvider.theme('altTheme')
+                        .primaryPalette('deep-purple')
+                        .accentPalette('purple'); // specify primary color, all
+                // other color intentions will be inherited
+                // from default
 
 
-        }]);
+
+            });
+
 
 
     // UI.ROUTER STUFF

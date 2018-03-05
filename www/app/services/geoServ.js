@@ -53,11 +53,11 @@
 
                     }
 
-                    this.GetUserLocation = function () {
+//                    this.GetUserLocation = function () {
 //                        var one = $q.defer();
-//                        var onSuccess = function (position) {                        
-//                                one.resolve(position);
-//                        
+//                        var onSuccess = function (position) {
+//                            one.resolve(position);
+//
 //                        };
 //
 //                        // onError Callback receives a PositionError object
@@ -68,11 +68,11 @@
 //                        }
 //                        navigator.geolocation.getCurrentPosition(onSuccess, onError);
 //                        return one.promise;
-                        console.log('in get location');
-                        console.log($rootScope.position);
-                        return $rootScope.position;
-
-                    };
+//                        console.log('in get location');
+//                        console.log($rootScope.position);
+//                        return $rootScope.position;
+//
+//                    };
 
 
                     this.GetClubesNearBy = function (position) {

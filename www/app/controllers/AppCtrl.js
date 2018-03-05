@@ -1,16 +1,7 @@
 angular
         .module('app')
 
-        .config(function ($mdThemingProvider, $mdDateLocaleProvider) {
-            $mdThemingProvider.theme('altTheme')
-                    .primaryPalette('deep-purple')
-                    .accentPalette('purple'); // specify primary color, all
-            // other color intentions will be inherited
-            // from default
 
-   
-          
-        })
 
         .controller('AppCtrl', ["$scope", "$interval",
             function ($scope, $interval) {

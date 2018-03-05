@@ -31,14 +31,17 @@
         <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
         <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />
     </platform>
-    <preference name="android-maxSdkVersion" value="26" />
+
     <universal-links>
         <host name="jf39m.app.goo.gl" scheme="https" />
         <host name="clubears-156821.firebaseapp.com" scheme="https">
             <path url="/__/auth/callback" />
         </host>
     </universal-links>
+    <preference name="android-maxSdkVersion" value="26" /> 
     <preference name="android-targetSdkVersion" value="26" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
     <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
@@ -58,4 +61,5 @@
     <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="~2.0.2" />
     <plugin name="cordova-plugin-geolocation" spec="~4.0.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
 </widget>
