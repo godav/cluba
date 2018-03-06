@@ -11,6 +11,7 @@
     firebase.initializeApp(config);
 
     var club = angular.module("app", [
+        "fsCordova",
         'ngMaterial',
         'ui.router',
         'wu.masonry',
@@ -22,7 +23,8 @@
         "nvd3",
         "nvd3ChartDirectives",
         "ngIntlTelInput",
-        "fsCordova"
+        'ngCordova'
+
     ]);
 
     club.factory("Auth", ["$firebaseAuth",
@@ -55,72 +57,73 @@
 
 
     // UI.ROUTER STUFF
-    club.run(["$rootScope", "$state", function ($rootScope, $state) {
+    club.run(function ($rootScope, $state, geoWatch) {
+        console.log('in config');
+        console.log(geoWatch.userLocation);
+        $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
+            console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+            $rootScope.spinnerActive = true;
+        });
+        $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {
+            console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+            if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))
+                $state.reload();
+            $rootScope.spinnerActive = false;
+        });
+        $rootScope.$on('$stateChangeError', function (evt, toState, toParams, fromState, fromParams, error) {
+            console.log("$stateChangeError " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+            $rootScope.spinnerActive = false;
 
-            $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
-                console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-                $rootScope.spinnerActive = true;
-            });
-            $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {
-                console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-                if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))
-                    $state.reload();
-                $rootScope.spinnerActive = false;
-            });
-            $rootScope.$on('$stateChangeError', function (evt, toState, toParams, fromState, fromParams, error) {
-                console.log("$stateChangeError " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-                $rootScope.spinnerActive = false;
-
-                if (angular.isObject(error) && angular.isString(error.code)) {
-                    console.log(error.code);
-                    switch (error.code) {
-                        case 'AUTH_REQUIRED':
-                            // go to the login page
-                            console.log('auth');
-                            $state.go('login');
-                            break;
-                        case 'MANAGMENT':
-                            $state.go('managment');
-                            break;
-                        default:
-                            // set the error object on the error state and go there
-                            $state.get('error').error = error;
-                            $state.go('error');
-                    }
-                } else {
-                    // unexpected error
-                    console.log('in else');
-                    console.log(error);
-                    $state.go('login');
+            if (angular.isObject(error) && angular.isString(error.code)) {
+                console.log(error.code);
+                switch (error.code) {
+                    case 'AUTH_REQUIRED':
+                        // go to the login page
+                        console.log('auth');
+                        $state.go('login');
+                        break;
+                    case 'MANAGMENT':
+                        $state.go('managment');
+                        break;
+                    default:
+                        // set the error object on the error state and go there
+                        $state.get('error').error = error;
+                        $state.go('error');
                 }
-
-
-            });
-
-        }]);
-
-
-    club.factory('facebookService', function ($q) {
-        return {
-            getMyLastName: function (id, at) {
-                var deferred = $q.defer();
-                console.log('in fact');
-
-                FB.api('/' + id, {
-                    fields: 'last_name',
-                    access_token: at
-                }, function (response) {
-                    console.log(response);
-                    if (!response || response.error) {
-                        deferred.reject('Error occured');
-                    } else {
-                        deferred.resolve(response);
-                    }
-                });
-                return deferred.promise;
+            } else {
+                // unexpected error
+                console.log('in else');
+                console.log(error);
+                $state.go('login');
             }
-        };
+
+
+        });
+
     });
+
+//
+//    club.factory('facebookService', function ($q) {
+//        return {
+//            getMyLastName: function (id, at) {
+//                var deferred = $q.defer();
+//                console.log('in fact');
+//
+//                FB.api('/' + id, {
+//                    fields: 'last_name',
+//                    access_token: at
+//                }, function (response) {
+//                    console.log(response);
+//                    if (!response || response.error) {
+//                        deferred.reject('Error occured');
+//                    } else {
+//                        deferred.resolve(response);
+//                    }
+//                });
+//                return deferred.promise;
+//            }
+//        };
+//    });
 
 
 })();

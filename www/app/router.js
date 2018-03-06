@@ -42,6 +42,9 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
+                    },
+                    userLocation: function(geoWatch){
+                        return geoWatch.position;
                     }
                     
 
@@ -126,7 +129,9 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    currentLocation: function (GEOLOCATION) {
+                    currentLocation: function (GEOLOCATION,userLocation) {
+                         console.log('in clubes router');
+                        console.log(userLocation);
                         return GEOLOCATION.GetUserLocation();
                     },                    
                     clubesNearBy: function (GEOLOCATION,currentLocation) {

@@ -4,68 +4,40 @@
 // and then run "window.location.reload()" in the JavaScript Console.
         (function () {
             "use strict";
+// https://medium.com/@thatisuday/manual-bootstrapping-angular-application-resolve-dependencies-before-angular-run-block-f572310bcb65
 
             window.onload = function () {
                 // get injector object
-                var initInjector = angular.injector(['fsCordova']);
+                var initInjector = angular.injector(['fsCordova', 'ngCordova']);
 
                 // extract necessary angular services
                 var CordovaService = initInjector.get('CordovaService');
-
+                var geoWatch = initInjector.get('geoWatch');
                 // do operations before bootstrap
                 // 
                 // 
 
                 CordovaService.ready.then(function (cordova) {
                     // Cordova is ready
-                    console.log(cordova);
-                    navigator.splashscreen.hide();
+
+                    geoWatch.startWatchLocation().then(function () {
+                        console.log('location');
+                        console.log(geoWatch.userLocation);
+                        angular.bootstrap(document, ['app']);
+                        navigator.splashscreen.hide();
+                    }, function () {
+                        console.log('error loc');
+                    });
+
+
+
+
                 }, function (error) {
+                    // fatal error the cordova native is not ready need to put error message to user
                     console.log(error);
                 });
-
-//                // get user sign in status
-//                $http({
-//                    url: 'https://api.mysite.com/auth/user/basic',
-//                    method: 'GET',
-//                    headers: {
-//                        'x-auth-token': localStorage.getItem('auth-token')
-//                    }
-//                })
-//                        // when first request resolves
-//                        // store user sign in status and other info
-//                        // as a constant in `config` module
-//                        .then(
-//                                // signed in {statusCode : 200} // OK
-//                                        function (res) {
-//                                            angular.module('config').constant('__user', {
-//                                                $state: 'signed',
-//                                                $accType: res.data.accountType,
-//                                                $accData: res.data
-//                                            });
-//                                        },
-//                                        // not signed in {statusCode : 403} // Forbidden
-//                                                function () {
-//                                                    angular.module('config').constant('__user', {
-//                                                        $state: 'unsigned'
-//                                                    });
-//                                                }
-//                                        )
-//                                                // resolves on either success or failed response
-//                                                // of previous authentication request 
-//                                                .then(function () {
-//                                                    // start bootstrapping
-//                                                    angular.bootstrap(document, ['myApp']);
-//                                                    // add `_splash_fade_out` class to splash screen
-//                                                    // when resolved after animation complete, remove element from DOM
-//                                                    $animate
-//                                                            .addClass(angular.element('splash-screen'), '_splash_fade_out')
-//                                                            .then(function () {
-//                                                                angular.element('splash-screen').remove();
-//                                                            });
-//                                                });
-                                    };
+            };
 
 
 
-                        })();
+        })();

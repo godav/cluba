@@ -3,3 +3,5 @@ plugins/
 google-services.json
 nbproject/
 platforms/
+package.json
+package-lock.json

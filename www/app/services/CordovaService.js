@@ -1,7 +1,7 @@
 (function () {
 
 
-    var cordova = angular.module('fsCordova', [])
+    angular.module('fsCordova', ['ng', 'ngCordova'])
             .service('CordovaService', ['$q',
                 function ($q) {
 
@@ -22,7 +22,7 @@
                         document.addEventListener('pause', onPause.bind(this), false);
                         document.addEventListener('resume', onResume.bind(this), false);
                         d.resolve(window.cordova);
-                    });
+                    }, false);
                     // Check to make sure we didn't miss the 
                     // event (just in case)
                     setTimeout(function () {
@@ -37,48 +37,44 @@
                 }])
 
 
-            .service('geoWatch', ['$q', function ($q) {
+            .service('geoWatch', function ($cordovaGeolocation, $q) {
+                var self = this;
+                self.userLocation = {position: {},
+                    error: {}};
+                console.log('in services');
+                console.log(self.userLocation);
 
-                    this.position = null;
-                    this.watchUserLocation = function () {
+                var watchOptions = {
+                    timeout: 3000,
+                    enableHighAccuracy: false // may cause errors if true
+                };
 
-                        var watchOptions = {
-                            timeout: 60 * 60 * 1000,
-                            maxAge: 0,
-                            enableHighAccuracy: true
-                        };
-                        var one = $q.defer();
-                        var onSuccess = function (position) {
-                            console.log(position);
-                            this.position = position;
-                            one.resolve(position);
-                        };
-                        // onError Callback receives a PositionError object
-                        //
-                        function onError(error) {
-                            console.log(error);
-                            this.position = error;
-                            console.log('code: ' + error.code + '\n' +
-                                    'message: ' + error.message + '\n');
-                            one.reject(error);
-                        }
-                        navigator.geolocation.watchPosition(onSuccess, onError, watchOptions);
-                        return one.promise;
-                    };
-                }]);
-    // this is the place for splash screen after everything is loaded
-    cordova.run(function (CordovaService, geoWatch) {
+                self.startWatchLocation = function () {
+                    console.log('in function');
+                    console.log(self.userLocation);
+                    var one = $q.defer();
 
+                    self.watch = $cordovaGeolocation.watchPosition(watchOptions);
+                    self.watch.then(
+                            null,
+                            function (err) {
+                                self.userLocation.position = null;
+                                self.userLocation.error = err;
+                                console.log(err);
+                                one.reject();
+                            },
+                            function (position) {
+                                console.log('success');
+                                console.log(position);
+                                self.userLocation.position = position;
+                                self.userLocation.error = null;
+                                one.resolve();
+                            });
 
-//                                return geoWatch.watchUserLocation();
-//                        },
-//                                afterGeo: function (userLocation, geoWatch) {
-//                                console.log(userLocation);
-//                                        console.log(geoWatch.position);
-//                                        angular.bootstrap(document, ['app']);
-//                                }
-//                        }
-//
-//                        });
-    });
+                    return one.promise;
+
+                };
+
+            });
+
 })();
