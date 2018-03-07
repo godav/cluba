@@ -1,15 +1,38 @@
 var club = angular.module("app").config(function ($stateProvider, $urlRouterProvider) {
 //
 // For any unmatched url, redirect to /state1
+    console.log('in config router');
     $urlRouterProvider.otherwise("/login");
     //    $urlRouterProvider.when('clubears/main', '/clubears/main/clubes');
     $stateProvider
+            .state('index', {
+                url: "^",
+                resolve: {
+                    deviceReady: function (CordovaService) {
+                        console.log('in device ready');
+                        return CordovaService.ready;
+
+                    }, watchLocation: function (GEOLOCATION) {
+                        console.log('in watch');
+                        return GEOLOCATION.watchUserLocation();                                  
+                       
+                    }, route: function (watchLocation, $state) {
+                        console.log('in route');
+                        console.log(watchLocation);
+                        $state.go('login');
+                        navigator.splashscreen.hide();
+                    }
+
+                }
+
+            })
             .state('login', {
                 url: "/login",
                 templateUrl: "app/pages/login.html",
                 controller: "loginCtrl",
                 resolve: {
                     currentAuth: function (Auth) {
+                        console.log('in login');
                         return Auth.$waitForSignIn();
                     },
                     userObj: function (USERS, currentAuth) {
@@ -42,11 +65,8 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
-                    },
-                    userLocation: function(geoWatch){
-                        return geoWatch.position;
                     }
-                    
+
 
                 }
             })
@@ -91,7 +111,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return Auth.$requireSignIn();
                     },
                     faceFriends: function (USERS) {
-                            return USERS.getUserFreinds();
+                        return USERS.getUserFreinds();
                     }
                 }
             })
@@ -129,12 +149,11 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    currentLocation: function (GEOLOCATION,userLocation) {
-                         console.log('in clubes router');
-                        console.log(userLocation);
+                    currentLocation: function (GEOLOCATION) {
+                        console.log('in clubes router');
                         return GEOLOCATION.GetUserLocation();
-                    },                    
-                    clubesNearBy: function (GEOLOCATION,currentLocation) {
+                    },
+                    clubesNearBy: function (GEOLOCATION, currentLocation) {
                         return GEOLOCATION.GetClubesNearBy(currentLocation);
                     }
                 }

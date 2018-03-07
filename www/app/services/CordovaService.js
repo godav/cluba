@@ -1,10 +1,10 @@
 (function () {
 
 
-    angular.module('fsCordova', ['ng', 'ngCordova'])
+    angular.module('fsCordova', [])
             .service('CordovaService', ['$q',
                 function ($q) {
-
+                    console.log('CordovaService');
                     function onPause() {
                         // TODO: This application has been suspended. Save application state here.
                     }
@@ -37,44 +37,46 @@
                 }])
 
 
-            .service('geoWatch', function ($cordovaGeolocation, $q) {
-                var self = this;
-                self.userLocation = {position: {},
-                    error: {}};
-                console.log('in services');
-                console.log(self.userLocation);
 
-                var watchOptions = {
-                    timeout: 3000,
-                    enableHighAccuracy: false // may cause errors if true
-                };
-
-                self.startWatchLocation = function () {
-                    console.log('in function');
-                    console.log(self.userLocation);
-                    var one = $q.defer();
-
-                    self.watch = $cordovaGeolocation.watchPosition(watchOptions);
-                    self.watch.then(
-                            null,
-                            function (err) {
-                                self.userLocation.position = null;
-                                self.userLocation.error = err;
-                                console.log(err);
-                                one.reject();
-                            },
-                            function (position) {
-                                console.log('success');
-                                console.log(position);
-                                self.userLocation.position = position;
-                                self.userLocation.error = null;
-                                one.resolve();
-                            });
-
-                    return one.promise;
-
-                };
-
-            });
+//            .service('geoWatch', function ($cordovaGeolocation, $q) {
+//                console.log('CordovaService');
+//                var self = this;
+//                self.userLocation = {position: {},
+//                    error: {}};
+//                console.log('in services');
+//                console.log(self.userLocation);
+//
+//                var watchOptions = {
+//                    timeout: 3000,
+//                    enableHighAccuracy: false // may cause errors if true
+//                };
+//
+//                self.startWatchLocation = function () {
+//                    console.log('in function');
+//                    console.log(self.userLocation);
+//                    var one = $q.defer();
+//
+//                    self.watch = $cordovaGeolocation.watchPosition(watchOptions);
+//                    self.watch.then(
+//                            null,
+//                            function (err) {
+//                                self.userLocation.position = null;
+//                                self.userLocation.error = err;
+//                                console.log(err);
+//                                one.reject();
+//                            },
+//                            function (position) {
+//                                console.log('success');
+//                                console.log(position);
+//                                self.userLocation.position = position;
+//                                self.userLocation.error = null;
+//                                one.resolve();
+//                            });
+//
+//                    return one.promise;
+//
+//                };
+//
+//            });
 
 })();

@@ -37,13 +37,14 @@
 
     club.config(function (ngIntlTelInputProvider) {
 
-
+        console.log('in config 1');
         ngIntlTelInputProvider.set(
                 {
                     utilsScript: 'js/utils.js'
                 });
     })
             .config(function ($mdThemingProvider, $mdDateLocaleProvider) {
+                console.log('in config 2');
                 $mdThemingProvider.theme('altTheme')
                         .primaryPalette('deep-purple')
                         .accentPalette('purple'); // specify primary color, all
@@ -57,9 +58,24 @@
 
 
     // UI.ROUTER STUFF
-    club.run(function ($rootScope, $state, geoWatch) {
-        console.log('in config');
-        console.log(geoWatch.userLocation);
+    club.run(function ($rootScope, $state, GEOLOCATION) {
+        console.log('in config run');
+        $rootScope.userLocation = null;
+        $rootScope.$on('watcher', function (event, obj) {
+            console.log('in route scope');
+            console.log(event);
+            console.log(obj);
+            if (!$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
+                    obj.position.coords.longitude !== $rootScope.userLocation.position.coords.longitude) {
+                console.log('their is a change');
+                $rootScope.userLocation = obj;
+                $rootScope.clubesNearBy = GEOLOCATION.GetClubesNearBy(obj.position.coords.latitude, obj.position.coords.longitude);
+            } else
+                console.log('their is no change');
+        });
+
+
+
         $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
             console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
             $rootScope.spinnerActive = true;

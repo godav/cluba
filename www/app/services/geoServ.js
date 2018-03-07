@@ -1,9 +1,9 @@
 (function () {
 
     angular.module('app').
-            service("GEOLOCATION", function ($cordovaGeolocation, $q) {
+            service("GEOLOCATION", function ($cordovaGeolocation, $q, $rootScope) {
 
-
+                console.log('geolocation init');
                 var ClubesRef = firebase.database().ref('geoClubes');
 
 
@@ -53,11 +53,56 @@
 
                 }
 
-                this.GetClubesNearBy = function (position) {
+
+
+                var watchOptions = {
+                    timeout: 3000,
+                    enableHighAccuracy: false // may cause errors if true
+                };
+
+                var watch = null;
+
+                this.watchUserLocation = function () {
+                    console.log('watchUserLocation');
+
+                    var userLocation = {
+                        position: {},
+                        error: {}
+                    };
+
+                    var one = $q.defer();
+
+                    watch = $cordovaGeolocation.watchPosition(watchOptions);
+                    watch.then(
+                            null,
+                            function (err) {
+                                console.log('error');
+                                console.log(err);
+                                userLocation.position = null;
+                                userLocation.error = err;
+                                $rootScope.$broadcast('watcher', userLocation);
+                                one.reject();
+                            },
+                            function (position) {
+                                console.log('success');
+                                console.log(position);
+                                userLocation.position = position;
+                                userLocation.error = null;
+                                $rootScope.$broadcast('watcher', userLocation);
+                                one.resolve();
+                            });
+
+                    return one.promise;
+
+                };
+
+
+
+                this.GetClubesNearBy = function (lat,long) {
                     var one = $q.defer();
 
                     ClubesRef.once('value').then(function (snapshot) {
-                        var clubes = calcDistance(position.coords.latitude, position.coords.longitude, snapshot.val());
+                        var clubes = calcDistance(lat,long, snapshot.val());
                         one.resolve(clubes);
                     });
 
