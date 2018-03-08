@@ -1,64 +1,66 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" defaultlocale="en-US" id="com.clubears.android" version="1.0.0">
+<?xml version='1.0' encoding='utf-8'?>
+<widget defaultlocale="en-US" id="com.clubears.android" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
     <name>clubears</name>
     <description>A blank project that uses Apache Cordova to help you build an app that targets multiple mobile platforms: Android, iOS, and the Windows Universal Platform.</description>
     <author email="godav@walla.com" href="http://cordova.io">Clubears</author>
-    <content src="index.html"/>
-    <access origin="*"/>
-    <preference name="SplashScreen" value="screen"/>
-    <allow-intent href="http://*/*"/>
-    <allow-intent href="https://*/*"/>
-    <allow-intent href="tel:*"/>
-    <allow-intent href="sms:*"/>
-    <allow-intent href="mailto:*"/>
-    <allow-intent href="geo:*"/>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="SplashScreen" value="screen" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
     <platform name="android">
-        <allow-intent href="market:*"/>
+        <allow-intent href="market:*" />
     </platform>
     <platform name="android">
-        <icon density="ldpi" src="res/icons/android/icon-36-ldpi.png"/>
-        <icon density="mdpi" src="res/icons/android/icon-48-mdpi.png"/>
-        <icon density="hdpi" src="res/icons/android/icon-72-hdpi.png"/>
-        <icon density="xhdpi" src="res/icons/android/icon-96-xhdpi.png"/>
+        <icon density="ldpi" src="res/icons/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icons/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icons/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icons/android/icon-96-xhdpi.png" />
     </platform>
     <platform name="android">
-        <splash density="land-hdpi" src="res/screens/android/screen-hdpi-landscape.png"/>
-        <splash density="land-ldpi" src="res/screens/android/screen-ldpi-landscape.png"/>
-        <splash density="land-mdpi" src="res/screens/android/screen-mdpi-landscape.png"/>
-        <splash density="land-xhdpi" src="res/screens/android/screen-xhdpi-landscape.png"/>
-        <splash density="port-hdpi" src="res/screens/android/screen-hdpi-portrait.png"/>
-        <splash density="port-ldpi" src="res/screens/android/screen-ldpi-portrait.png"/>
-        <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png"/>
-        <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png"/>
+        <splash density="land-hdpi" src="res/screens/android/screen-hdpi-landscape.png" />
+        <splash density="land-ldpi" src="res/screens/android/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi" src="res/screens/android/screen-mdpi-landscape.png" />
+        <splash density="land-xhdpi" src="res/screens/android/screen-xhdpi-landscape.png" />
+        <splash density="port-hdpi" src="res/screens/android/screen-hdpi-portrait.png" />
+        <splash density="port-ldpi" src="res/screens/android/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />
     </platform>
     <universal-links>
-        <host name="jf39m.app.goo.gl" scheme="https"/>
+        <host name="jf39m.app.goo.gl" scheme="https" />
         <host name="clubears-156821.firebaseapp.com" scheme="https">
-            <path url="/__/auth/callback"/>
+            <path url="/__/auth/callback" />
         </host>
     </universal-links>
-    <preference name="android-maxSdkVersion" value="26"/>
-    <preference name="android-targetSdkVersion" value="26"/>
-    <preference name="AutoHideSplashScreen" value="false"/>
-    <preference name="ShowSplashScreenSpinner" value="false"/>
-    <engine name="android" spec="6.3.0"/>
-    <plugin name="cordova-plugin-whitelist" spec="^1.2.2"/>
-    <plugin name="cordova-plugin-browsertab" spec="^0.2.0"/>
-    <plugin name="cordova-plugin-buildinfo" spec="^2.0.1"/>
-    <plugin name="cordova-plugin-compat" spec="^1.2.0"/>
+    <preference name="android-maxSdkVersion" value="27" />
+    <preference name="android-targetSdkVersion" value="27" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <engine name="android" spec="6.3.0" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
+    <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
+    <plugin name="cordova-plugin-buildinfo" spec="^2.0.1" />
+    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
-        <variable name="URL_SCHEME" value="com.firebase.cordova"/>
-        <variable name="ANDROID_SCHEME" value=" "/>
-        <variable name="ANDROID_HOST" value=" "/>
-        <variable name="ANDROID_PATHPREFIX" value="/"/>
+        <variable name="URL_SCHEME" value="com.firebase.cordova" />
+        <variable name="ANDROID_SCHEME" value=" " />
+        <variable name="ANDROID_HOST" value=" " />
+        <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
-        <variable name="APP_ID" value="569349916606060"/>
-        <variable name="APP_NAME" value="clubears"/>
+        <variable name="APP_ID" value="569349916606060" />
+        <variable name="APP_NAME" value="clubears" />
     </plugin>
-    <plugin name="cordova-plugin-firebase" spec="^0.1.24"/>
-    <plugin name="cordova-universal-links-plugin" spec="^1.2.1"/>
-    <plugin name="cordova-plugin-inappbrowser" spec="~2.0.2"/>
-    <plugin name="cordova-plugin-geolocation" spec="~4.0.1"/>
-    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2"/>
+    <plugin name="cordova-plugin-firebase" spec="^0.1.25" />
+    <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~2.0.2" />
+    <plugin name="cordova-plugin-geolocation" spec="~4.0.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
+    <preference name="cordova.plugins.diagnostic.modules" value="LOCATION" />
+    <plugin name="cordova.plugins.diagnostic" spec="~4.0.2" />
 </widget>

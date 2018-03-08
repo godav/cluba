@@ -12,13 +12,33 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         console.log('in device ready');
                         return CordovaService.ready;
 
-                    }, watchLocation: function (GEOLOCATION) {
+                    }, watchLocation: function (GEOLOCATION,deviceReady,$rootScope) {
                         console.log('in watch');
-                        return GEOLOCATION.watchUserLocation();                                  
-                       
+                          console.log(deviceReady);
+                          $rootScope.device = deviceReady;
+                           switch ($rootScope.locationAuth) {
+                                case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                                    console.log("Permission not requested");
+                                    break;
+                                case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                                    console.log("Permission granted");
+                                    return GEOLOCATION.watchUserLocation();
+                                    break;
+                                case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                                    console.log("Permission denied");
+                                    break;
+                                case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                                    console.log("Permission permanently denied");
+                                    break;
+                            }
+                          
+                          
+                          
+                          
+                        
+
                     }, route: function (watchLocation, $state) {
                         console.log('in route');
-                        console.log(watchLocation);
                         $state.go('login');
                         navigator.splashscreen.hide();
                     }
@@ -149,12 +169,9 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    currentLocation: function (GEOLOCATION) {
-                        console.log('in clubes router');
-                        return GEOLOCATION.GetUserLocation();
-                    },
-                    clubesNearBy: function (GEOLOCATION, currentLocation) {
-                        return GEOLOCATION.GetClubesNearBy(currentLocation);
+
+                    clubesNearBy: function (currentAuth,$rootScope ) {
+                        return $rootScope.clubesNearBy;
                     }
                 }
             })

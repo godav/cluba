@@ -61,16 +61,19 @@
     club.run(function ($rootScope, $state, GEOLOCATION) {
         console.log('in config run');
         $rootScope.userLocation = null;
+        $rootScope.clubesNearBy = null;
         $rootScope.$on('watcher', function (event, obj) {
             console.log('in route scope');
-            console.log(event);
-            console.log(obj);
-            if (!$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
+            if (!obj.error && !$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
                     obj.position.coords.longitude !== $rootScope.userLocation.position.coords.longitude) {
-                console.log('their is a change');
+                console.alert('their is a change');
                 $rootScope.userLocation = obj;
                 $rootScope.clubesNearBy = GEOLOCATION.GetClubesNearBy(obj.position.coords.latitude, obj.position.coords.longitude);
-            } else
+            } else if (obj.error)
+                console.alert('their is an error in location mdoe');
+                // maybe the best thing to do is to take the middle of the country and search from their
+                // didn't do it yet.
+            else
                 console.log('their is no change');
         });
 
