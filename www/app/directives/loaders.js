@@ -5,19 +5,19 @@ angular.module('app')
             return {
                 restrict: 'E',
                 replace: true,
-                template: '<div layout="column" layout-align="center center" layout-sm="column" style="min-height:100%;">' +
+                template: '<div layout="column" layout-align="center center" layout-sm="column" style="opacity: 0.5; min-height:100%;">' +
                         '<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
                         +'</div>',
                 link: function (scope, element) {
 
                     element.addClass('ng-hide');
 
-                    $rootScope.$on('$routeChangeStart', function () {
+                    $rootScope.$on('$stateChangeStart', function () {
                         console.log('start2');
                         element.removeClass('ng-hide');
                     });
 
-                    $rootScope.$on('$routeChangeSuccess', function () {
+                    $rootScope.$on('$stateChangeSuccess', function () {
                         console.log('exit2');
                         element.addClass('ng-hide');
                     });
@@ -30,15 +30,16 @@ angular.module('app')
             return {
                 restrict: 'E',
                 replace: true,
-                template: '<div layout="column" layout-align="center center" layout-sm="column" style="min-height:100%;">' +
+                template: '<div layout="column" layout-align="center center" layout-sm="column" style="opacity: 0.5; min-height:100%;">' +
                         '<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
                         +'</div>',
                 link: function (scope, element) {
 
-                    $rootScope.$on('$routeChangeStart', function (event, currentRoute, previousRoute) {
+                    $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
                         console.log('start1');
-                        console.log(previousRoute);
-                        if (previousRoute)
+                        console.log(fromState);
+                          console.log(toState);
+                        if (fromState)
                             return;
 
                         $timeout(function () {
@@ -46,7 +47,7 @@ angular.module('app')
                         });
                     });
 
-                    $rootScope.$on('$routeChangeSuccess', function () {
+                    $rootScope.$on('$stateChangeSuccess', function () {
                         console.log('exit1');
                         element.addClass('ng-hide');
                     });
