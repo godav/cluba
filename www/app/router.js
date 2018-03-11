@@ -1,7 +1,6 @@
 var club = angular.module("app").config(function ($stateProvider, $urlRouterProvider) {
 //
 // For any unmatched url, redirect to /state1
-    console.log('in config router');
     $urlRouterProvider.otherwise("/login");
     //    $urlRouterProvider.when('clubears/main', '/clubears/main/clubes');
     $stateProvider
@@ -9,19 +8,14 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 url: "^",
                 resolve: {
                     deviceReady: function (CordovaService) {
-                        console.log('in device ready');
                         return CordovaService.ready;
-
                     }, watchLocation: function (GEOLOCATION,deviceReady,$rootScope) {
-                        console.log('in watch');
-                          console.log(deviceReady);
                           $rootScope.device = deviceReady;
                            switch ($rootScope.locationAuth) {
                                 case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
                                     console.log("Permission not requested");
                                     break;
                                 case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-                                    console.log("Permission granted");
                                     return GEOLOCATION.watchUserLocation();
                                     break;
                                 case cordova.plugins.diagnostic.permissionStatus.DENIED:
@@ -30,17 +24,10 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                                 case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
                                     console.log("Permission permanently denied");
                                     break;
-                            }
-                          
-                          
-                          
-                          
-                        
-
+                            }                      
                     }, route: function (watchLocation, $state) {
-                        console.log('in route');
                         $state.go('login');
-                        navigator.splashscreen.hide();
+                     
                     }
 
                 }
@@ -51,8 +38,8 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 templateUrl: "app/pages/login.html",
                 controller: "loginCtrl",
                 resolve: {
+                    
                     currentAuth: function (Auth) {
-                        console.log('in login');
                         return Auth.$waitForSignIn();
                     },
                     userObj: function (USERS, currentAuth) {

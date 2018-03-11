@@ -16,6 +16,7 @@
                     //    keytool -genkey -v -keystore c:\clubears.keystore -storepass android -alias clubears -keypass android -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
                     //    keytool -exportcert -alias clubears -keystore clubears.keystore> c:\openssl\bin\debug.txt
 
+                    console.log('login button pressed');
                     var fbLoginSuccess = function (userData) {
 
                         facebookConnectPlugin.getLoginStatus(statusCheckSuccess, statusCheckFail);
@@ -31,10 +32,11 @@
 
 
                                 Auth.$signInWithCredential(credential).then(function (firebaseUser) {
-                                    console.log(firebaseUser);
+
                                     console.log("Signed in as:", firebaseUser.uid);
                                     if (userObj && userObj.email && userObj.phone)
                                     {
+                                        console.log('jump to main because already have it stored');
                                         $scope.isNotFire = true;
                                         $state.go('clubears.main.clubes');                   // send user to profile because everything is good and stored
                                     }
@@ -72,23 +74,24 @@
 
 
                 Auth.$onAuthStateChanged(function (authData) {
-                    console.log(authData);
+                    console.log('inside auth changed');
 
                     if (authData && !$scope.isNotFire)
 
                     {
-
+                        console.log('their is entery - without pressing the button');
                         facebookConnectPlugin.getLoginStatus(statusCheckSuccess, statusCheckFail);
 
                     }
 
 
                     function statusCheckSuccess(response) {
-                        console.log('before face')
+                        console.log('before face');
                         if (response.status === 'connected') {
                             handleFirebaseAuthFlow();
+                               navigator.splashscreen.hide();
                         } else {
-
+                            navigator.splashscreen.hide();
                             console.log('user not connected facebook so he need to press the button');
                         }
                     }
@@ -101,8 +104,8 @@
 
                     function handleFirebaseAuthFlow() {
                         if (userObj) {
-                            console.log('wired that it come inside');
-                            console.log(userObj);
+                            console.log('wired that it come inside if login button presses');
+
                             if (userObj.phone) {
 
                                 $state.go('clubears.main.clubes');                   // send user to profile because everything is good and stored
@@ -119,12 +122,12 @@
                             user.$loaded().then(function ()
                             {
                                 console.log('loaded');
-                                console.log(user);
+
                                 if (user.$value === null)
                                 {         // first time
                                     facebookConnectPlugin.api("/" + authData.providerData[0].uid + '?fields=id,first_name,last_name,gender,email,picture', [],
                                             function (result) {
-                                                console.log(result);
+                    
                                                 var newUser = {
                                                     email: result.email,
                                                     first_name: result.first_name,

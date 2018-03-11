@@ -41,6 +41,7 @@
     <preference name="android-targetSdkVersion" value="27" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="FadeSplashScreenDuration" value="1000"/>
     <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
     <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />

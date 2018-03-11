@@ -34,11 +34,9 @@
     </head>
     <body layout="column">
         <!--<div id="fb-root"></div>-->
-        <div layout="column" layout-align="center center" layout-sm="column" style="min-height:100%;" ng-show="spinnerActive">
-            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-        </div>
 
-        <div ui-view ng-show="!spinnerActive" style="overflow:hidden"></div>
+
+        <div ui-view style="overflow:hidden"></div>
 
         <script src="js/jquery-3.2.1.min.js"></script>
 
@@ -115,7 +113,8 @@
         <script src="app/directives/angular-nvd3.js" type="text/javascript"></script>
         <script src="app/directives/scrollHeadlineClubes.js" type="text/javascript"></script>
         <script src="app/directives/backImg.js" type="text/javascript"></script>
-
+        <script src="app/directives/loaders.js" type="text/javascript"></script>
+        
         <!-- Controllers -->
         <script src="app/controllers/AppCtrl.js"></script>
         <script src="app/controllers/loginCtrl.js"></script>

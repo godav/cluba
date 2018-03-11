@@ -37,14 +37,14 @@
 
     club.config(function (ngIntlTelInputProvider) {
 
-        console.log('in config 1');
+
         ngIntlTelInputProvider.set(
                 {
                     utilsScript: 'js/utils.js'
                 });
     })
             .config(function ($mdThemingProvider, $mdDateLocaleProvider) {
-                console.log('in config 2');
+
                 $mdThemingProvider.theme('altTheme')
                         .primaryPalette('deep-purple')
                         .accentPalette('purple'); // specify primary color, all
@@ -59,20 +59,22 @@
 
     // UI.ROUTER STUFF
     club.run(function ($rootScope, $state, GEOLOCATION) {
-        console.log('in config run');
+
         $rootScope.userLocation = null;
         $rootScope.clubesNearBy = null;
         $rootScope.$on('watcher', function (event, obj) {
-            console.log('in route scope');
+
             if (!obj.error && !$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
                     obj.position.coords.longitude !== $rootScope.userLocation.position.coords.longitude) {
-                console.alert('their is a change');
+
                 $rootScope.userLocation = obj;
+
                 $rootScope.clubesNearBy = GEOLOCATION.GetClubesNearBy(obj.position.coords.latitude, obj.position.coords.longitude);
+
             } else if (obj.error)
-                console.alert('their is an error in location mdoe');
-                // maybe the best thing to do is to take the middle of the country and search from their
-                // didn't do it yet.
+                console.log('their is an error in location mdoe');
+            // maybe the best thing to do is to take the middle of the country and search from their
+            // didn't do it yet.
             else
                 console.log('their is no change');
         });
@@ -81,17 +83,17 @@
 
         $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
             console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-            $rootScope.spinnerActive = true;
+
         });
         $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {
             console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
             if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))
                 $state.reload();
-            $rootScope.spinnerActive = false;
+          
         });
         $rootScope.$on('$stateChangeError', function (evt, toState, toParams, fromState, fromParams, error) {
             console.log("$stateChangeError " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-            $rootScope.spinnerActive = false;
+        
 
             if (angular.isObject(error) && angular.isString(error.code)) {
                 console.log(error.code);

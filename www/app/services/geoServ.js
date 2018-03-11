@@ -63,8 +63,6 @@
                 var watch = null;
 
                 this.watchUserLocation = function () {
-                    console.log('watchUserLocation');
-
                     var userLocation = {
                         position: {},
                         error: {}
@@ -84,8 +82,6 @@
                                 one.reject();
                             },
                             function (position) {
-                                console.log('success');
-                                console.log(position);
                                 userLocation.position = position;
                                 userLocation.error = null;
                                 $rootScope.$broadcast('watcher', userLocation);
@@ -98,11 +94,10 @@
 
 
 
-                this.GetClubesNearBy = function (lat,long) {
+                this.GetClubesNearBy = function (lat, long) {
                     var one = $q.defer();
-
                     ClubesRef.once('value').then(function (snapshot) {
-                        var clubes = calcDistance(lat,long, snapshot.val());
+                        var clubes = calcDistance(lat, long, snapshot.val());
                         one.resolve(clubes);
                     });
 
