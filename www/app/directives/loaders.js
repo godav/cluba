@@ -1,6 +1,6 @@
 angular.module('app')
 
-        .directive('showDuringResolve', function ($rootScope) {
+        .directive('showDuringResolve', function ($rootScope,$timeout) {
 
             return {
                 restrict: 'E',

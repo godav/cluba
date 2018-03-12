@@ -2,7 +2,7 @@
 
     angular.module('app')
             .controller('clubears.Ctrl',
-                    function ($scope, currentAuth, $mdPanel, $state) {
+                    function ($scope, currentAuth, userObj, $mdPanel, $state) {
                         $scope._mdPanel = $mdPanel;
                         $scope.openFrom = 'button';
                         $scope.closeTo = 'button';
@@ -13,7 +13,7 @@
                             close: $scope.duration
                         };
 
-
+                        $scope.currentUser = userObj;
                         $scope.currentAuth = currentAuth;
                         $scope.showMobileMainHeader = true;
 

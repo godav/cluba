@@ -1,71 +1,28 @@
 <show-during-resolve></show-during-resolve>
-<div layout="column" md-theme="altTheme" class="md-primary rtl" style="color:white;"  ng-cloak>
-	<hr class="club-hr">
-	<div  >
-		<div layout="row" class="club-list">
+<div scroll-headline-all-friends id="all-friends-content" flex style="overflow: auto;" ng-clock>
 
-			<div flex="30">
-			 <img ng-src='{{user.picture}}' class="avatar" ng-click="showConfirm($event, user)"> 
-				</div>
-			
-			<div flex="40">
-				<span class="md-subhead club-name" >אבנר אבנר</span>
-			</div>
-			<div flex="20">
-				<span class="md-subhead club-distance"><i class="material-icons">&#xE7FD;</i></span>
-			</div>
-			<div flex="10">
-                            	<md-icon class="material-icons" ng-click="enterClub(club)">
-					<span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE0B7;</i></span>
-				</md-icon>
-			</div>
-			
-			
-		</div>
-		<hr class="club-hr">
-				<div layout="row" class="club-list">
+    <div ng-repeat="friend in friends" >	
+        <hr ng-if="$first" class="user-hr-no-top" >
+        <hr ng-if="!$first" class="user-hr">
+        <div layout="row" class="user-list">
 
-			<div flex="30">
-				<div  class="md-media-sm card-media "><img style='width: 60%' ng-src="{{person.imageLogo}}">
-				</div>
-			</div>
-			<div flex="40">
-				<span class="md-subhead club-name" >אלי אלי</span>
-			</div>
-			<div flex="20">
-				<span class="md-subhead club-distance"><i class="material-icons">&#xE7FD;</i></span>
-			</div>
-			<div flex="10">
-                            	<md-icon class="material-icons" ng-click="enterClub(club)">
-					<span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE0B7;</i></span>
-				</md-icon>
-			</div>
-			
-			
-		</div>
-		<hr class="club-hr">
-				<div layout="row" class="club-list">
+            <div flex="35" layout="row" >
+                <img ng-src='{{friend.picture}}' class="avatar" ng-click="showConfirm($event, user)"> 
+            </div>
+            <div flex="45" layout="row">
+                <span class="user-name vertical-text" >{{friend.name}}</span>
+            </div>
+            <div flex="20" layout="row">
+                <md-icon class="material-icons" ng-click="openChat(friend)">
+                    <span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE0B7;</i></span>
+                </md-icon>
 
-			<div flex="30">
-				<div  class="md-media-sm card-media "><img style='width: 60%' ng-src="{{person.imageLogo}}">
-				</div>
-			</div>
-			<div flex="40">
-				<span class="md-subhead club-name" >מיקי מיקי</span>
-			</div>
-			<div flex="20">
-				<span class="md-subhead club-distance"><i class="material-icons">&#xE7FD;</i></span>
-			</div>
-			<div flex="10">
-                            	<md-icon class="material-icons" ng-click="enterClub(club)">
-					<span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE0B7;</i></span>
-				</md-icon>
-			</div>
-			
-			
-		</div>
-		<hr class="club-hr">
-	</div>
+            </div>          
+        </div>
+        <hr ng-if="$last" class="user-hr-no-bottom">
+
+
+    </div>
+    <div ng-show="!friends" class="no-friends"><span>אין חברים לתצוגה</span></div>
+
 </div>
-
-

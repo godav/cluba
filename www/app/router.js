@@ -9,25 +9,25 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 resolve: {
                     deviceReady: function (CordovaService) {
                         return CordovaService.ready;
-                    }, watchLocation: function (GEOLOCATION,deviceReady,$rootScope) {
-                          $rootScope.device = deviceReady;
-                           switch ($rootScope.locationAuth) {
-                                case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-                                    console.log("Permission not requested");
-                                    break;
-                                case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-                                    return GEOLOCATION.watchUserLocation();
-                                    break;
-                                case cordova.plugins.diagnostic.permissionStatus.DENIED:
-                                    console.log("Permission denied");
-                                    break;
-                                case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
-                                    console.log("Permission permanently denied");
-                                    break;
-                            }                      
+                    }, watchLocation: function (GEOLOCATION, deviceReady, $rootScope) {
+                        $rootScope.device = deviceReady;
+                        switch ($rootScope.locationAuth) {
+                            case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                                console.log("Permission not requested");
+                                break;
+                            case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                                return GEOLOCATION.watchUserLocation();
+                                break;
+                            case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                                console.log("Permission denied");
+                                break;
+                            case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                                console.log("Permission permanently denied");
+                                break;
+                        }
                     }, route: function (watchLocation, $state) {
                         $state.go('login');
-                     
+
                     }
 
                 }
@@ -38,7 +38,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 templateUrl: "app/pages/login.html",
                 controller: "loginCtrl",
                 resolve: {
-                    
+
                     currentAuth: function (Auth) {
                         return Auth.$waitForSignIn();
                     },
@@ -72,9 +72,9 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
+                    }, userObj: function (USERS, currentAuth) {
+                        return USERS.getUser(currentAuth.uid);
                     }
-
-
                 }
             })
             .state('clubears.friends', {
@@ -96,6 +96,9 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
+                    },
+                    friends: function (FRIENDS, currentAuth) {
+                        FRIENDS.getUserFriends(currentAuth.uid);
                     }
                 }
             })
@@ -157,7 +160,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return Auth.$requireSignIn();
                     },
 
-                    clubesNearBy: function (currentAuth,$rootScope ) {
+                    clubesNearBy: function (currentAuth, $rootScope) {
                         return $rootScope.clubesNearBy;
                     }
                 }
