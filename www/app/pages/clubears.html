@@ -1,7 +1,7 @@
 
 
 <!-- Upper toolbar with bottons to serve the user -->
-<md-toolbar md-theme="altTheme" class="md-primary gradient">
+<md-toolbar md-theme="altTheme" class="md-primary gradient"  ng-cloak>
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -36,7 +36,7 @@
 </md-toolbar>
 
 
-<div style=" height:100%;"  ui-view ></div>
+<div style=" height:100%;"  ui-view  ng-cloak></div>
 
-<main-side-nav></main-side-nav>
+<main-side-nav  ng-cloak></main-side-nav>
 

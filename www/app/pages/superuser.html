@@ -2,8 +2,8 @@
     <span flex>Custom toast!</span>
 
 </md-toast>-->
-
-<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}">
+<show-during-resolve></show-during-resolve>
+<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-cloak>
     <div class="md-toolbar-tools gradient">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -23,7 +23,7 @@
     </div>
 </md-toolbar>
 
-<div layout-padding flex id="toaster-ancor">
+<div layout-padding flex id="toaster-ancor"  ng-cloak>
 
     <md-chips ng-model="selectedUsers" md-autocomplete-snap>
         <md-autocomplete 
@@ -51,9 +51,9 @@
         </md-chip-template>
     </md-chips>    
 </div>
-<md-content style="text-align: center;">
+<md-content style="text-align: center;" ng-cloak>
 
     <md-button ng-disabled="isEmpty()" class="md-raised md-primary"  ng-click="openClub()">פתח מועדון</md-button>
 </md-content>
 
-<main-side-nav></main-side-nav>
+<main-side-nav ng-cloak></main-side-nav >

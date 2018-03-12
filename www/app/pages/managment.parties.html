@@ -1,4 +1,5 @@
-<md-toolbar style="color:white;" id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-show="partiesShow">
+<show-during-resolve></show-during-resolve>
+<md-toolbar style="color:white;" id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-show="partiesShow"  ng-cloak>
     <div class="md-toolbar-tools gradient">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -83,7 +84,7 @@
     </md-icon>
 </md-button>
 
-<footer  ng-show="partiesShow && role < 3">
+<footer  ng-show="partiesShow && role < 3"  ng-cloak>
     <md-toolbar style="background-color:whitesmoke;">
         <div layout="row" layout-align="center center" flex>
             <md-button class="md-primary" ng-click="goPermissions()">

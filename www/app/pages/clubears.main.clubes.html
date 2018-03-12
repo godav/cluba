@@ -2,7 +2,7 @@
  <show-during-resolve></show-during-resolve>
  
 
-        <div  ng-repeat="club in clubes">
+        <div  ng-repeat="club in clubes"  ng-cloak>
             <hr ng-if="$first" class="user-hr" >
             <hr ng-if="!$first" class="user-hr">
             <div layout="row" class="club-list">

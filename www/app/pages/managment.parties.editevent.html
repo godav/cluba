@@ -1,4 +1,5 @@
-<md-toolbar  class="md-primary bottom-shadow">
+<show-during-resolve></show-during-resolve>
+<md-toolbar  class="md-primary bottom-shadow"  ng-cloak>
     <div class="md-toolbar-tools gradient">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -32,7 +33,7 @@
 <!--https://codepen.io/shepard_one/pen/MypdLy-->
 
 
-<md-toolbar class="md-primary gradient _md _md-toolbar-transitions">
+<md-toolbar class="md-primary gradient _md _md-toolbar-transitions"  ng-cloak>
     <div class="md-toolbar-tools rtl">
       <h2 class="md-flex">עריכת מסיבה / ליין</h2>
     </div>
@@ -45,7 +46,7 @@
     md-theme="altTheme" 
     flex 
     ng-clock>
-    <md-input-container class="md-block no-margin-top-bottom">
+    <md-input-container class="md-block no-margin-top-bottom"  ng-cloak>
         <label>שם הליין</label>
         <input name="lineName" ng-model="event.name" required md-no-asterisk>
         <div ng-messages="eventForm.lineName.$error" ng-if="eventForm.lineName.$invalid && (eventForm.$submitted || eventForm.lineName.$touched || eventForm.lineName.$dirty)" >

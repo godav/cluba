@@ -1,4 +1,5 @@
-<md-toolbar ng-show="show">
+<show-during-resolve></show-during-resolve>
+<md-toolbar ng-show="show"  ng-cloak>
     <div class="md-toolbar-tools gradient">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -21,7 +22,7 @@
 
 </md-toolbar>
 
-<md-content flex layout-padding class="rtl" md-theme="altTheme" ng-show="show">
+<md-content flex layout-padding class="rtl" md-theme="altTheme" ng-show="show"  ng-cloak>
     <md-toolbar class="md-primary gradient _md _md-toolbar-transitions">
         <div class="md-toolbar-tools rtl">
             <h2 class="md-flex">המועדונים שלי</h2>
@@ -45,7 +46,7 @@
 
 </md-content>
 
-<div layout="column" layout-fill ui-view ng-show="!show"></div>
+<div layout="column" layout-fill ui-view ng-show="!show"  ng-cloak></div>
 
 
 

@@ -1,5 +1,6 @@
 
-<div ng-controller="mainHistoryCtrl">
+<div ng-controller="mainHistoryCtrl"  ng-cloak>
+    <show-during-resolve></show-during-resolve>
     <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch ng-repeat="his in history" class="rtl">
         <md-card-title>
             <md-card-title-text>

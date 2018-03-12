@@ -1,7 +1,7 @@
 (function () {
 
     angular.module('app').
-            service("GEOLOCATION", function ($cordovaGeolocation, $q, $rootScope) {
+            service("GEOLOCATION", function ($cordovaGeolocation, $q, $rootScope, $timeout) {
 
                 console.log('geolocation init');
                 var ClubesRef = firebase.database().ref('geoClubes');
@@ -56,7 +56,7 @@
 
 
                 var watchOptions = {
-                    timeout: 3000,
+                    timeout: 30000,
                     enableHighAccuracy: false // may cause errors if true
                 };
 
@@ -87,6 +87,11 @@
                                 $rootScope.$broadcast('watcher', userLocation);
                                 one.resolve();
                             });
+
+                    $timeout(function () {
+                        if (userLocation.error)
+                            watch = $cordovaGeolocation.watchPosition(watchOptions);
+                    }, 30100);
 
                     return one.promise;
 

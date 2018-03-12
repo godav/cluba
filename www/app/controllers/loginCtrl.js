@@ -75,6 +75,9 @@
 
                 Auth.$onAuthStateChanged(function (authData) {
                     console.log('inside auth changed');
+                    console.log(authData);
+                    console.log($scope.isNotFire);
+
 
                     if (authData && !$scope.isNotFire)
 
@@ -82,14 +85,16 @@
                         console.log('their is entery - without pressing the button');
                         facebookConnectPlugin.getLoginStatus(statusCheckSuccess, statusCheckFail);
 
-                    }
+                    } else if (!authData && !$scope.isNotFire)
+                        navigator.splashscreen.hide();
+
 
 
                     function statusCheckSuccess(response) {
                         console.log('before face');
                         if (response.status === 'connected') {
                             handleFirebaseAuthFlow();
-                               navigator.splashscreen.hide();
+                            navigator.splashscreen.hide();
                         } else {
                             navigator.splashscreen.hide();
                             console.log('user not connected facebook so he need to press the button');
@@ -127,7 +132,7 @@
                                 {         // first time
                                     facebookConnectPlugin.api("/" + authData.providerData[0].uid + '?fields=id,first_name,last_name,gender,email,picture', [],
                                             function (result) {
-                    
+
                                                 var newUser = {
                                                     email: result.email,
                                                     first_name: result.first_name,

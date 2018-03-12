@@ -1,4 +1,5 @@
-<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}">
+<show-during-resolve></show-during-resolve>
+<md-toolbar id="managment-toolbar" ng-class="{'bottom-shadow': boolChangeClass}"  ng-cloak>
     <div class="md-toolbar-tools gradient">
         <md-button class="md-icon-button" aria-label="Side Panel" ng-click="openSideNavPanel()">
             <md-tooltip>
@@ -18,7 +19,7 @@
     </div>
 </md-toolbar>
 
-<div class="picture-container">
+<div class="picture-container"  ng-cloak>
 
 
     <img class="image-profile" ng-src="{{club.clubPicture}}" alt="Club picture">
@@ -40,7 +41,7 @@
 
 
 
-<md-content flex layout-padding class="rtl" md-theme="altTheme" id="managment-profile">
+<md-content flex layout-padding class="rtl" md-theme="altTheme" id="managment-profile"  ng-cloak>
     <form id="clubProfile" name="clubForm" novalidate >
 
         <div class="logo-container" layout="row" layout-align="space-around  center">
@@ -127,10 +128,10 @@
     </form>
 </md-content>
 
-<footer>
+<footer  ng-cloak>
     <md-toolbar style="background-color:whitesmoke;">
         <div layout="row" layout-align="center center" flex>
-            
+
             <md-button class="md-primary md-disabled" ng-disabled="!club.active" ng-click="goPermissions()">
                 הרשאות
             </md-button>

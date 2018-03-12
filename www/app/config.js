@@ -63,9 +63,11 @@
         $rootScope.userLocation = null;
         $rootScope.clubesNearBy = null;
         $rootScope.$on('watcher', function (event, obj) {
-
-            if (!obj.error && !$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
-                    obj.position.coords.longitude !== $rootScope.userLocation.position.coords.longitude) {
+            console.log('obj');
+            console.log(obj);
+            console.log($rootScope.userLocation);
+            if (!obj.error && (!$rootScope.userLocation || obj.position.coords.latitude !== $rootScope.userLocation.position.coords.latitude ||
+                    obj.position.coords.longitude !== $rootScope.userLocation.position.coords.longitude)) {
 
                 $rootScope.userLocation = obj;
 
@@ -89,11 +91,11 @@
             console.log("$stateChangeSuccess " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
             if ((fromState.name === "" && toState.name === "managment") || (fromState.name === "managment.parties" && toState.name === "managment") || (fromState.name === "managment.profile" && toState.name === "managment"))
                 $state.reload();
-          
+
         });
         $rootScope.$on('$stateChangeError', function (evt, toState, toParams, fromState, fromParams, error) {
             console.log("$stateChangeError " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
-        
+
 
             if (angular.isObject(error) && angular.isString(error.code)) {
                 console.log(error.code);
