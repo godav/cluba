@@ -12,12 +12,12 @@
                         return array;
                     };
 
-//
-//
-//                    this.AddFriend = function (Friend, Key) {
-//                        console.log('add friend');
-//                        FriendsRef.child(Key).set(Friend);
-//                    };
+
+
+                    this.AddFriend = function (Friend, Key) {
+                        console.log('add friend');
+                        FriendsRef.child(Key).child(Friend.id).set({name:Friend.first_name + " " + Friend.last_name,picture: Friend.picture.data.url});
+                    };
 //
 //                    this.UpdateUser = function (User) {
 //                        User.save();

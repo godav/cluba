@@ -108,7 +108,8 @@ exports.user_entered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{
  * Followers add a flag to `/followers/{followedUid}/{followerUid}`.
  * Users save their device notification tokens to `/users/{followedUid}/notificationTokens/{notificationToken}`.
  */
-exports.sendFollowerNotification = functions.database.ref('/friends/{userId}/{friendId}').onWrite((event) => {
+exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{friendId}').onCreate(event => {
+
     const friendId = event.params.friendId;
     const userId = event.params.userId;
     // If un-follow we exit the function.
@@ -117,7 +118,7 @@ exports.sendFollowerNotification = functions.database.ref('/friends/{userId}/{fr
     }
     console.log('We have a new request from UID:', friendId, 'to user:', userId);
     // Get the list of device notification tokens.
-    const getDeviceTokenPromise = admin.database().ref(`/users/${userId}/tk`).once('value');
+    const getDeviceTokenPromise = admin.database().ref(`/users/${userId}/token`).once('value');
     // Get the follower profile.
     const getFriendProfilePromise = admin.auth().getUser(friendId);
     return Promise.all([getDeviceTokenPromise, getFriendProfilePromise]).then((results) => {

@@ -25,7 +25,8 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                                 console.log("Permission permanently denied");
                                 break;
                         }
-                    }, route: function (watchLocation, $state) {
+                    },                  
+                    route: function (watchLocation, $state) {
                         $state.go('login');
 
                     }
@@ -42,6 +43,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$waitForSignIn();
                     },
+
                     userObj: function (USERS, currentAuth) {
                         if (currentAuth && currentAuth.uid)
                             return USERS.getUser(currentAuth.uid);

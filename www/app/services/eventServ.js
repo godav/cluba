@@ -93,7 +93,7 @@
                             one.resolve(userExists);
                         });
                         return one.promise;
-                    }
+                    };
 
                     this.GetOneEvent = function (clubId, EventKey) {
                         var clubRef = EventsRef.child(clubId).child(EventKey);

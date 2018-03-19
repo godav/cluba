@@ -4,7 +4,7 @@
     angular.module('app').controller("loginCtrl",
             function ($scope, Auth, $state, currentAuth, USERS, userObj, $firebaseObject, $rootScope) {
 
-                $scope.currentAuth = currentAuth;
+//                $scope.currentAuth = currentAuth;
                 $scope.isNotFire = false;
 
 
@@ -22,7 +22,7 @@
                         facebookConnectPlugin.getLoginStatus(statusCheckSuccess, statusCheckFail);
 
                         function statusCheckSuccess(response) {
-                            console.log('before face')
+                            console.log('before face');
                             if (response.status === 'connected') {
                                 // you can get user data here or redirect to main page depending on your goals
                                 console.log('loged in ok');
@@ -38,6 +38,14 @@
                                     {
                                         console.log('jump to main because already have it stored');
                                         $scope.isNotFire = true;
+                                        window.FirebasePlugin.getToken(function (token) {
+                                            // save this server-side and use it to push notifications to this device
+                                            console.log(token);
+                                            USERS.saveDeviceToken(firebaseUser.uid, token);
+
+                                        }, function (error) {
+                                            console.error(error);
+                                        });
                                         $state.go('clubears.main.clubes');                   // send user to profile because everything is good and stored
                                     }
 
@@ -85,7 +93,7 @@
                         console.log('their is entery - without pressing the button');
                         facebookConnectPlugin.getLoginStatus(statusCheckSuccess, statusCheckFail);
 
-                    } else if (!authData && !$scope.isNotFire)
+                    } else (!authData && !$scope.isNotFire)
                         navigator.splashscreen.hide();
 
 
@@ -110,7 +118,14 @@
                     function handleFirebaseAuthFlow() {
                         if (userObj) {
                             console.log('wired that it come inside if login button presses');
+                            window.FirebasePlugin.getToken(function (token) {
+                                // save this server-side and use it to push notifications to this device
+                                console.log(token);
+                                USERS.saveDeviceToken(authData.uid, token);
 
+                            }, function (error) {
+                                console.error(error);
+                            });
                             if (userObj.phone) {
 
                                 $state.go('clubears.main.clubes');                   // send user to profile because everything is good and stored
@@ -145,7 +160,14 @@
 
                                                 console.log('before save');
                                                 USERS.AddUser(newUser, authData.uid);
+                                                window.FirebasePlugin.getToken(function (token) {
+                                                    // save this server-side and use it to push notifications to this device
+                                                    console.log(token);
+                                                    USERS.saveDeviceToken(authData.uid, token);
 
+                                                }, function (error) {
+                                                    console.error(error);
+                                                });
                                                 $state.go('phone');                     // send user to auth phone incase phone not stored on DB
                                             },
                                             function (error) {
@@ -159,6 +181,14 @@
                                 } else if (user.email && user.phone) {
 
                                     console.log('all OK');
+                                    window.FirebasePlugin.getToken(function (token) {
+                                        // save this server-side and use it to push notifications to this device
+                                        console.log(token);
+                                        USERS.saveDeviceToken(authData.uid, token);
+
+                                    }, function (error) {
+                                        console.error(error);
+                                    });
                                     $state.go('clubears.main.clubes');                   // send user to profile because everything is good and stored
                                 } else if (!user.email) {
 
@@ -166,7 +196,16 @@
                                     $state.go('login');                                  // send user to login again because for some reason the mail not stored
                                 } else if (!user.phone) {
 
-                                    console.log('missing phone');                       // send user to auth phone incase phone not stored on DB
+                                    console.log('missing phone');
+                                    window.FirebasePlugin.getToken(function (token) {
+                                        // save this server-side and use it to push notifications to this device
+                                        console.log(token);
+                                        USERS.saveDeviceToken(authData.uid, token);
+
+                                    }, function (error) {
+                                        console.error(error);
+                                    });
+                                    // send user to auth phone incase phone not stored on DB
                                     $state.go('phone');
                                 }
 

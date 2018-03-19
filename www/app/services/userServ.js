@@ -22,6 +22,28 @@
                     };
 
                     this.getUserFreinds = function () {
+//                        var one = $q.defer();
+//                        var userExists = {};
+//                        var promises = [];
+//                        clubesEvents.forEach(function (event) {
+//                            var EventsUsersRef = firebase.database().ref('UsersInEvent/' + clubId + '/' + event.$id + '/' + userId);
+//                            var promise = EventsUsersRef.once('value').then(function (snapshot) {
+//
+//                                if (snapshot.hasChild('approved')) {
+//                                    userExists[event.$id] = true;
+//                                } else
+//                                    userExists[event.$id] = false;
+//                            });
+//                            promises.push(promise);
+//                        });
+//                        $q.all(promises).then(function () {
+//                            one.resolve(userExists);
+//                        });
+//                        return one.promise;
+
+
+
+
                         var one = $q.defer();
                         facebookConnectPlugin.api("/me/friends" + '?fields=id,first_name,last_name,picture', [],
                                 function (result) {
@@ -44,6 +66,11 @@
                     this.UpdateUser = function (User) {
                         User.save();
 
+                    };
+
+
+                    this.saveDeviceToken = function (cId, newToken) {
+                        UsersRef.child(cId).update({token: newToken});
                     };
 
                     this.DeleteUser = function (UserKey) {
