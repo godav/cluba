@@ -22,28 +22,17 @@
                     };
 
                     this.getUserFreinds = function () {
-//                        var one = $q.defer();
-//                        var userExists = {};
-//                        var promises = [];
-//                        clubesEvents.forEach(function (event) {
-//                            var EventsUsersRef = firebase.database().ref('UsersInEvent/' + clubId + '/' + event.$id + '/' + userId);
-//                            var promise = EventsUsersRef.once('value').then(function (snapshot) {
-//
-//                                if (snapshot.hasChild('approved')) {
-//                                    userExists[event.$id] = true;
-//                                } else
-//                                    userExists[event.$id] = false;
-//                            });
-//                            promises.push(promise);
-//                        });
-//                        $q.all(promises).then(function () {
-//                            one.resolve(userExists);
-//                        });
-//                        return one.promise;
+
+                        return facebookFriendSuggestion()
+                                .then(function (faceFriends) {
+                                    return convertFaceObjToFirebaseObj(faceFriends);
+                                }).promise;
 
 
 
+                    };
 
+                    function facebookFriendSuggestion() {
                         var one = $q.defer();
                         facebookConnectPlugin.api("/me/friends" + '?fields=id,first_name,last_name,picture', [],
                                 function (result) {
@@ -55,8 +44,38 @@
 
                                 });
                         return one.promise;
-                    };
+                    }
 
+                    function convertFaceObjToFirebaseObj(faceFriends)
+                    {
+                        
+                        console.log(faceFriends);
+                        var one = $q.defer();
+                        var firebaseUsers = {};
+                        var promises = [];
+                        faceFriends.forEach(function (friend) {
+                            var promise = UsersRef.orderByChild('facebookId').equalTo(friend.id).once('value').then(function (snapshot) {
+
+                                console.log(snapshot.key);
+                                console.log(snapshot.val());
+                                
+//                                if (snapshot.hasChild('approved')) {
+//                                    firebaseUsers[event.$id] = true;
+//                                } else
+//                                    firebaseUsers[event.$id] = false;
+                            });
+                            promises.push(promise);
+                        });
+                        $q.all(promises).then(function () {
+                            console.log('finish all promises');
+                            console.log(promises);
+                            one.resolve(promises);
+                        });
+                        return one.promise;
+
+
+
+                    }
 
                     this.AddUser = function (User, Key) {
                         console.log('add user');
