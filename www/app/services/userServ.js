@@ -54,7 +54,7 @@
 
                         console.log(faceFriends);
                         var one = $q.defer();
-                        var firebaseUsers = {};
+                        var firebaseUsers = [];
                         var promises = [];
                         faceFriends.forEach(function (friend) {
                             var promise = UsersRef.orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
@@ -89,34 +89,37 @@
                     {
 
                         console.log(Friends);
+                        console.log(userId);
                         var one = $q.defer();
                         var firebaseUsers = {};
                         var promises = [];
                         Friends.forEach(function (friend) {
-                            var promise = FriendsRef.child()orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
-
-                                console.log(snapshot.key);
-                                console.log(snapshot.val());
-                                var user = snapshot.val();
-                                var key = Object.keys(user);
-                                console.log(key);
-                                console.log(key[0]);
-                                console.log(user[key[0]]);
-                                firebaseUsers[key[0]] = user[key[0]];
-                                console.log(user[key]);
-//                                if (snapshot.hasChild('approved')) {
-//                                    firebaseUsers[event.$id] = true;
-//                                } else
-//                                    firebaseUsers[event.$id] = false;
-                            });
-                            promises.push(promise);
+                            console.log(friend);
+                            console.log(friend[0]);
+//                            var promise = FriendsRef.child(userId).child(friend.id)orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
+//
+//                                console.log(snapshot.key);
+//                                console.log(snapshot.val());
+//                                var user = snapshot.val();
+//                                var key = Object.keys(user);
+//                                console.log(key);
+//                                console.log(key[0]);
+//                                console.log(user[key[0]]);
+//                                firebaseUsers[key[0]] = user[key[0]];
+//                                console.log(user[key]);
+////                                if (snapshot.hasChild('approved')) {
+////                                    firebaseUsers[event.$id] = true;
+////                                } else
+////                                    firebaseUsers[event.$id] = false;
+//                            });
+//                            promises.push(promise);
                         });
-                        $q.all(promises).then(function () {
-                            console.log('finish all promises');
-                            console.log(firebaseUsers);
-                            one.resolve(firebaseUsers);
-                        });
-                        return one.promise;
+//                        $q.all(promises).then(function () {
+//                            console.log('finish all promises');
+//                            console.log(firebaseUsers);
+//                            one.resolve(firebaseUsers);
+//                        });
+//                        return one.promise;
 
 
 
