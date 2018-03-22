@@ -122,7 +122,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    faceFriends: function (USERS) {
+                    faceFriends: function (USERS,currentAuth) {
                         return USERS.getUserFreinds();
                     }
                 }

@@ -5,7 +5,8 @@
                 if (Auth) {
 
                     var UsersRef = firebase.database().ref('users');
-
+                    var FriendsRef = firebase.database().ref('friends');
+                    
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
@@ -21,12 +22,14 @@
                         return one.promise;
                     };
 
-                    this.getUserFreinds = function () {
+                    this.getUserFreinds = function (userId) {
 
                         return facebookFriendSuggestion()
                                 .then(function (faceFriends) {
                                     return convertFaceObjToFirebaseObj(faceFriends);
-                                }).promise;
+                                }).then(function (Friends) {
+                                    return checkIfAlreadyFriend(Friends,userId);
+                                });
 
 
 
@@ -48,17 +51,23 @@
 
                     function convertFaceObjToFirebaseObj(faceFriends)
                     {
-                        
+
                         console.log(faceFriends);
                         var one = $q.defer();
                         var firebaseUsers = {};
                         var promises = [];
                         faceFriends.forEach(function (friend) {
-                            var promise = UsersRef.orderByChild('facebookId').equalTo(friend.id).once('value').then(function (snapshot) {
+                            var promise = UsersRef.orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
 
                                 console.log(snapshot.key);
                                 console.log(snapshot.val());
-                                
+                                var user = snapshot.val();
+                                var key = Object.keys(user);
+                                console.log(key);
+                                console.log(key[0]);
+                                console.log(user[key[0]]);
+                                firebaseUsers[key[0]] = user[key[0]];
+                                console.log(user[key]);
 //                                if (snapshot.hasChild('approved')) {
 //                                    firebaseUsers[event.$id] = true;
 //                                } else
@@ -68,14 +77,51 @@
                         });
                         $q.all(promises).then(function () {
                             console.log('finish all promises');
-                            console.log(promises);
-                            one.resolve(promises);
+                            console.log(firebaseUsers);
+                            one.resolve(firebaseUsers);
                         });
                         return one.promise;
 
 
 
                     }
+                    function checkIfAlreadyFriend(Friends,userId)
+                    {
+
+                        console.log(Friends);
+                        var one = $q.defer();
+                        var firebaseUsers = {};
+                        var promises = [];
+                        Friends.forEach(function (friend) {
+                            var promise = FriendsRef.child()orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
+
+                                console.log(snapshot.key);
+                                console.log(snapshot.val());
+                                var user = snapshot.val();
+                                var key = Object.keys(user);
+                                console.log(key);
+                                console.log(key[0]);
+                                console.log(user[key[0]]);
+                                firebaseUsers[key[0]] = user[key[0]];
+                                console.log(user[key]);
+//                                if (snapshot.hasChild('approved')) {
+//                                    firebaseUsers[event.$id] = true;
+//                                } else
+//                                    firebaseUsers[event.$id] = false;
+                            });
+                            promises.push(promise);
+                        });
+                        $q.all(promises).then(function () {
+                            console.log('finish all promises');
+                            console.log(firebaseUsers);
+                            one.resolve(firebaseUsers);
+                        });
+                        return one.promise;
+
+
+
+                    }
+
 
                     this.AddUser = function (User, Key) {
                         console.log('add user');
