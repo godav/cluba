@@ -123,38 +123,42 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     const getFriendProfilePromise = admin.auth().getUser(friendId);
     return Promise.all([getDeviceTokenPromise, getFriendProfilePromise]).then((results) => {
         const tokenSnapshot = results[0];
-        console.log('token: ', tokenSnapshot);
-        const friendId = results[1];
-        console.log('friend: ', friendId);
+        console.log('token: ', tokenSnapshot.val());
+        const friendData = results[1];
+//        console.log('friend: ', friendData);
         // Check if there are any device tokens.
-        if (!tokenSnapshot.hasChildren()) {
-            return console.log('There are no notification tokens to send to.');
-        }
-        console.log('There are', tokenSnapshot.numChildren(), 'tokens to send notifications to.');
-        console.log('Fetched friend profile', friendId);
+//        if (!tokenSnapshot.hasChildren()) {
+//            return console.log('There are no notification tokens to send to.');
+//        }
+//        console.log('The token is ', tokenSnapshot.val());
+        console.log('Fetched friend profile', friendData);
         // Notification details.
         const payload = {
             notification: {
-                title: 'בקשת חברות חדשה',
-                body: ` ${friendId.first_name} ${friendId.last_name} יש לך בקשת חברות חדשה מ - `,
-                icon: friendId.picture
+                title: 'בקשת חברות חדשה ב - Clubears',
+                body: ` ${friendData.displayName} - יש לך בקשת חברות חדשה מ `,
+                icon: friendData.photoURL
             }
         };
         // Listing all tokens.
-        const tokens = Object.keys(tokenSnapshot.val());
-        console.log('token listing', tokens);
+        const token = [];
+        token.push(tokenSnapshot.val());
+        console.log('token listing', token);
         // Send notifications to all tokens.
-        return admin.messaging().sendToDevice(tokens, payload);
+        return admin.messaging().sendToDevice(token, payload);
     }).then((response) => {
 // For each message check if there was an error.
+        console.log('For each message check if there was an error', response);
         const tokensToRemove = [];
         response.results.forEach((result, index) => {
+            console.log('start remove', result);
+            console.log('start remove', index);
             const error = result.error;
             if (error) {
-                console.error('Failure sending notification to', tokens[index], error);
+                console.error('Failure sending notification to', token[index], error);
                 // Cleanup the tokens who are not registered anymore.
                 if (error.code === 'messaging/invalid-registration-token' || error.code === 'messaging/registration-token-not-registered') {
-                    tokensToRemove.push(tokenSnapshot.ref.child(tokens[index]).remove());
+                    tokensToRemove.push(tokenSnapshot.ref.child(token[index]).remove());
                 }
             }
         });

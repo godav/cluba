@@ -11,6 +11,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return CordovaService.ready;
                     }, watchLocation: function (GEOLOCATION, deviceReady, $rootScope) {
                         $rootScope.device = deviceReady;
+                        console.log('device:', $rootScope.device);
                         switch ($rootScope.locationAuth) {
                             case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
                                 console.log("Permission not requested");
@@ -25,8 +26,44 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                                 console.log("Permission permanently denied");
                                 break;
                         }
-                    },                  
-                    route: function (watchLocation, $state) {
+                    },
+                    route: function (deviceReady, $state, $rootScope) {
+
+                        // result contains any error description text returned from the plugin call 
+                        function errorHandler(error) {
+                            alert('error = ' + error);
+                        }
+
+                        // result contains any message sent from the plugin call 
+                        function successHandler(result) {
+                            alert('result = ' + result);
+                        }
+
+                        function tokenHandler(result) {
+                            // Your iOS push server needs to know the token before it can push to this device 
+                            // here is where you might want to send it the token for later use. 
+                            alert('device token = ' + result);
+                        }
+                        
+                        if (deviceReady.platformId === 'android' || deviceReady.platformId === 'Android' || deviceReady.platformId === "amazon-fireos") {
+                            $rootScope.pushNotification.register(
+                                    successHandler,
+                                    errorHandler,
+                                    {
+                                        "senderID": "970903539685",
+                                        "ecb": "onNotification"
+                                    });
+                        } else {
+                            $rootScope.pushNotification.register(
+                                    tokenHandler,
+                                    errorHandler,
+                                    {
+                                        "badge": "true",
+                                        "sound": "true",
+                                        "alert": "true",
+                                        "ecb": "onNotificationAPN"
+                                    });
+                        }
                         $state.go('login');
 
                     }
@@ -122,7 +159,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();
                     },
-                    faceFriends: function (USERS,currentAuth) {
+                    faceFriends: function (USERS, currentAuth) {
                         return USERS.getUserFreinds(currentAuth.uid);
                     }
                 }

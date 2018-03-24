@@ -16,7 +16,8 @@
 
                     this.AddFriend = function (Friend, Key) {
                         console.log('add friend');
-                        FriendsRef.child(Key).child(Friend.id).set({name:Friend.first_name + " " + Friend.last_name,picture: Friend.picture.data.url});
+                        console.log(Friend);
+                        FriendsRef.child(Key).child(Friend.id).set({active:false});
                     };
 //
 //                    this.UpdateUser = function (User) {
