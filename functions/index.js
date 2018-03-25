@@ -1,17 +1,13 @@
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
-
 // The Firebase Admin SDK to access the Firebase Realtime Database. 
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
-
-
 // update the pending counter in event for all + male + female when user is signed in to event
 exports.user_registered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{eventId}/{userId}').onCreate(event => {
     const root = event.data.ref.root;
     const events = root.child('events').child(event.params.clubId).child(event.params.eventId).child('pending').child('all');
-
     return events.transaction(current => {
         return (current || 0) + 1;
     }).then(() => {
@@ -27,37 +23,29 @@ exports.user_registered_to_event = functions.database.ref('/UsersInEvent/{clubId
         });
     });
 });
-
-
 // update the pending counter in event for all + male + female when user is unsigned from event
 exports.user_unregistered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{eventId}/{userId}').onDelete(event => {
     const root = event.data.ref.root;
     const events = root.child('events').child(event.params.clubId).child(event.params.eventId).child('pending').child('all');
-
     return events.transaction(current => {
         return (current || 0) - 1;
     }).then(() => {
         var original = event.data.previous.val();
-
         const gender = root.child('events').child(event.params.clubId).child(event.params.eventId).child('pending').child(original.gender);
-
         return gender.transaction(current => {
             return (current || 0) - 1;
         });
     });
 });
-
 // update the approved counter in event for all + male + female when user has been approved to participate in event
 exports.user_approved_to_event = functions.database.ref('/UsersInEvent/{clubId}/{eventId}/{userId}/sent').onUpdate(event => {
 
     const newVal = event.data.val();
     if (!newVal)
         return null;
-
     const root = event.data.ref.root;
     var original = root.child('UsersInEvent').child(event.params.clubId).child(event.params.eventId).child(event.params.userId);
     const events = root.child('events').child(event.params.clubId).child(event.params.eventId).child('approved').child('all');
-
     return events.transaction(current => {
         return (current || 0) + 1;
     }).then(() => {
@@ -65,25 +53,21 @@ exports.user_approved_to_event = functions.database.ref('/UsersInEvent/{clubId}/
 
             var user = snapshot.val();
             const gender = root.child('events').child(event.params.clubId).child(event.params.eventId).child('approved').child(user.gender);
-
             return gender.transaction(current => {
                 return (current || 0) + 1;
             });
         });
     });
 });
-
 // update the entered counter in event for all + male + female when user has been entered to event
 exports.user_entered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{eventId}/{userId}/entered').onUpdate(event => {
 
     const newVal = event.data.val();
     if (!newVal)
         return null;
-
     const root = event.data.ref.root;
     var original = root.child('UsersInEvent').child(event.params.clubId).child(event.params.eventId).child(event.params.userId);
     const events = root.child('events').child(event.params.clubId).child(event.params.eventId).child('entered').child('all');
-
     return events.transaction(current => {
         return (current || 0) + 1;
     }).then(() => {
@@ -91,14 +75,12 @@ exports.user_entered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{
 
             var user = snapshot.val();
             const gender = root.child('events').child(event.params.clubId).child(event.params.eventId).child('entered').child(user.gender);
-
             return gender.transaction(current => {
                 return (current || 0) + 1;
             });
         });
     });
 });
-
 // https://github.com/firebase/functions-samples/blob/master/fcm-notifications/functions/index.js
 
 
@@ -116,53 +98,34 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     if (!event.data.val()) {
         return console.log('User ', friendId, 'un-followed user', userId);
     }
-    console.log('We have a new request from UID:', friendId, 'to user:', userId);
-    // Get the list of device notification tokens.
-    const getDeviceTokenPromise = admin.database().ref(`/users/${userId}/token`).once('value');
+    
+    // Get device notification token.
+    const getDeviceTokenPromise = admin.database().ref(`/users/${friendId}/token`).once('value');
     // Get the follower profile.
-    const getFriendProfilePromise = admin.auth().getUser(friendId);
-    return Promise.all([getDeviceTokenPromise, getFriendProfilePromise]).then((results) => {
+    const getUserRequestFriendshipPromise = admin.auth().getUser(userId);
+    const getFriendPromise = admin.auth().getUser(friendId);
+    return Promise.all([getDeviceTokenPromise, getUserRequestFriendshipPromise, getFriendPromise]).then((results) => {
         const tokenSnapshot = results[0];
-        console.log('token: ', tokenSnapshot.val());
-        const friendData = results[1];
-//        console.log('friend: ', friendData);
-        // Check if there are any device tokens.
-//        if (!tokenSnapshot.hasChildren()) {
-//            return console.log('There are no notification tokens to send to.');
-//        }
-//        console.log('The token is ', tokenSnapshot.val());
-        console.log('Fetched friend profile', friendData);
+        const UserRequestFriendship = results[1];
+    
         // Notification details.
         const payload = {
+            token: tokenSnapshot.val(),
             notification: {
                 title: 'בקשת חברות חדשה ב - Clubears',
-                body: ` ${friendData.displayName} - יש לך בקשת חברות חדשה מ `,
-                icon: friendData.photoURL
+                body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `
             }
         };
-        // Listing all tokens.
-        const token = [];
-        token.push(tokenSnapshot.val());
-        console.log('token listing', token);
-        // Send notifications to all tokens.
-        return admin.messaging().sendToDevice(token, payload);
+
+        return [admin.messaging().send(payload),results[2],UserRequestFriendship];
+
     }).then((response) => {
-// For each message check if there was an error.
-        console.log('For each message check if there was an error', response);
-        const tokensToRemove = [];
-        response.results.forEach((result, index) => {
-            console.log('start remove', result);
-            console.log('start remove', index);
-            const error = result.error;
-            if (error) {
-                console.error('Failure sending notification to', token[index], error);
-                // Cleanup the tokens who are not registered anymore.
-                if (error.code === 'messaging/invalid-registration-token' || error.code === 'messaging/registration-token-not-registered') {
-                    tokensToRemove.push(tokenSnapshot.ref.child(token[index]).remove());
-                }
-            }
-        });
-        return Promise.all(tokensToRemove);
+
+        return admin.database().ref('/notifications/' + response[1].uid).push({UserRequestId: response[2].uid, UserRequestName: response[2].displayName, type: '1', active: true});
+
+    }).catch((error) => {
+        console.log('Error sending message:', error);
+
     });
 });
         

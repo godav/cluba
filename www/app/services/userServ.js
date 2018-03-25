@@ -6,7 +6,7 @@
 
                     var UsersRef = firebase.database().ref('users');
                     var FriendsRef = firebase.database().ref('friends');
-
+                    var NotificationsRef = firebase.database().ref('notifications');
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
@@ -34,6 +34,14 @@
 
 
                     };
+
+                    this.getUserNotificationsRef = function (userId) {
+                        var notificationQuery = NotificationsRef.child(userId).orderByChild("active").equelTo(true);
+                        array = $infiniteScroll(notificationQuery, 10);
+                        return array;
+                    };
+
+
 
                     function facebookFriendSuggestion() {
                         var one = $q.defer();

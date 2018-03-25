@@ -113,7 +113,10 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return Auth.$requireSignIn();
                     }, userObj: function (USERS, currentAuth) {
                         return USERS.getUser(currentAuth.uid);
+                    },notifications: function (USERS, currentAuth) {
+                        return USERS.getUserNotificationsRef(currentAuth.uid);
                     }
+                    
                 }
             })
             .state('clubears.friends', {

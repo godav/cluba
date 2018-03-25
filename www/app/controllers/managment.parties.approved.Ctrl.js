@@ -206,7 +206,7 @@ angular.module('app')
                             "<p>" + $scope.currentEvent.entered.female + " נשים נכנסו מתוך " + $scope.currentEvent.approved.female + " שאושרו " + "</p><hr>" +
                             "<p>" + "סך הכל  " + $scope.currentEvent.entered.all + " בליינים נכנסו מתוך " + $scope.currentEvent.approved.all + " שאושרו " + "</p>";
 
-                    $scope.data = [                        
+                    $scope.data = [
                         {
                             label: "נשים",
                             value: newVal.entered.female,

@@ -1,52 +1,67 @@
 <div role="dialog" aria-label="Eat me!" layout="column" layout-align="center center" >
-  <md-toolbar>
-    <div class="md-toolbar-tools rtl">
-      <h2>לוח ההתראות</h2>
+    <md-toolbar>
+        <div class="md-toolbar-tools rtl">
+            <h2>לוח ההתראות</h2>
+        </div>
+    </md-toolbar>
+
+    <div class="noti-dialog-content" md-swipe-up="onSwipeUp()" style="width: 100%;">
+
+
+        <md-list class="md-dense" flex>
+
+            <md-list-item ng-repeat="notification in notifications" ng-click="goToPerson(person.name, $event)" class="noright">
+
+                <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
+                    &#xE876;
+                </md-icon>
+                <div class="md-list-item-text">
+                    <h3>קיבלת בקשת חברות חדשה</h3>
+                    <p></p>
+                </div>
+                <p> שלח לך בקשת חברות האם לאשר? {{ person.UserRequestName}}</p>
+                <md-button class="md-raised md-primary md-secondary">אשר</md-button>
+                <md-button class="md-raised md-primary md-secondary">דחה</md-button>
+            </md-list-item>
+
+
+<!--            <md-list-item class="md-2-line rtl" ng-click="null">
+
+                <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
+                    &#xE876;
+                </md-icon>
+                <div class="md-list-item-text rtl" layout="column" >
+                    <h3>אושרה ההרשמה למועדון</h3>
+                    <h4>אושרה הכניסה למועדון הסיפריה, תהנה!</h4>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item class="md-2-line rtl" ng-click="null">
+                <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
+                    &#xE853;
+                </md-icon>
+                <div class="md-list-item-text rtl" layout="column">
+                    <h3>קיבלת בקשת חברות חדשה</h3>
+                    <h4>אבנר אינוז שלח לך בקשת חברות!</h4>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item class="md-2-line rtl" ng-click="null">
+                <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
+                    &#xE0CA;
+                </md-icon>
+                <div class="md-list-item-text rtl" layout="column">
+                    <h3>הודעה מהSPACE</h3>
+                    <h4>מיקי מדינה שלח לך הודעה חדשה!</h4>
+                </div>
+            </md-list-item>-->
+        </md-list>
+
     </div>
-  </md-toolbar>
 
-  <div class="noti-dialog-content" md-swipe-up="onSwipeUp()" style="width: 100%;">
-    
-
-      <md-list class="md-dense" flex>
-       
-                <md-list-item class="md-2-line rtl" ng-click="null">
-        
-          <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
-                                &#xE876;
-                            </md-icon>
-          <div class="md-list-item-text rtl" layout="column" >
-            <h3>אושרה ההרשמה למועדון</h3>
-            <h4>אושרה הכניסה למועדון הסיפריה, תהנה!</h4>
-          </div>
-        </md-list-item>
-        <md-divider></md-divider>
-                <md-list-item class="md-2-line rtl" ng-click="null">
-                   <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
-                                &#xE853;
-                            </md-icon>
-          <div class="md-list-item-text rtl" layout="column">
-            <h3>קיבלת בקשת חברות חדשה</h3>
-            <h4>אבנר אינוז שלח לך בקשת חברות!</h4>
-          </div>
-        </md-list-item>
-         <md-divider></md-divider>
-                        <md-list-item class="md-2-line rtl" ng-click="null">
-                   <md-icon class=" md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
-                                &#xE0CA;
-                            </md-icon>
-          <div class="md-list-item-text rtl" layout="column">
-            <h3>הודעה מהSPACE</h3>
-            <h4>מיקי מדינה שלח לך הודעה חדשה!</h4>
-          </div>
-        </md-list-item>
-</md-list>
-    
-  </div>
-
-  <div layout="row" class="demo-dialog-button">
-    <md-button md-autofocus flex class="md-primary" ng-click="ctrl.closeDialog()">
-      סגור
-    </md-button>
-  </div>
+    <div layout="row" class="demo-dialog-button">
+        <md-button md-autofocus flex class="md-primary" ng-click="ctrl.closeDialog()">
+            סגור
+        </md-button>
+    </div>
 </div>

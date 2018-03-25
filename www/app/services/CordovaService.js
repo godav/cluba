@@ -24,7 +24,6 @@
                     document.addEventListener('deviceready', function () {
                         resolved = true;
                         
-                         $rootScope.pushNotification = window.plugins.pushNotification;
                         document.addEventListener('pause', onPause.bind(this), false);
                         document.addEventListener('resume', onResume.bind(this), false);
                         cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
