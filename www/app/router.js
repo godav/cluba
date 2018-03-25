@@ -28,42 +28,42 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         }
                     },
                     route: function (deviceReady, $state, $rootScope) {
-
-                        // result contains any error description text returned from the plugin call 
-                        function errorHandler(error) {
-                            alert('error = ' + error);
-                        }
-
-                        // result contains any message sent from the plugin call 
-                        function successHandler(result) {
-                            alert('result = ' + result);
-                        }
-
-                        function tokenHandler(result) {
-                            // Your iOS push server needs to know the token before it can push to this device 
-                            // here is where you might want to send it the token for later use. 
-                            alert('device token = ' + result);
-                        }
-                        
-                        if (deviceReady.platformId === 'android' || deviceReady.platformId === 'Android' || deviceReady.platformId === "amazon-fireos") {
-                            $rootScope.pushNotification.register(
-                                    successHandler,
-                                    errorHandler,
-                                    {
-                                        "senderID": "970903539685",
-                                        "ecb": "onNotification"
-                                    });
-                        } else {
-                            $rootScope.pushNotification.register(
-                                    tokenHandler,
-                                    errorHandler,
-                                    {
-                                        "badge": "true",
-                                        "sound": "true",
-                                        "alert": "true",
-                                        "ecb": "onNotificationAPN"
-                                    });
-                        }
+//
+//                        // result contains any error description text returned from the plugin call 
+//                        function errorHandler(error) {
+//                            alert('error = ' + error);
+//                        }
+//
+//                        // result contains any message sent from the plugin call 
+//                        function successHandler(result) {
+//                            alert('result = ' + result);
+//                        }
+//
+//                        function tokenHandler(result) {
+//                            // Your iOS push server needs to know the token before it can push to this device 
+//                            // here is where you might want to send it the token for later use. 
+//                            alert('device token = ' + result);
+//                        }
+//                        
+//                        if (deviceReady.platformId === 'android' || deviceReady.platformId === 'Android' || deviceReady.platformId === "amazon-fireos") {
+//                            $rootScope.pushNotification.register(
+//                                    successHandler,
+//                                    errorHandler,
+//                                    {
+//                                        "senderID": "970903539685",
+//                                        "ecb": "onNotification"
+//                                    });
+//                        } else {
+//                            $rootScope.pushNotification.register(
+//                                    tokenHandler,
+//                                    errorHandler,
+//                                    {
+//                                        "badge": "true",
+//                                        "sound": "true",
+//                                        "alert": "true",
+//                                        "ecb": "onNotificationAPN"
+//                                    });
+//                        }
                         $state.go('login');
 
                     }

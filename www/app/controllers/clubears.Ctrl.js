@@ -2,104 +2,150 @@
 
     angular.module('app')
             .controller('clubears.Ctrl',
-                    function ($scope, currentAuth, userObj, $mdPanel, $state,notifications) {
-                        $scope._mdPanel = $mdPanel;
-                        $scope.openFrom = 'button';
-                        $scope.closeTo = 'button';
-                        $scope.animationType = 'scale';
-                        $scope.duration = 300;
-                        $scope.separateDurations = {
-                            open: $scope.duration,
-                            close: $scope.duration
-                        };
-                        
-                        
+                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService) {
+//                        $scope._mdPanel = $mdPanel;
+//                        $scope.openFrom = 'button';
+//                        $scope.closeTo = 'button';
+//                        $scope.animationType = 'scale';
+//                        $scope.duration = 300;
+//                        $scope.separateDurations = {
+//                            open: $scope.duration,
+//                            close: $scope.duration
+//                        };
 
-                       window.FirebasePlugin.onNotificationOpen(function (notification) {
+
+
+                        window.FirebasePlugin.onNotificationOpen(function (notification) {
                             console.log(notification);
                             alert(notification);
                         }, function (error) {
                             console.error(error);
                             alert(error);
                         });
-                            
+
                         $scope.notifications = notifications;
                         $scope.currentUser = userObj;
                         $scope.currentAuth = currentAuth;
                         $scope.showMobileMainHeader = true;
 
+
+                        $scope.openModal = openModal;
+                        $scope.closeModal = closeModal;
+
                         $scope.goFriends = function () {
                             $state.go('clubears.friends.all');
                         };
 
-                        $scope.showDialog = function () {
-                            var position = $scope._mdPanel.newPanelPosition()
-                                    .absolute()
-                                    .right()
-                                    .top();
+//                        $scope.showDialog = function () {
+//                            var position = $scope._mdPanel.newPanelPosition()
+//                                    .absolute()
+//                                    .right()
+//                                    .top();
+//
+//                            var animation = this._mdPanel.newPanelAnimation();
+//
+//                            animation.duration(this.duration || this.separateDurations);
+//
+//                            switch (this.openFrom) {
+//
+//                                case 'corner':
+//                                    animation.openFrom({top: 56, left: 0});
+//                                    break;
+//                            }
+//                            ;
+//                            switch (this.closeTo) {
+//
+//                                case 'corner':
+//                                    animation.closeTo({top: 56, left: 0});
+//                                    break;
+//                            }
+//                            ;
+//
+//                            switch (this.animationType) {
+//                                case 'custom':
+//                                    animation.withAnimation({
+//                                        open: 'demo-dialog-custom-animation-open',
+//                                        close: 'demo-dialog-custom-animation-close'
+//                                    });
+//                                    break;
+//                                case 'slide':
+//                                    animation.withAnimation(this._mdPanel.animation.SLIDE);
+//                                    break;
+//                            }
+//
+//                            var config = {
+//                                animation: animation,
+//                                attachTo: angular.element(document.body),
+//                                controller: DialogCtrl,
+//                                controllerAs: 'ctrl',
+//                                templateUrl: 'app/templete/panel.tmpl.html',
+//                                panelClass: 'demo-dialog-example',
+//                                position: position,
+//                                trapFocus: true,
+//                                zIndex: 150,
+//                                clickOutsideToClose: true,
+//                                clickEscapeToClose: true,
+//                                hasBackdrop: true
+//                            };
+//
+//                            this._mdPanel.open(config);
+//                        };
 
-                            var animation = this._mdPanel.newPanelAnimation();
+                        function openModal(id) {
+                            ModalService.Open(id);
+                        }
 
-                            animation.duration(this.duration || this.separateDurations);
+                        function closeModal(id) {
+                            ModalService.Close(id);
+                        }
 
-                            switch (this.openFrom) {
-
-                                case 'corner':
-                                    animation.openFrom({top: 56, left: 0});
-                                    break;
-                            }
-                            ;
-                            switch (this.closeTo) {
-
-                                case 'corner':
-                                    animation.closeTo({top: 56, left: 0});
-                                    break;
-                            }
-                            ;
-
-                            switch (this.animationType) {
-                                case 'custom':
-                                    animation.withAnimation({
-                                        open: 'demo-dialog-custom-animation-open',
-                                        close: 'demo-dialog-custom-animation-close'
-                                    });
-                                    break;
-                                case 'slide':
-                                    animation.withAnimation(this._mdPanel.animation.SLIDE);
-                                    break;
-                            }
-
-                            var config = {
-                                animation: animation,
-                                attachTo: angular.element(document.body),
-                                controller: DialogCtrl,
-                                controllerAs: 'ctrl',
-                                templateUrl: 'app/templete/panel.tmpl.html',
-                                panelClass: 'demo-dialog-example',
-                                position: position,
-                                trapFocus: true,
-                                zIndex: 150,
+                        $scope.showDialog = function (ev, notifications) {
+                            // Appending dialog to document.body to cover sidenav in docs app
+                            var confirm = {
+                                controller: NotoficationsCtrl,
+                                templateUrl: 'app/templete/notifications.tmpl.html',
+                                parent: angular.element(document.body),
                                 clickOutsideToClose: true,
-                                clickEscapeToClose: true,
-                                hasBackdrop: true
+                                fullscreen: true,
+                                locals: {
+                                    Notifications: notifications
+                                },
+                                targetEvent: ev
                             };
 
-                            this._mdPanel.open(config);
+                            $mdDialog.show(confirm).then(function () {
+                                $scope.status = 'Confirm resolved';
+                     
+                            });
+
+                          
                         };
 
                     })
 
-            .controller('DialogCtrl', DialogCtrl);
 
 
-// Necessary to pass locals to the dialog template.
-    function DialogCtrl(mdPanelRef) {
-        this._mdPanelRef = mdPanelRef;
+
+    function NotoficationsCtrl($scope, $mdDialog, Notifications) {
+        $scope.User = Notifications;
+        console.log(Notifications);
+        $scope.hide = function () {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
     }
 
-    DialogCtrl.prototype.closeDialog = function () {
-        console.log('swipe');
-        this._mdPanelRef && this._mdPanelRef.close();
-    };
+// Necessary to pass locals to the dialog template.
+//    function DialogCtrl(mdPanelRef) {
+//        this._mdPanelRef = mdPanelRef;
+//    }
+//
+//    DialogCtrl.prototype.closeDialog = function () {
+//        console.log('swipe');
+//        this._mdPanelRef && this._mdPanelRef.close();
+//    };
 
 })();

@@ -1,12 +1,13 @@
 (function () {
 
     angular.module('app').service("USERS",
-            function ($firebaseObject, $firebaseArray, Auth, $q) {
+            function ($firebaseObject, $firebaseArray, Auth, $q, $infiniteScroll) {
                 if (Auth) {
 
                     var UsersRef = firebase.database().ref('users');
                     var FriendsRef = firebase.database().ref('friends');
                     var NotificationsRef = firebase.database().ref('notifications');
+                    
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
@@ -36,7 +37,9 @@
                     };
 
                     this.getUserNotificationsRef = function (userId) {
-                        var notificationQuery = NotificationsRef.child(userId).orderByChild("active").equelTo(true);
+                        console.log(userId);
+                        var notificationQuery = NotificationsRef.child(userId).orderByChild("active");
+                         console.log(notificationQuery);
                         array = $infiniteScroll(notificationQuery, 10);
                         return array;
                     };

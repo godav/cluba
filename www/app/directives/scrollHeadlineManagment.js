@@ -1,9 +1,9 @@
 angular.module('app')
 
-        .directive("scrollHeadlineNotifications", function ($window) {
+        .directive("scrollHeadlineManagment", function ($window) {
             return function (scope, element, attrs) {
-                var header = document.querySelector('#notifications-toolbar');
-                var content = document.querySelector('#notifications-content');
+                var header = document.querySelector('#managment-toolbar');
+                var content = document.querySelector('#managment-content');
                 var last = document.querySelector('.club-hr-no-bottom');
 
                 element.bind('scroll', function () {
