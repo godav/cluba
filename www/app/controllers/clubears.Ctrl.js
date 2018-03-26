@@ -101,6 +101,7 @@
 
                         $scope.showDialog = function (ev, notifications) {
                             // Appending dialog to document.body to cover sidenav in docs app
+                            console.log("showDialog",notifications);
                             var confirm = {
                                 controller: NotoficationsCtrl,
                                 templateUrl: 'app/templete/notifications.tmpl.html',
@@ -121,14 +122,14 @@
                           
                         };
 
-                    })
+                    });
 
 
 
 
     function NotoficationsCtrl($scope, $mdDialog, Notifications) {
-        $scope.User = Notifications;
-        console.log(Notifications);
+        $scope.Notifications = Notifications;
+        console.log("inside controller for modal:",Notifications);
         $scope.hide = function () {
             $mdDialog.hide();
         };
