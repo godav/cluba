@@ -98,7 +98,7 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     if (!event.data.val()) {
         return console.log('User ', friendId, 'un-followed user', userId);
     }
-    
+
     // Get device notification token.
     const getDeviceTokenPromise = admin.database().ref(`/users/${friendId}/token`).once('value');
     // Get the follower profile.
@@ -107,7 +107,7 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     return Promise.all([getDeviceTokenPromise, getUserRequestFriendshipPromise, getFriendPromise]).then((results) => {
         const tokenSnapshot = results[0];
         const UserRequestFriendship = results[1];
-    
+
         // Notification details.
         const payload = {
             token: tokenSnapshot.val(),
@@ -117,7 +117,7 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
             }
         };
 
-        return [admin.messaging().send(payload),results[2],UserRequestFriendship];
+        return [admin.messaging().send(payload), results[2], UserRequestFriendship];
 
     }).then((response) => {
 

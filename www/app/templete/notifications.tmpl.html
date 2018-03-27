@@ -5,12 +5,12 @@
     </div>
 </md-toolbar>
 
-<!--<div scroll-headline-notifications id="notifications-content" flex style="overflow: auto;" ng-clock>-->
+<div scroll-headline-notifications id="notifications-content" flex style="overflow: auto;" ng-clock>
 
 
-<md-list scroll-headline-notifications id="notifications-content" class="md-dense rtl" flex style="overflow: auto;" ng-clock>
+<md-list class="md-dense rtl" flex>
 
-    <md-list-item ng-repeat="notification in Notifications" class="notification-list-item-rtl">
+    <md-list-item id="notifications-item" ng-repeat="notification in Notifications" class="notification-list-item-rtl">
         <!--<div ng-show="notification.type === '1'">-->
         <md-icon class="notification-icon-rtl md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
             &#xE853;
@@ -19,8 +19,8 @@
             <h3 class="notification-h3">קיבלת בקשת חברות חדשה</h3>  
             <div class="notification-second-line">
                 <p class="notification-p">{{ notification.UserRequestName}} שלח לך בקשת חברות האם לאשר  ? </p>
-                <md-button class="notification-button md-raised md-primary">אשר</md-button>
-                <md-button class="notification-button md-raised md-primary">דחה</md-button>
+                <md-button class="notification-button md-raised md-primary" ng-click="confirm(notification)">אשר</md-button>
+                <md-button class="notification-button md-raised md-primary" ng-click="reject(notification.UserRequestId)">דחה</md-button>
             </div>
         </div>
         <md-divider ng-if="$last" class="last-notification"></md-divider>
@@ -60,7 +60,7 @@
                 </md-list-item>-->
 </md-list>
 
-<!--</div>-->
+</div>
 
 <div layout="row" class="demo-dialog-button">
     <md-button md-autofocus flex class="md-primary" ng-click="hide()">

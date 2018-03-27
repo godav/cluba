@@ -140,7 +140,8 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return Auth.$requireSignIn();
                     },
                     friends: function (FRIENDS, currentAuth) {
-                        FRIENDS.getUserFriends(currentAuth.uid);
+                        return FRIENDS.getUserFriends(currentAuth.uid);
+                        
                     }
                 }
             })

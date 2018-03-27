@@ -5,9 +5,6 @@ angular.module('app').controller('clubears.friends.all.ctrl',
             $scope.friends = friends;
             console.log('in all');
 
-            $scope.showFriends = function () {
-//FRIENDS
-            };
 
         });
   

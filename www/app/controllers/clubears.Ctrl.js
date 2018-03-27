@@ -101,7 +101,7 @@
 
                         $scope.showDialog = function (ev, notifications) {
                             // Appending dialog to document.body to cover sidenav in docs app
-                            console.log("showDialog",notifications);
+                            console.log("showDialog", notifications);
                             var confirm = {
                                 controller: NotoficationsCtrl,
                                 templateUrl: 'app/templete/notifications.tmpl.html',
@@ -112,32 +112,50 @@
                                     Notifications: notifications
                                 },
                                 targetEvent: ev
+
                             };
 
                             $mdDialog.show(confirm).then(function () {
                                 $scope.status = 'Confirm resolved';
-                     
+
                             });
 
-                          
+
                         };
+
+                        function NotoficationsCtrl($scope, $mdDialog, Notifications, FRIENDS, USERS) {
+                            $scope.Notifications = Notifications;
+                            console.log("inside controller for modal:", Notifications);
+                            console.log(Notifications);
+                            $scope.hide = function () {
+                                $mdDialog.hide();
+                            };
+
+                            $scope.confirm = function (note) {
+                                FRIENDS.ConfirmFriend(note.UserRequestId, note.UserRequestName, currentAuth.uid);
+                                var myEl = angular.element(document.querySelector('#notifications-item'));
+                                myEl.addClass('removed-item-animation');
+                                USERS.removeUserNotification(note.$id, currentAuth.uid);
+                            };
+
+                            $scope.reject = function (note) {
+                                FRIENDS.RejectFriend(note.UserRequestId, currentAuth.uid);
+                                var myEl = angular.element(document.querySelector('#notifications-item'));
+                                myEl.addClass('removed-item-animation');
+                                USERS.removeUserNotification(note.$id, currentAuth.uid);
+                            };
+
+                            $scope.cancel = function () {
+                                $mdDialog.cancel();
+                            };
+                        }
 
                     });
 
 
 
 
-    function NotoficationsCtrl($scope, $mdDialog, Notifications) {
-        $scope.Notifications = Notifications;
-        console.log("inside controller for modal:",Notifications);
-        $scope.hide = function () {
-            $mdDialog.hide();
-        };
 
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-    }
 
 // Necessary to pass locals to the dialog template.
 //    function DialogCtrl(mdPanelRef) {

@@ -7,7 +7,7 @@
                     var UsersRef = firebase.database().ref('users');
                     var FriendsRef = firebase.database().ref('friends');
                     var NotificationsRef = firebase.database().ref('notifications');
-                    
+
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
@@ -39,11 +39,15 @@
                     this.getUserNotificationsRef = function (userId) {
                         console.log(userId);
                         var notificationQuery = NotificationsRef.child(userId).orderByChild("active");
-                         console.log(notificationQuery);
+                        console.log(notificationQuery);
                         array = $infiniteScroll(notificationQuery, 10);
                         return array;
                     };
 
+                    this.removeUserNotification = function (noteId, userId) {
+                        NotificationsRef.child(userId).child(noteId).remove();
+
+                    };
 
 
                     function facebookFriendSuggestion() {
@@ -139,16 +143,16 @@
                     };
 
                     this.DeleteUser = function (UserKey) {
-                        var OneUserRef = UserRef.child(UserKey);
+                        var OneUserRef = UsersRef.child(UserKey);
                         OneUserRef.remove();
                     };
 
                     this.GetAllUsers = function () {
-                        return $firebaseArray(UserRef);
+                        return $firebaseArray(UsersRef);
                     };
 
                     this.GetOneUser = function (UserKey) {
-                        var OneItemRef = $firebaseObject(UserRef.child(UserKey));
+                        var OneItemRef = $firebaseObject(UsersRef.child(UserKey));
                         console.log(OneItemRef);
                         return $firebaseObject(OneItemRef);
                     };
