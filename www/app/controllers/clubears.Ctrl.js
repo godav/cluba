@@ -2,7 +2,7 @@
 
     angular.module('app')
             .controller('clubears.Ctrl',
-                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService) {
+                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService,noteCount,USERS) {
 //                        $scope._mdPanel = $mdPanel;
 //                        $scope.openFrom = 'button';
 //                        $scope.closeTo = 'button';
@@ -17,13 +17,18 @@
 
                         window.FirebasePlugin.onNotificationOpen(function (notification) {
                             console.log(notification);
-                            alert(notification);
+                            if (!notification.tap)
+                            {
+                                $scope.noteCount = USERS.countUserNotification(currentAuth.uid);
+                            }
                         }, function (error) {
                             console.error(error);
                             alert(error);
                         });
 
+                        console.log('$scope.noteCount:',noteCount)
                         $scope.notifications = notifications;
+                            $scope.noteCount = noteCount;
                         $scope.currentUser = userObj;
                         $scope.currentAuth = currentAuth;
                         $scope.showMobileMainHeader = true;

@@ -7,22 +7,19 @@
                     var UsersRef = firebase.database().ref('users');
                     var FriendsRef = firebase.database().ref('friends');
                     var NotificationsRef = firebase.database().ref('notifications');
-
+                    
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
-
                         user.$loaded().then(function () {
 
                             one.resolve(user);
-
                         });
-
                         // Avner remmber that you didn't handle errores in load userr object. For later add catch
 
                         return one.promise;
                     };
-
+                    
                     this.getUserFreinds = function (userId) {
 
                         return facebookFriendSuggestion()
@@ -31,11 +28,8 @@
                                 }).then(function (Friends) {
                             return checkIfAlreadyFriend(Friends, userId);
                         });
-
-
-
                     };
-
+                    
                     this.getUserNotificationsRef = function (userId) {
                         console.log(userId);
                         var notificationQuery = NotificationsRef.child(userId).orderByChild("active");
@@ -43,13 +37,23 @@
                         array = $infiniteScroll(notificationQuery, 10);
                         return array;
                     };
-
+                    
                     this.removeUserNotification = function (noteId, userId) {
                         NotificationsRef.child(userId).child(noteId).remove();
-
                     };
 
-
+                    this.countUserNotification = function (userId) {
+                         var one = $q.defer();
+                        NotificationsRef.child(userId).once("value", function (snapshot) {
+                            var a = snapshot.numChildren();
+                            // a === 1 ("name")
+                            console.log('count Note:',a);
+                              one.resolve(a);
+                        });
+                        console.log('exit');
+                         return one.promise;
+                    };
+                    
                     function facebookFriendSuggestion() {
                         var one = $q.defer();
                         facebookConnectPlugin.api("/me/friends" + '?fields=id,first_name,last_name,picture', [],
@@ -59,7 +63,6 @@
                                 },
                                 function (error) {
                                     console.log(error);
-
                                 });
                         return one.promise;
                     }
@@ -76,9 +79,7 @@
 
                                 var user = snapshot.val();
                                 var key = Object.keys(user);
-
                                 firebaseUsers[key[0]] = user[key[0]];
-
                             });
                             promises.push(promise);
                         });
@@ -88,22 +89,17 @@
                             one.resolve(firebaseUsers);
                         });
                         return one.promise;
-
-
-
                     }
+                    
                     function checkIfAlreadyFriend(Friends, userId)
                     {
                         console.log('last callback');
-
                         var one = $q.defer();
                         var firebaseUsers = [];
                         var promises = [];
-
                         Object.keys(Friends).forEach(function (key) {
 
                             console.log('inside last loop');
-
                             var promise = FriendsRef.child(userId).child(key).once('value').then(function (snapshot) {
                                 if (!snapshot.val())
                                 {
@@ -121,9 +117,6 @@
                             one.resolve(firebaseUsers);
                         });
                         return one.promise;
-
-
-
                     }
 
 
@@ -131,26 +124,24 @@
                         console.log('add user');
                         firebase.database().ref().child('users').child(Key).set(User);
                     };
-
+                    
                     this.UpdateUser = function (User) {
                         User.save();
-
                     };
-
-
+                    
                     this.saveDeviceToken = function (cId, newToken) {
                         UsersRef.child(cId).update({token: newToken});
                     };
-
+                    
                     this.DeleteUser = function (UserKey) {
                         var OneUserRef = UsersRef.child(UserKey);
                         OneUserRef.remove();
                     };
-
+                    
                     this.GetAllUsers = function () {
                         return $firebaseArray(UsersRef);
                     };
-
+                    
                     this.GetOneUser = function (UserKey) {
                         var OneItemRef = $firebaseObject(UsersRef.child(UserKey));
                         console.log(OneItemRef);
@@ -158,7 +149,6 @@
                     };
                 }
                 ;
-
 //                this.registerUser = function (clubKey, eventKey, User) {
 //
 //                    var root = firebase.database().ref();

@@ -23,7 +23,9 @@
         "nvd3",
         "nvd3ChartDirectives",
         "ngIntlTelInput",
-        'ngCordova'
+        'ngCordova',
+        'ngAnimate',
+        'angular-notification-icons'
 
     ]);
 

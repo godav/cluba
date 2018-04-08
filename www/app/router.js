@@ -115,7 +115,11 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return USERS.getUser(currentAuth.uid);
                     },notifications: function (USERS, currentAuth) {
                         return USERS.getUserNotificationsRef(currentAuth.uid);
+                    },noteCount: function (USERS,currentAuth) {
+                        return USERS.countUserNotification(currentAuth.uid);
                     }
+                    
+                    
                     
                 }
             })
