@@ -2,7 +2,7 @@
 
     angular.module('app')
             .controller('clubears.Ctrl',
-                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService,noteCount,USERS) {
+                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService, noteCount, USERS) {
 //                        $scope._mdPanel = $mdPanel;
 //                        $scope.openFrom = 'button';
 //                        $scope.closeTo = 'button';
@@ -19,16 +19,20 @@
                             console.log(notification);
                             if (!notification.tap)
                             {
-                                $scope.noteCount = USERS.countUserNotification(currentAuth.uid);
+                                USERS.countUserNotification(currentAuth.uid).then(function (count) {
+                                    console.log('resolved count : ', count);
+                                    $scope.noteCount = count;
+
+                                });
                             }
                         }, function (error) {
                             console.error(error);
                             alert(error);
                         });
 
-                        console.log('$scope.noteCount:',noteCount)
+                        console.log('$scope.noteCount:', noteCount);
                         $scope.notifications = notifications;
-                            $scope.noteCount = noteCount;
+                        $scope.noteCount = noteCount;
                         $scope.currentUser = userObj;
                         $scope.currentAuth = currentAuth;
                         $scope.showMobileMainHeader = true;
@@ -101,7 +105,16 @@
                         }
 
                         function closeModal(id) {
+
                             ModalService.Close(id);
+                            USERS.countUserNotification(currentAuth.uid).then(function (count) {
+                                $timeout(function () {
+                                    console.log('resolved count : ', count);
+                                    $scope.noteCount = count;
+                                });
+
+
+                            });
                         }
 
                         $scope.showDialog = function (ev, notifications) {
@@ -121,14 +134,14 @@
                             };
 
                             $mdDialog.show(confirm).then(function () {
-                                $scope.status = 'Confirm resolved';
-
+                       
+                                console.log("Confirm resolved");
                             });
 
 
                         };
 
-                        function NotoficationsCtrl($scope, $mdDialog, Notifications, FRIENDS, USERS) {
+                        function NotoficationsCtrl($scope, $mdDialog, Notifications, FRIENDS, USERS, $timeout) {
                             $scope.Notifications = Notifications;
                             console.log("inside controller for modal:", Notifications);
                             console.log(Notifications);
@@ -137,17 +150,21 @@
                             };
 
                             $scope.confirm = function (note) {
-                                FRIENDS.ConfirmFriend(note.UserRequestId, note.UserRequestName, currentAuth.uid);
-                                var myEl = angular.element(document.querySelector('#notifications-item'));
-                                myEl.addClass('removed-item-animation');
+                                console.log('inside confirm check auth:');
+                                console.log(currentAuth);
+                                FRIENDS.ConfirmFriend(note.UserRequestId, note.UserRequestName, currentAuth);
+//                                var myEl = angular.element(document.querySelector('#notifications-item'));
+//                                myEl.addClass('removed-item-animation');
                                 USERS.removeUserNotification(note.$id, currentAuth.uid);
+
                             };
 
                             $scope.reject = function (note) {
                                 FRIENDS.RejectFriend(note.UserRequestId, currentAuth.uid);
-                                var myEl = angular.element(document.querySelector('#notifications-item'));
-                                myEl.addClass('removed-item-animation');
+//                                var myEl = angular.element(document.querySelector('#notifications-item'));
+//                                myEl.addClass('removed-item-animation');
                                 USERS.removeUserNotification(note.$id, currentAuth.uid);
+
                             };
 
                             $scope.cancel = function () {

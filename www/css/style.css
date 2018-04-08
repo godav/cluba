@@ -1482,25 +1482,36 @@ md-dialog-actions {
 .removed-item.ng-leave {
     animation: .6s cubic-bezier(.65,-0.02,.72,.29) removed-item-animation;
 }
- 
+
 @keyframes removed-item-animation {
-   0% {
+    0% {
         opacity: 1;
         transform: translateX(0);
     }
- 
+
     30% {
         opacity: 1;
         transform: translateX(50px);
     }
- 
+
     80% {
         opacity: 1;
         transform: translateX(-800px);
     }
- 
+
     100% {
         opacity: 0;
         transform: translateX(-800px);
     }
+}
+
+.angular-notifications-icon {
+    padding-left: 0.5em !important;
+    padding-right: 0.5em !important;
+    padding-top: 0.5em !important;
+    min-width: 2em !important;
+    height: 2em !important;
+    right: 5px !important;
+    top: 0px !important;
+    font-size: 0.5em !important;
 }

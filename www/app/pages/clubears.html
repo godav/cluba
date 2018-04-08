@@ -24,13 +24,15 @@
             </md-icon>
 
         </md-button>
-        <md-button class="md-icon-button animation-target" ng-click="showDialog($event, notifications)" aria-label="Messages">
-            <notification-icon count="noteCount" animation='bounce'>
+
+        <notification-icon count="noteCount" animation='bounce'>
+            <md-button class="md-icon-button animation-target" ng-click="showDialog($event, notifications)" aria-label="Messages">
                 <i class="fa fa-bell-o fa-15x" aria-hidden="true"></i>
-            </notification-icon>
+            </md-button>
+        </notification-icon>
 
 
-        </md-button>
+
 
     </div>
 </md-toolbar>
