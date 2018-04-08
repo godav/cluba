@@ -1479,8 +1479,8 @@ md-dialog-actions {
     margin-left: auto;
 }
 
-li.removed-item {
-    animation: removed-item-animation .8s cubic-bezier(.65,-0.02,.72,.29);
+.removed-item.ng-leave {
+    animation: .6s cubic-bezier(.65,-0.02,.72,.29) removed-item-animation;
 }
  
 @keyframes removed-item-animation {

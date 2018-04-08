@@ -10,7 +10,7 @@
 
 <md-list class="md-dense rtl" flex>
 
-    <md-list-item id="notifications-item" ng-repeat="notification in Notifications" class="notification-list-item-rtl">
+    <md-list-item  ng-repeat="notification in Notifications" class="notification-list-item-rtl removed-item">
         <!--<div ng-show="notification.type === '1'">-->
         <md-icon class="notification-icon-rtl md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
             &#xE853;
@@ -20,7 +20,7 @@
             <div class="notification-second-line">
                 <p class="notification-p">{{ notification.UserRequestName}} שלח לך בקשת חברות האם לאשר  ? </p>
                 <md-button class="notification-button md-raised md-primary" ng-click="confirm(notification)">אשר</md-button>
-                <md-button class="notification-button md-raised md-primary" ng-click="reject(notification.UserRequestId)">דחה</md-button>
+                <md-button class="notification-button md-raised md-primary" ng-click="reject(notification)">דחה</md-button>
             </div>
         </div>
         <md-divider ng-if="$last" class="last-notification"></md-divider>
