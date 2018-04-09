@@ -13,7 +13,7 @@ angular.module('app').controller('clubears.friends.sugg.ctrl',
                 console.log(friend);
                 console.log(currentAuth);
                 console.log(index);
-                $scope.friends = faceFriends.slice(index, 1);
+                $scope.friends.splice(index, 1);
                 console.log($scope.friends);
                 $clubToast.show('הבקשה נשלחה בהצלחה', 'toaster-ancor', 'success');
             };

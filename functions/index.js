@@ -94,11 +94,15 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
 
     const friendId = event.params.friendId;
     const userId = event.params.userId;
+    const dataVal = event.data.val();
+      console.log(dataVal);
     // If un-follow we exit the function.
-    if (!event.data.val()) {
+    if (!dataVal) {
         return console.log('User ', friendId, 'un-followed user', userId);
+    } else if (dataVal.active_name[0] === "-") {
+        return console.log('That is not the user to sent notification');
     }
-
+  
     // Get device notification token.
     const getDeviceTokenPromise = admin.database().ref(`/users/${friendId}/token`).once('value');
     // Get the follower profile.

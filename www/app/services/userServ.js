@@ -7,7 +7,7 @@
                     var UsersRef = firebase.database().ref('users');
                     var FriendsRef = firebase.database().ref('friends');
                     var NotificationsRef = firebase.database().ref('notifications');
-                    
+
                     this.getUser = function (Key) {
                         var one = $q.defer();
                         var user = $firebaseObject(UsersRef.child(Key));
@@ -19,16 +19,16 @@
 
                         return one.promise;
                     };
-                    
+
                     this.getUserFreinds = function (userId) {
 
                         return facebookFriendSuggestion().then(function (faceFriends) {
-                                    return convertFaceObjToFirebaseObj(faceFriends);
-                                }).then(function (Friends) {
-                                    return checkIfAlreadyFriend(Friends, userId);
+                            return convertFaceObjToFirebaseObj(faceFriends);
+                        }).then(function (Friends) {
+                            return checkIfAlreadyFriend(Friends, userId);
                         });
                     };
-                    
+
                     this.getUserNotificationsRef = function (userId) {
                         console.log(userId);
                         var notificationQuery = NotificationsRef.child(userId).orderByChild("active");
@@ -36,23 +36,23 @@
                         var array = $infiniteScroll(notificationQuery, 10);
                         return array;
                     };
-                    
+
                     this.removeUserNotification = function (noteId, userId) {
                         NotificationsRef.child(userId).child(noteId).remove();
                     };
 
                     this.countUserNotification = function (userId) {
-                         var one = $q.defer();
+                        var one = $q.defer();
                         NotificationsRef.child(userId).once("value", function (snapshot) {
                             var a = snapshot.numChildren();
                             // a === 1 ("name")
-                            console.log('count Note:',a);
-                              one.resolve(a);
+                            console.log('count Note:', a);
+                            one.resolve(a);
                         });
                         console.log('exit');
-                         return one.promise;
+                        return one.promise;
                     };
-                    
+
                     function facebookFriendSuggestion() {
                         var one = $q.defer();
                         facebookConnectPlugin.api("/me/friends" + '?fields=id,first_name,last_name,picture', [],
@@ -75,10 +75,14 @@
                         var promises = [];
                         faceFriends.forEach(function (friend) {
                             var promise = UsersRef.orderByChild('facebookId').equalTo(Number(friend.id)).once('value').then(function (snapshot) {
+                                console.log('in converete');
 
                                 var user = snapshot.val();
                                 var key = Object.keys(user);
+                                console.log(user);
+                                console.log(key);
                                 firebaseUsers[key[0]] = user[key[0]];
+                                console.log(firebaseUsers);
                             });
                             promises.push(promise);
                         });
@@ -89,7 +93,7 @@
                         });
                         return one.promise;
                     }
-                    
+
                     function checkIfAlreadyFriend(Friends, userId)
                     {
                         console.log('last callback');
@@ -103,6 +107,7 @@
                                 if (!snapshot.val())
                                 {
                                     Friends[key].id = key;
+                                    console.log('before push', Friends[key]);
                                     firebaseUsers.push(Friends[key]);
                                 }
 
@@ -123,24 +128,24 @@
                         console.log('add user');
                         firebase.database().ref().child('users').child(Key).set(User);
                     };
-                    
+
                     this.UpdateUser = function (User) {
                         User.save();
                     };
-                    
+
                     this.saveDeviceToken = function (cId, newToken) {
                         UsersRef.child(cId).update({token: newToken});
                     };
-                    
+
                     this.DeleteUser = function (UserKey) {
                         var OneUserRef = UsersRef.child(UserKey);
                         OneUserRef.remove();
                     };
-                    
+
                     this.GetAllUsers = function () {
                         return $firebaseArray(UsersRef);
                     };
-                    
+
                     this.GetOneUser = function (UserKey) {
                         var OneItemRef = $firebaseObject(UsersRef.child(UserKey));
                         console.log(OneItemRef);

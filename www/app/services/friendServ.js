@@ -35,7 +35,7 @@
                                     displayName: Me.displayName,
                                     picture: Me.photoURL,
                                     created: Date.now(),
-                                    active_name: "0"
+                                    active_name: "-"
                                 });
                     };
 
