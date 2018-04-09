@@ -1,5 +1,5 @@
 
-<md-toolbar id="notifications-toolbar">
+<md-toolbar id="notifications-toolbar" ng-clock>
     <div class="md-toolbar-tools rtl">
         <h2>לוח ההתראות</h2>
     </div>
@@ -8,9 +8,9 @@
 <div scroll-headline-notifications id="notifications-content" flex style="overflow: auto;" ng-clock>
 
 
-<md-list class="md-dense rtl" flex>
+<md-list class="md-dense rtl" flex ng-clock>
 
-    <md-list-item  ng-repeat="notification in Notifications" class="notification-list-item-rtl removed-item">
+    <md-list-item ng-clock ng-repeat="notification in Notifications" class="notification-list-item-rtl removed-item">
         <!--<div ng-show="notification.type === '1'">-->
         <md-icon class="notification-icon-rtl md-avatar md-default-theme ng-scope material-icons md-altTheme-theme" role="img" aria-hidden="true">
             &#xE853;

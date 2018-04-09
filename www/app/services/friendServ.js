@@ -1,7 +1,7 @@
 (function () {
 
     angular.module('app').service("FRIENDS",
-            function ($firebaseObject, $firebaseArray, Auth, $q, $infiniteScroll) {
+            function ($timeout, $firebaseArray, Auth, $q, $infiniteScroll) {
                 if (Auth) {
 
                     var FriendsRef = firebase.database().ref('friends');
@@ -20,36 +20,36 @@
 
 
 
-                    this.AddFriend = function (Friend, Key) {
+                    this.AddFriend = function (Friend, Me) {
                         console.log('add friend');
                         console.log(Friend);
-                        FriendsRef.child(Key).child(Friend.id).set(
+                        FriendsRef.child(Me.uid).child(Friend.id).set(
                                 {
                                     displayName: Friend.first_name + " " + Friend.last_name,
                                     picture: Friend.picture,
                                     created: Date.now(),
                                     active_name: "0"
                                 });
+                        FriendsRef.child(Friend.id).child(Me.uid).set(
+                                {
+                                    displayName: Me.displayName,
+                                    picture: Me.photoURL,
+                                    created: Date.now(),
+                                    active_name: "0"
+                                });
                     };
 
-                    this.ConfirmFriend = function (friendId, friendName, me) {
+                    this.ConfirmFriend = function (friendId, friendName, Me) {
                         console.log('confirm friend');
-                        FriendsRef.child(friendId).child(me.uid).update({active_name: "1_" + friendName[0]});
-                           console.log(me);
-                           
-                           var check  =  {
-                                    displayName: me.displayName,
-                                    picture:  me.photoURL,
-                                    created: Date.now(),
-                                    active_name: "1_" + me.displayName[0]
-                                };
-                               console.log(check);    
-                        FriendsRef.child(me.uid).child(friendId).update(check);
+                        FriendsRef.child(friendId).child(Me.uid).update({active_name: "1_" + friendName[0]});
+                        FriendsRef.child(Me.uid).child(friendId).update({active_name: "1_" + Me.displayName[0]});
                     };
 
                     this.RejectFriend = function (friendId, myId) {
                         console.log('reject friend');
                         FriendsRef.child(myId).child(friendId).remove();
+                        $timeout(10);
+                        FriendsRef.child(friendId).child(myId).remove();
                     };
 
 //

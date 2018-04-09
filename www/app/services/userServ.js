@@ -22,11 +22,10 @@
                     
                     this.getUserFreinds = function (userId) {
 
-                        return facebookFriendSuggestion()
-                                .then(function (faceFriends) {
+                        return facebookFriendSuggestion().then(function (faceFriends) {
                                     return convertFaceObjToFirebaseObj(faceFriends);
                                 }).then(function (Friends) {
-                            return checkIfAlreadyFriend(Friends, userId);
+                                    return checkIfAlreadyFriend(Friends, userId);
                         });
                     };
                     
@@ -34,7 +33,7 @@
                         console.log(userId);
                         var notificationQuery = NotificationsRef.child(userId).orderByChild("active");
                         console.log(notificationQuery);
-                        array = $infiniteScroll(notificationQuery, 10);
+                        var array = $infiniteScroll(notificationQuery, 10);
                         return array;
                     };
                     

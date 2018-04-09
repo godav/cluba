@@ -7,10 +7,14 @@ angular.module('app').controller('clubears.friends.sugg.ctrl',
             console.log(faceFriends);
             $scope.friends = faceFriends;
 
-            $scope.addFriend = function (friend,index) {
+            $scope.addFriend = function (friend, index) {
                 console.log('press on add');
-                FRIENDS.AddFriend(friend, currentAuth.uid);
-                $scope.friends = faceFriends.slice(index,1);
+                FRIENDS.AddFriend(friend, currentAuth);
+                console.log(friend);
+                console.log(currentAuth);
+                console.log(index);
+                $scope.friends = faceFriends.slice(index, 1);
+                console.log($scope.friends);
                 $clubToast.show('הבקשה נשלחה בהצלחה', 'toaster-ancor', 'success');
             };
 
