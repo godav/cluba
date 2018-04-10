@@ -11,6 +11,7 @@
                             {
                                 USERS.countUserNotification(currentAuth.uid).then(function (count) {
                                     console.log('resolved count : ', count);
+                                    navigator.vibrate(1500);
                                     $scope.noteCount = count;
 
                                 });
@@ -43,10 +44,12 @@
                                 controller: NotoficationsCtrl,
                                 templateUrl: 'app/templete/notifications.tmpl.html',
                                 parent: angular.element(document.body),
+                                 scope: $scope,
                                 clickOutsideToClose: true,
                                 fullscreen: true,
                                 locals: {
-                                    Notifications: notifications
+                                    Notifications: notifications,
+                                    NoteCount: $scope.noteCount
                                 },
                                 targetEvent: ev
 
@@ -61,8 +64,9 @@
 
                         };
 
-                        function NotoficationsCtrl($scope, $mdDialog, Notifications, FRIENDS, USERS, $timeout) {
+                        function NotoficationsCtrl($scope, $mdDialog, Notifications, FRIENDS, USERS, $timeout, NoteCount) {
                             $scope.Notifications = Notifications;
+                            $scope.noteCount = NoteCount;
                             console.log("inside controller for modal:", Notifications);
                             console.log(Notifications);
                             $scope.hide = function () {
@@ -70,8 +74,12 @@
                                 $rootScope.noteModal = false;
                                 USERS.countUserNotification(currentAuth.uid).then(function (count) {
                                     console.log('update on close : ', count);
-                                    $timeout(10);
-                                    $scope.noteCount = count;
+                                    $timeout(function () {
+                                        $scope.noteCount = count;
+                                        // anything you want can go here and will safely be run on the next digest.
+                                    });
+
+
 
                                 });
 
