@@ -61,7 +61,7 @@
 
     // UI.ROUTER STUFF
     club.run(function ($rootScope, $state, GEOLOCATION) {
-
+        $rootScope.noteModal = false;
         $rootScope.userLocation = null;
         $rootScope.clubesNearBy = null;
         $rootScope.$on('watcher', function (event, obj) {
@@ -87,6 +87,10 @@
 
         $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
             console.log("$stateChangeStart " + fromState.name + JSON.stringify(fromParams) + " -> " + toState.name + JSON.stringify(toParams));
+            if ($rootScope.noteModal){
+                console.log('prevented');
+                evt.preventDefault();
+            }
 
         });
         $rootScope.$on('$stateChangeSuccess', function (evt, toState, toParams, fromState, fromParams) {

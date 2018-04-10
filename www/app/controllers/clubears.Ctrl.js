@@ -2,17 +2,7 @@
 
     angular.module('app')
             .controller('clubears.Ctrl',
-                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, ModalService, noteCount, USERS) {
-//                        $scope._mdPanel = $mdPanel;
-//                        $scope.openFrom = 'button';
-//                        $scope.closeTo = 'button';
-//                        $scope.animationType = 'scale';
-//                        $scope.duration = 300;
-//                        $scope.separateDurations = {
-//                            open: $scope.duration,
-//                            close: $scope.duration
-//                        };
-
+                    function ($scope, currentAuth, userObj, $mdDialog, $state, notifications, $rootScope, noteCount, USERS) {
 
 
                         window.FirebasePlugin.onNotificationOpen(function (notification) {
@@ -35,87 +25,16 @@
                         $scope.noteCount = noteCount;
                         $scope.currentUser = userObj;
                         $scope.currentAuth = currentAuth;
-                        $scope.showMobileMainHeader = true;
+//                        $scope.showMobileMainHeader = true;
 
 
-                        $scope.openModal = openModal;
-                        $scope.closeModal = closeModal;
+//                        $scope.openModal = openModal;
+//                        $scope.closeModal = closeModal;
 
                         $scope.goFriends = function () {
                             $state.go('clubears.friends.all');
                         };
 
-//                        $scope.showDialog = function () {
-//                            var position = $scope._mdPanel.newPanelPosition()
-//                                    .absolute()
-//                                    .right()
-//                                    .top();
-//
-//                            var animation = this._mdPanel.newPanelAnimation();
-//
-//                            animation.duration(this.duration || this.separateDurations);
-//
-//                            switch (this.openFrom) {
-//
-//                                case 'corner':
-//                                    animation.openFrom({top: 56, left: 0});
-//                                    break;
-//                            }
-//                            ;
-//                            switch (this.closeTo) {
-//
-//                                case 'corner':
-//                                    animation.closeTo({top: 56, left: 0});
-//                                    break;
-//                            }
-//                            ;
-//
-//                            switch (this.animationType) {
-//                                case 'custom':
-//                                    animation.withAnimation({
-//                                        open: 'demo-dialog-custom-animation-open',
-//                                        close: 'demo-dialog-custom-animation-close'
-//                                    });
-//                                    break;
-//                                case 'slide':
-//                                    animation.withAnimation(this._mdPanel.animation.SLIDE);
-//                                    break;
-//                            }
-//
-//                            var config = {
-//                                animation: animation,
-//                                attachTo: angular.element(document.body),
-//                                controller: DialogCtrl,
-//                                controllerAs: 'ctrl',
-//                                templateUrl: 'app/templete/panel.tmpl.html',
-//                                panelClass: 'demo-dialog-example',
-//                                position: position,
-//                                trapFocus: true,
-//                                zIndex: 150,
-//                                clickOutsideToClose: true,
-//                                clickEscapeToClose: true,
-//                                hasBackdrop: true
-//                            };
-//
-//                            this._mdPanel.open(config);
-//                        };
-
-                        function openModal(id) {
-                            ModalService.Open(id);
-                        }
-
-                        function closeModal(id) {
-
-                            ModalService.Close(id);
-                            USERS.countUserNotification(currentAuth.uid).then(function (count) {
-                                $timeout(function () {
-                                    console.log('resolved count : ', count);
-                                    $scope.noteCount = count;
-                                });
-
-
-                            });
-                        }
 
                         $scope.showDialog = function (ev, notifications) {
                             // Appending dialog to document.body to cover sidenav in docs app
@@ -133,9 +52,10 @@
 
                             };
 
+                            // here is were the Modal of notification opens
                             $mdDialog.show(confirm).then(function () {
-                       
-                                console.log("Confirm resolved");
+                                $rootScope.noteModal = true;
+
                             });
 
 
@@ -147,6 +67,14 @@
                             console.log(Notifications);
                             $scope.hide = function () {
                                 $mdDialog.hide();
+                                $rootScope.noteModal = false;
+                                USERS.countUserNotification(currentAuth.uid).then(function (count) {
+                                    console.log('update on close : ', count);
+                                    $timeout(10);
+                                    $scope.noteCount = count;
+
+                                });
+
                             };
 
                             $scope.confirm = function (note) {
@@ -167,9 +95,10 @@
 
                             };
 
-                            $scope.cancel = function () {
-                                $mdDialog.cancel();
-                            };
+//                            $scope.cancel = function () {
+//                                $mdDialog.cancel();
+//                                
+//                            };
                         }
 
                     });
