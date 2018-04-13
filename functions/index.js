@@ -95,14 +95,14 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     const friendId = event.params.friendId;
     const userId = event.params.userId;
     const dataVal = event.data.val();
-      console.log(dataVal);
+    console.log(dataVal);
     // If un-follow we exit the function.
     if (!dataVal) {
         return console.log('User ', friendId, 'un-followed user', userId);
     } else if (dataVal.active_name[0] === "-") {
         return console.log('That is not the user to sent notification');
     }
-  
+
     // Get device notification token.
     const getDeviceTokenPromise = admin.database().ref(`/users/${friendId}/token`).once('value');
     // Get the follower profile.
@@ -113,11 +113,30 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
         const UserRequestFriendship = results[1];
 
         // Notification details.
+
+
+
         const payload = {
             token: tokenSnapshot.val(),
             notification: {
                 title: 'בקשת חברות חדשה ב - Clubears',
-                body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `
+                body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `,
+                sound: "default"
+            },
+            android: {
+//                ttl: 3600 * 1000,
+                notification: {
+                    icon: 'stock_ticker_update',
+                    color: '#f45342'
+
+                }
+            },
+            apns: {
+                payload: {
+                    aps: {
+                        badge: 42
+                    }
+                }
             }
         };
 
