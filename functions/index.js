@@ -4,6 +4,7 @@ const functions = require('firebase-functions');
 // The Firebase Admin SDK to access the Firebase Realtime Database. 
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
+//admin.initializeApp();
 // update the pending counter in event for all + male + female when user is signed in to event
 exports.user_registered_to_event = functions.database.ref('/UsersInEvent/{clubId}/{eventId}/{userId}').onCreate(event => {
     const root = event.data.ref.root;
@@ -98,9 +99,11 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
     console.log(dataVal);
     // If un-follow we exit the function.
     if (!dataVal) {
+        
         return console.log('User ', friendId, 'un-followed user', userId);
     } else if (dataVal.active_name[0] === "-") {
-        return console.log('That is not the user to sent notification');
+        console.log('That is not the user to sent notification');
+        return Promise.all([]);
     }
 
     // Get device notification token.
@@ -112,38 +115,38 @@ exports.sendFriendshipRequest = functions.database.ref('/friends/{userId}/{frien
         const tokenSnapshot = results[0];
         const UserRequestFriendship = results[1];
 
-        // Notification details.
-
-
-
-        const payload = {
+        const message = {
             token: tokenSnapshot.val(),
-            notification: {
-                title: 'בקשת חברות חדשה ב - Clubears',
-                body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `,
-                sound: "default"
-            },
             android: {
-//                ttl: 3600 * 1000,
+                ttl: 3600 * 1000,
+                priority: 'normal',
                 notification: {
+                    title: 'בקשת חברות חדשה ב - Clubears',
+                    body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `,
                     icon: 'stock_ticker_update',
-                    color: '#f45342'
-
+                    color: '#f45342',
+                    sound: "default"
                 }
             },
             apns: {
                 payload: {
                     aps: {
-                        badge: 42
+                        alert: {
+                            title: 'בקשת חברות חדשה ב - Clubears',
+                            body: ` ${UserRequestFriendship.displayName} - יש לך בקשת חברות חדשה מ `
+                        },
+                        badge: 42,
+                        sound: "default"
                     }
                 }
             }
+
         };
 
-        return [admin.messaging().send(payload), results[2], UserRequestFriendship];
+        return [admin.messaging().send(message), results[2], UserRequestFriendship];
 
     }).then((response) => {
-
+        console.log('response:', response);
         return admin.database().ref('/notifications/' + response[1].uid).push({UserRequestId: response[2].uid, UserRequestName: response[2].displayName, type: '1', active: true});
 
     }).catch((error) => {

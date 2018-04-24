@@ -1,6 +1,6 @@
 angular.module('app')
 
-        .directive('showDuringResolve', function ($rootScope,$timeout) {
+        .directive('showDuringResolve', function ($rootScope, $timeout) {
 
             return {
                 restrict: 'E',
@@ -13,9 +13,14 @@ angular.module('app')
                     element.addClass('ng-hide');
 
                     $timeout(function () {
-                        $rootScope.$on('$stateChangeStart', function () {
-                            console.log('start2');
-                            element.removeClass('ng-hide');
+                        $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
+                            if ($rootScope.noteModal) {
+                                console.log('prevented');
+                                evt.preventDefault();
+                            } else {
+                                console.log('start2');
+                                element.removeClass('ng-hide');
+                            }
                         }, 1000);
                     });
 
@@ -45,7 +50,10 @@ angular.module('app')
                         console.log(fromState);
                         console.log(toState);
                         console.log('exit1-start');
-                        if (fromState.name === "")
+                        if ($rootScope.noteModal) {
+                            console.log('prevented');
+                            evt.preventDefault();
+                        } else if (fromState.name === "")
                         {
                             console.log('start1');
                             $timeout(function () {
