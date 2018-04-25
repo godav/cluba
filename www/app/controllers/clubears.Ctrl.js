@@ -35,20 +35,20 @@
                         };
 
 
-                        $scope.showDialog = function ($event, notifications) {
+                        $scope.showDialog = function (ev, notifications) {
                             // Appending dialog to document.body to cover sidenav in docs app
                             console.log("showDialog", notifications);
                             var confirm = {
                                 controller: NotoficationsCtrl,
                                 templateUrl: 'app/templete/notifications.tmpl.html',
                                 parent: angular.element(document.body),
-                                scope: $scope,
+//                                scope: $scope,
                                 clickOutsideToClose: true,
                                 fullscreen: true,
                                 locals: {
                                     Notifications: notifications
                                 },
-                                targetEvent: $event
+                                targetEvent: ev
 
                             };
                             $rootScope.noteModal = true;
