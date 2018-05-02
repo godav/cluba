@@ -524,7 +524,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
             .state('clubears.club.party', {
                 url: "/club.party",
                 templateUrl: "app/pages/clubears.club.party.html",
-                controller: 'clubPartyCtrl',
+                controller: 'clubears.club.party.Ctrl',
                 resolve: {
                     currentAuth: function (Auth) {
                         return Auth.$requireSignIn();

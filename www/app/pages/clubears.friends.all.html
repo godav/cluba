@@ -1,25 +1,24 @@
 <show-during-resolve></show-during-resolve>
-<div scroll-headline-all-friends id="all-friends-content" flex style="overflow: auto;" ng-clock>
+<div class="rtl" scroll-headline-all-friends id="all-friends-content" flex style="overflow: auto;" ng-clock>
 
     <div ng-repeat="friend in friends" >	
-        <hr ng-if="$first" class="user-hr-no-top" >
+        <hr ng-if="$first" class="user-hr-top">
         <hr ng-if="!$first" class="user-hr">
-        <div layout="row" class="user-list">
+        <div layout="row" class="user-list" ng-clock>
 
             <div flex="35" layout="row" >
                 <img ng-src='{{friend.picture}}' class="avatar" ng-click="showConfirm($event, user)"> 
             </div>
             <div flex="45" layout="row">
-                <span class="user-name vertical-text" >{{friend.name}}</span>
+                <span ng-clock class="user-name vertical-text" >{{friend.displayName}}</span>
             </div>
             <div flex="20" layout="row">
-                <md-icon class="material-icons" ng-click="openChat(friend)">
-                    <span class="md-subhead club-reg-btn1"><i class="material-icons">&#xE0B7;</i></span>
-                </md-icon>
-
+                <md-button style="margin: 0 auto" aria-label="add" class="md-icon-button" ng-click="openChat(friend)">
+                    <i class="club-reg-btn1 fa fa-comments fa-15x" aria-hidden="true"></i>
+                </md-button>
             </div>          
         </div>
-        <hr ng-if="$last" class="user-hr-no-bottom">
+        <hr ng-if="$last" class="user-hr-bottom">
 
 
     </div>
