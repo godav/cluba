@@ -24,6 +24,22 @@ angular.module('app').controller('clubears.club.party.Ctrl',
                 } else
                 {
                     var index = $scope.clubEvents.$indexFor(eventId);
+                    
+                       var confirm = {
+                                controller: PartyRegisterCtrl,
+                                templateUrl: 'app/templete/partyregister.tmpl.html',
+                                parent: angular.element(document.body),
+//                                scope: $scope,
+                                clickOutsideToClose: true,
+                                fullscreen: false,
+                                locals: {
+                              
+                                },
+                                targetEvent: ev
+
+                            };
+                    
+                    
                     var confirm = $mdDialog.confirm()
                             .title('היי, בחרת להרשם למסיבה, יש אישור?')
                             .targetEvent(ev)
