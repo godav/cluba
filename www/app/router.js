@@ -113,14 +113,14 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                         return Auth.$requireSignIn();
                     }, userObj: function (USERS, currentAuth) {
                         return USERS.getUser(currentAuth.uid);
-                    },notifications: function (USERS, currentAuth) {
+                    }, notifications: function (USERS, currentAuth) {
                         return USERS.getUserNotificationsRef(currentAuth.uid);
-                    },noteCount: function (USERS,currentAuth) {
+                    }, noteCount: function (USERS, currentAuth) {
                         return USERS.countUserNotification(currentAuth.uid);
                     }
-                    
-                    
-                    
+
+
+
                 }
             })
             .state('clubears.friends', {
@@ -145,7 +145,7 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     },
                     friends: function (FRIENDS, currentAuth) {
                         return FRIENDS.getUserFriends(currentAuth.uid);
-                        
+
                     }
                 }
             })
@@ -532,6 +532,31 @@ var club = angular.module("app").config(function ($stateProvider, $urlRouterProv
                     checkSigned: function (clubesEvents, currentClub, currentAuth, EVENTS) {
                         return EVENTS.checkUserRegisteredToEvent(clubesEvents, currentClub.$id, currentAuth.uid);
                     }
+                }
+            })
+            .state('clubears.club.registration', {
+                url: "/club.party.registration",
+                templateUrl: "app/pages/clubears.club.registration.html",
+                controller: 'clubears.club.registration.Ctrl',
+                params: {
+                    eventId: null
+                },
+                resolve: {
+                    currentAuth: function (Auth) {
+                        return Auth.$requireSignIn();
+                    },
+                    currentEvent: function (currentClub, EVENTS,$stateParams) {
+                        return EVENTS.GetOneEvent(currentClub.$id, $stateParams.eventId);
+                    },
+                    pos: function (currentClub, ROLES) {
+                        return ROLES.getAllMangersOfClub(currentClub.$id);
+                    },
+                     friends: function (FRIENDS, currentAuth) {
+                        return FRIENDS.getUserFriends(currentAuth.uid);
+
+                    }
+                    
+                    
                 }
             })
             .state('clubears.club.about', {

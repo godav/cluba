@@ -1,60 +1,70 @@
 <show-during-resolve></show-during-resolve> 
-<md-content id="managment-toolbar"  ng-cloak>
-    <div layout="row" class="club-sub-head">
-        <span class="club-name" >בקשת רישום לאירוע</span>
+<md-content flex layout-padding ng-cloak class="rtl">
+
+    <p class="club-name" >בקשת רישום לאירוע</p>
+
+
+
+    <div scroll-headline-all-friends id="all-friends-content" flex style="overflow: auto; position: relative !important;" ng-clock>
+
+        <md-card  ng-repeat="friend in friends" style="display: inline-block !important; width: 60px !important;">
+            <img ng-src="{{friend.picture}}" class="md-card-image" alt="Washed Out">
+            <md-card-title style="padding: 1px !important; height: 2em !important;">
+                <md-card-title-text>
+                    <span class="md-headline" style="font-size: 12px!important; line-height: 12px!important;">{{friend.displayName}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            
+            
+    
+            <!--        <md-card-content>
+                      <p>
+                        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+                        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+                      </p>
+                      <p>
+                        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+                        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+                      </p>
+                      <p>
+                        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+                        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+                      </p>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                      <md-button>Action 1</md-button>
+                      <md-button>Action 2</md-button>
+                    </md-card-actions>-->
+        </md-card>
+
+
+
+        <!--        <md-grid-list md-cols="3" md-gutter="1em" md-row-height="4:3">
+        
+                    <md-grid-tile class="green" ng-repeat="friend in friends">
+                        <md-grid-tile-header>
+                            <img ng-src='{{friend.picture}}' class="avatar"> 
+                        </md-grid-tile-header>
+        
+                        <md-grid-tile-footer>
+                            <h3>{{friend.displayName}}</h3>
+                        </md-grid-tile-footer>
+        
+                </md-grid-list>-->
     </div>
-</md-content>
-
-<div scroll-with-headline id="managment-content" flex style="overflow: auto; position: relative !important;" ng-clock>
-
-    <md-grid-list ng-repeat="friend in friends"
-                  md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
-                  md-row-height-gt-md="1:1" md-row-height="2:2"
-                  md-gutter="12px" md-gutter-gt-sm="8px" >
-
-        <md-grid-tile class="green">
-            <md-grid-tile-footer>
-                <h3>#2: (1r x 1c)</h3>
-            </md-grid-tile-footer>
-        </md-grid-tile>
-
-        <md-grid-tile class="yellow">
-            <md-grid-tile-footer>
-                <h3>#3: (1r x 1c)</h3>
-            </md-grid-tile-footer>
-        </md-grid-tile>
-
-        <md-grid-tile class="blue"
-                      md-rowspan="2">
-            <md-grid-tile-footer>
-                <h3>#4: (2r x 1c)</h3>
-            </md-grid-tile-footer>
-        </md-grid-tile>
-
-        <md-grid-tile class="red"
-                      md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-            <md-grid-tile-footer>
-                <h3>#5: (2r x 2c)</h3>
-            </md-grid-tile-footer>
-        </md-grid-tile>
-
-        <md-grid-tile class="green"
-                      md-rowspan="2" >
-            <md-grid-tile-footer>
-                <h3>#6: (2r x 1c)</h3>
-            </md-grid-tile-footer>
-        </md-grid-tile>
-
-    </md-grid-list>
 
     <md-input-container>
         <label>יחצן</label>
-        <md-select ng-model="ctrl.userState">
-            <md-option><em>None</em></md-option>
-            <md-option ng-repeat="state in ctrl.states" ng-value="state.abbrev" ng-disabled="$index === 1">
-                {{state.abbrev}}
+        <md-select ng-model="currentPO">
+            <md-option><em>ללא</em></md-option>
+            <md-option ng-repeat="po in pos" ng-value="po.name" ng-disabled="$index === 1">
+                {{po.name}}
             </md-option>
         </md-select>
-    </md-input-container>     
+    </md-input-container>  
 
-</div>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <md-button class="md-raised md-primary" ng-click="signIn()">אישור</md-button>
+        <md-button class="md-raised md-primary" ng-click="cancel()">ביטול</md-button>
+    </section>
+</md-content>

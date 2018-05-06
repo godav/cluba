@@ -26,7 +26,7 @@ angular.module('app')
 
                         if (recCont.bottom <= recLast.top)
                         {
-                            scope.users.$scroll();
+                            scope.friends.$scroll();
                         }
 
 
