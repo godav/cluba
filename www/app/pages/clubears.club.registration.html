@@ -1,22 +1,22 @@
 <show-during-resolve></show-during-resolve> 
 <md-content flex layout-padding ng-cloak class="rtl">
 
-    <p class="club-name" >בקשת רישום לאירוע</p>
+    <h3 style="margin: 0; text-align: center;" >בקשת רישום לאירוע</h3>
 
-
+    <h5 style="margin: 0;" >מגיע עם:</h5>
 
     <div scroll-headline-all-friends id="all-friends-content" flex style="overflow: auto; position: relative !important;" ng-clock>
 
-        <md-card  ng-repeat="friend in friends" style="display: inline-block !important; width: 60px !important;">
-            <img ng-src="{{friend.picture}}" class="md-card-image" alt="Washed Out">
-            <md-card-title style="padding: 1px !important; height: 2em !important;">
+        <md-card  ng-repeat="friend in friends" style="display: inline-block !important; width: 60px !important; border-radius: 10px !important;">
+            <img ng-src="{{friend.picture}}" class="md-card-image" alt="Washed Out" style="border-radius: 10px 10px 0 0 !important;">
+            <md-card-title style="text-align: center !important; padding: 1px !important; height: 1.5em !important;">
                 <md-card-title-text>
-                    <span class="md-headline" style="font-size: 12px!important; line-height: 12px!important;">{{friend.displayName}}</span>
+                    <span class="md-headline" style="font-size: 12px!important; line-height: 12px!important;" ng-class="checkLanguage(friend.displayName) === 'ltr' ? 'truncate-pic-text-ltr' : 'truncate-pic-text-rtl'">{{friend.displayName}}</span>
                 </md-card-title-text>
             </md-card-title>
-            
-            
-    
+
+
+
             <!--        <md-card-content>
                       <p>
                         The titles of Washed Out's breakthrough song and the first single from Paracosm share the

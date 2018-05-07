@@ -1396,6 +1396,24 @@ md-dialog-actions {
     width: 90%;
 }
 
+.truncate-pic-text-ltr{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: ltr;
+    width: 60px;
+    margin: 0 auto;
+}
+
+.truncate-pic-text-rtl{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 60px;
+    margin: 0 auto;
+}
+
+
 .fix-message{
     display: inline-block !important;
 }
